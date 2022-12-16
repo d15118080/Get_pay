@@ -24,7 +24,7 @@ function get_uuid_v3()
 }
 
 
-//가맹점 번호 일때 씀
+//계좌생성 일때 씀
 function get_uuid_v1()
 {
     return sprintf('%04x-%02x',
