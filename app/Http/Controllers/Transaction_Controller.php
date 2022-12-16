@@ -296,4 +296,56 @@ class Transaction_Controller extends Controller
             return Return_json('9999', 1, "에러가 발생하였습니다.", 422, null);
         }
     }
+
+    //페이투스 가상계좌 영구계좌 발급
+    public function Account_everlasting_issuance(Request $request,$route_id,$company_key){
+        if(!company_bank_data::where('route_id',$route_id)->exists()){
+            return Return_json('9999', 1, "허용되지 않은 접근입니다.", 422, null);
+        }
+        if(!company::where('company_key',$company_key)->where('company_state',0)->exists()){
+            return Return_json('9999', 1, "허용되지 않은 접근입니다.", 422, null);
+        }
+        $bank_code = $request->input('bankCode');
+        $bank_number = $request->input('acctNo');
+        $user_name = $request->input('custNm');
+        $data = company_bank_data::where('route_id',$route_id)->first();
+
+        $curl = curl_init();
+        $curl_data = array("compUuid" => "$data->comp_uuid",
+            "custNm" => "$user_name",
+            "custTermDttm" => "$data->comp_uuid",
+            "custBankCode" => "$bank_code",
+            "custBankAcct" => "$bank_number",
+            "custBirth" => "000000",
+            "custPhoneNo" => "00000000000",
+
+        );
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://api.cashes.co.kr/api/v1/vips/request',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => json_encode($curl_data),
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: Basic '.$data->basic_auth,
+                'Content-Type: application/json'
+            ),
+        ));
+        $bank_check_response = curl_exec($curl);
+        curl_close($curl);
+        $bank_check_response_data = json_decode($bank_check_response);
+
+
+        if ($bank_check_response_data->code == "0000") {
+            //DB INSERT 부분 넣어줘야함
+            return Return_json('0000', 200, "정상", 200, ['bank_no'=>$bank_check_response_data->response->bankAcctNo,'money'=>number_format($amount)]);
+        } else {
+            return Return_json('9999', 1, "$bank_check_response_data", 422, null);
+        }
+    }
 }
