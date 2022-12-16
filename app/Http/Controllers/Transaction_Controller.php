@@ -187,7 +187,7 @@ class Transaction_Controller extends Controller
             return Return_json('0000', 200, "정상처리", 200, $return_data);
 
         } else {
-            return Return_json('9999', 1,$bank_check_response_data, 200, null);
+            return Return_json('9999', 1,"$bank_check_response_data->message", 200, null);
         }
     }
 
@@ -232,7 +232,7 @@ class Transaction_Controller extends Controller
         if ($bank_check_response_data->code == "0000") {
             return Return_json('0000', 200, "인증완료", 200, null);
         } else {
-            return Return_json('9999', 1, "인증 문자가 일치하지 않습니다.", 422, null);
+            return Return_json('9999', 1, "$bank_check_response_data->message", 422, null);
         }
 
     }
@@ -293,7 +293,7 @@ class Transaction_Controller extends Controller
             //DB INSERT 부분 넣어줘야함
             return Return_json('0000', 200, "정상", 200, ['bank_no'=>$bank_check_response_data->response->bankAcctNo,'money'=>number_format($amount)]);
         } else {
-            return Return_json('9999', 1, "에러가 발생하였습니다.", 422, null);
+            return Return_json('9999', 1, "$bank_check_response_data->message", 422, null);
         }
     }
 
@@ -338,7 +338,6 @@ class Transaction_Controller extends Controller
         ));
         $bank_check_response = curl_exec($curl);
         curl_close($curl);
-        return $bank_check_response;
         $bank_check_response_data = json_decode($bank_check_response);
 
 
@@ -346,7 +345,7 @@ class Transaction_Controller extends Controller
             //DB INSERT 부분 넣어줘야함
             return Return_json('0000', 200, "정상", 200, ['bank_no'=>$bank_check_response_data->response->bankAcctNo,'money'=>number_format($amount)]);
         } else {
-            return Return_json('9999', 1, "", 422, $bank_check_response_data);
+            return Return_json('9999', 1, "$bank_check_response_data->message", 422, null);
         }
     }
 }
