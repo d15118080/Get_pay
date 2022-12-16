@@ -147,11 +147,11 @@ class Transaction_Controller extends Controller
             return Return_json('9999', 1, "필수값을 입력해주세요.", 422, null);
         }
 
+        $curl = curl_init();
         $curl_data = array("compUuid" => $data->comp_uuid,
             "bankCode" => "$bank_code",
             "acctNo" => "$bank_number",
             "custNm" => "$user_name");
-        $curl = curl_init();
 
         curl_setopt_array($curl, array(
             CURLOPT_URL => 'https://api.cashes.co.kr/api/v1/viss/acct',
@@ -162,19 +162,15 @@ class Transaction_Controller extends Controller
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POSTFIELDS => $curl_data,
+            CURLOPT_POSTFIELDS => json_encode($curl_data),
             CURLOPT_HTTPHEADER => array(
-                'Authorization: Basic dmljZXRhYmxleDp2aWNldGFibGV4MSE=',
+                'Authorization: Basic '.$data->basic_auth,
                 'Content-Type: application/json'
             ),
         ));
-
-        $response = curl_exec($curl);
-
+        $bank_check_response = curl_exec($curl);
         curl_close($curl);
-        return $response;
-
-
+        $bank_check_response_data = json_decode($bank_check_response);
 
         if ($bank_check_response_data->code == "0000") {
             $return_data =[
