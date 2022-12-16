@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\company;
 use App\Models\company_bank_data;
 use App\Models\transaction_history;
 use App\Models\withdraw;
@@ -239,6 +240,9 @@ class Transaction_Controller extends Controller
     //페이투스 가상계좌 임시계좌 발급
     public function Account_temporary_issuance(Request $request,$route_id,$company_key){
         if(!company_bank_data::where('route_id',$route_id)->exists()){
+            return Return_json('9999', 1, "허용되지 않은 접근입니다.", 422, null);
+        }
+        if(!company::where('company_key',$company_key)->where('company_state',0)->exists()){
             return Return_json('9999', 1, "허용되지 않은 접근입니다.", 422, null);
         }
         $bank_code = $request->input('bankCode');
