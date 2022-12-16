@@ -190,4 +190,49 @@ class Transaction_Controller extends Controller
         }
     }
 
+    //페이투스 가상계좌 1원 인증 (본시 키로 연결하여 데이터 가져옴)
+    public function Won_shipment_check(Request $request,$route_id){
+        $verifyVal = $request->input('verifyVal');
+        $verifyTrDt = $request->input('verifyTrDt');
+        $verifyTrNo = $request->input('verifyTrNo');
+        if ($verifyVal == "") {
+            return Return_json('9999', 1, "필수값을 입력해주세요.", 422, null);
+        }
+        if(!company_bank_data::where('route_id',$route_id)->exists()){
+            return Return_json('9999', 1, "허용되지 않은 접근입니다.", 422, null);
+        }
+        $data = company_bank_data::where('route_id',$route_id)->first();
+        $curl = curl_init();
+        $curl_data = array("compUuid" => $data->comp_uuid,
+            "verifyTrDt" => "$verifyTrDt",
+            "verifyTrNo" => "$verifyTrNo",
+            "verifyVal" => "$verifyVal");
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://api.cashes.co.kr/api/v1/viss/confirm',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => json_encode($curl_data),
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: Basic '.$data->basic_auth,
+                'Content-Type: application/json'
+            ),
+        ));
+        $bank_check_response = curl_exec($curl);
+        curl_close($curl);
+        $bank_check_response_data = json_decode($bank_check_response);
+
+
+        if ($bank_check_response_data->code == "0000") {
+            return Return_json('0000', 200, "인증완료", 200, null);
+        } else {
+            return Return_json('9999', 1, "인증 문자가 일치하지 않습니다.", 422, null);
+        }
+
+    }
 }
