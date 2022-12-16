@@ -338,6 +338,7 @@ class Transaction_Controller extends Controller
         ));
         $bank_check_response = curl_exec($curl);
         curl_close($curl);
+        return $bank_check_response;
         $bank_check_response_data = json_decode($bank_check_response);
 
 
@@ -345,7 +346,7 @@ class Transaction_Controller extends Controller
             //DB INSERT 부분 넣어줘야함
             return Return_json('0000', 200, "정상", 200, ['bank_no'=>$bank_check_response_data->response->bankAcctNo,'money'=>number_format($amount)]);
         } else {
-            return Return_json('9999', 1, "$bank_check_response_data", 422, null);
+            return Return_json('9999', 1, "", 422, $bank_check_response_data);
         }
     }
 }
