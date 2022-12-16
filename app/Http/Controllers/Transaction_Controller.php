@@ -139,6 +139,9 @@ class Transaction_Controller extends Controller
 
     //페이투스 가상계좌 1원 발급 (본사 키로 연결하여 데이터 가져옴)
     public function Won_shipment(Request $request,$route_id){
+        if(company_bank_data::where('route_id',$route_id)->exists()){
+            return Return_json('9999', 1, "허용되지 않은 접근입니다.", 422, null);
+        }
         $data = company_bank_data::where('route_id',$route_id)->first();
         $bank_code = $request->input('bankCode');
         $bank_number = $request->input('acctNo');
