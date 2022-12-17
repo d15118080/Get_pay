@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\company_bank_data;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -143,7 +144,8 @@ class Controller extends BaseController
             $today_withdraw_money = withdraw::where('date_ymd',date('Y-m-d'))->sum('money'); //금일 출금액
             $today_withdraw_count = withdraw::where('date_ymd',date('Y-m-d'))->count(); //금일 출금 건수
             $my_money = User::where('key',$HToken)->value('money'); //현재 잔액
-
+            $bank_mode_int = null;
+            $bank_route = null;
         }
 
         //본사 요청
@@ -154,6 +156,8 @@ class Controller extends BaseController
             $today_withdraw_money = withdraw::where('date_ymd',date('Y-m-d'))->where('head_key',$company_key)->sum('money'); //금일 출금액
             $today_withdraw_count = withdraw::where('date_ymd',date('Y-m-d'))->where('head_key',$company_key)->count(); //금일 출금 건수
             $my_money = company::where('company_key',$company_key)->value('money'); //현재 잔액
+            $bank_mode_int = null;
+            $bank_route = null;
         }
 
         //지사 요청
@@ -164,6 +168,8 @@ class Controller extends BaseController
             $today_withdraw_money = withdraw::where('date_ymd',date('Y-m-d'))->where('company_key',$company_key)->sum('money'); //금일 출금액
             $today_withdraw_count = withdraw::where('date_ymd',date('Y-m-d'))->where('company_key',$company_key)->count(); //금일 출금 건수
             $my_money = company::where('company_key',$company_key)->value('money'); //현재 잔액
+            $bank_mode_int = null;
+            $bank_route = null;
         }
 
         //총판 요청
@@ -174,6 +180,8 @@ class Controller extends BaseController
             $today_withdraw_money = withdraw::where('date_ymd',date('Y-m-d'))->where('company_key',$company_key)->sum('money'); //금일 출금액
             $today_withdraw_count = withdraw::where('date_ymd',date('Y-m-d'))->where('company_key',$company_key)->count(); //금일 출금 건수
             $my_money = company::where('company_key',$company_key)->value('money'); //현재 잔액
+            $bank_mode_int = null;
+            $bank_route = null;
         }
 
         //가맹점
@@ -184,6 +192,14 @@ class Controller extends BaseController
             $today_withdraw_money = withdraw::where('date_ymd',date('Y-m-d'))->where('company_key',$company_key)->sum('money'); //금일 출금액
             $today_withdraw_count = withdraw::where('date_ymd',date('Y-m-d'))->where('company_key',$company_key)->count(); //금일 출금 건수
             $my_money = company::where('company_key',$company_key)->value('money'); //현재 잔액
+            $bank_mode_int = company::where('company_key',$company_key)->value('bank_mode_int'); //가상계좌 영구만 사용인지, 임시만 사용인지
+
+            if($bank_mode_int == 0||$bank_mode_int == 1||$bank_mode_int == 2){
+                $head_key = company::where('company_key',$company_key)->value('head_key'); //가맹점에 연결된 본사 키
+                $bank_route_s = company_bank_data::where('company_key',$head_key)->value('route_id'); //가상계좌 발급 라우트ID
+                $bank_route = "$bank_route_s/$company_key";
+            }
+
         }
 
         return view('welcome',[
@@ -192,7 +208,9 @@ class Controller extends BaseController
             'today_money_count'=>$today_money_count,
             'my_money'=>$my_money,
             'today_withdraw_money'=>$today_withdraw_money,
-            'today_withdraw_count'=>$today_withdraw_count
+            'today_withdraw_count'=>$today_withdraw_count,
+            'bank_route'=>$bank_route,
+            'bank_mode_int'=>$bank_mode_int
         ]);
     }
 }

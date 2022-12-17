@@ -31,22 +31,26 @@ class auth_check
                     if($user_data->user_authority == 1){
                         $position = "본사";
                         $bank_mode = company::where('company_key',$user_data->company_key)->value('bank_mode');
-
+                        $bank_mode_int = null;
                     }elseif ($user_data->user_authority == 2){
                         $position = "지사";
                         $bank_mode = null;
+                        $bank_mode_int = null;
                     }elseif ($user_data->user_authority == 3){
                         $position = "총판";
                         $bank_mode = null;
+                        $bank_mode_int = null;
                     }elseif ($user_data->user_authority == 4){
                         $position = "가맹점";
                         $bank_mode = null;
+                        $bank_mode_int = company::where('company_key',$user_data->company_key)->value('bank_mode_int');
                     }
                     session([
                         'state' => $user_data->user_authority,
                         'name' => company::where('company_key',$user_data->company_key)->value('company_name'),
                         'position' =>$position,
-                        'bank_mode'=> $bank_mode
+                        'bank_mode'=> $bank_mode,
+                        'bank_mode_int' =>$bank_mode_int
                     ]);
                 }else{
                     session([

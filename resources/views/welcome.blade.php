@@ -558,8 +558,45 @@
                             </div> <!-- end row-->
                             @endif
                         </div> <!-- end .h-100-->
-
                     </div> <!-- end col -->
+                    @if(session('state') == 4 && session('bank_mode_int') != 3)
+                    <div class="row">
+                        <div class="col-xl">
+                            <div class="card">
+                                <div class="card-header align-items-center d-flex">
+                                    <h4 class="card-title mb-0 flex-grow-1">가상계좌 발급 링크</h4>
+                                </div><!-- end card header -->
+
+                                <div class="card-body">
+                                    <p class="text-muted">본 가상계좌 링크를 회원에게 주시면 됩니다 <b style="color: darkred">임시 계좌는 발급후 10분이내 미입금시 삭제 처리됩니다</b></p>
+                                    <div class="live-preview">
+                                        <div action="javascript:void(0);">
+                                            <div class="row">
+                                                @if($bank_mode_int == 0 || $bank_mode_int == 2)
+                                                <div class="col-md-12">
+                                                    <div class="mb-3">
+                                                        <label for="firstNameinput" class="form-label">영구 계좌 발급 링크</label>
+                                                        <input type="text" class="form-control" value="https://paysone.kr/account_everlasting_issuance/{{$bank_route}}" id="firstNameinput" disabled>
+                                                    </div>
+                                                </div>
+                                                @endif
+                                                @if($bank_mode_int == 1 || $bank_mode_int == 2)
+                                                <div class="col-md-12">
+                                                    <div class="mb-3">
+                                                        <label for="lastNameinput" class="form-label">임시 계좌 발급 링크</label>
+                                                        <input type="text" class="form-control" value="https://paysone.kr/account_temporary_issuance/{{$bank_route}}" id="lastNameinput" disabled>
+                                                    </div>
+                                                </div>
+                                                @endif
+                                            </div>
+                                            <!--end row-->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> <!-- end col -->
+                    </div>
+                    @endif
                 </div>
             </div>
             <!-- container-fluid -->
