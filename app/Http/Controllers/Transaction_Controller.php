@@ -246,7 +246,8 @@ class Transaction_Controller extends Controller
             return Return_json('9999', 1, "허용되지 않은 접근입니다.", 422, null);
         }
         $bank_mode_int = company::where('company_key',$company_key)->value('bank_mode_int'); //영구 계좌 발급 허용인지
-        if($bank_mode_int != 2 || $bank_mode_int != 1 ){
+
+        if($bank_mode_int != "2" || $bank_mode_int != "1" ){
             return Return_json('9999', 1, "허용되지 않은 접근입니다.", 422, null);
         }
         $bank_code = $request->input('bankCode');
@@ -310,7 +311,7 @@ class Transaction_Controller extends Controller
             return Return_json('9999', 1, "허용되지 않은 접근입니다.", 422, null);
         }
         $bank_mode_int = company::where('company_key',$company_key)->value('bank_mode_int'); //영구 계좌 발급 허용인지
-        if($bank_mode_int != 2 || $bank_mode_int != 0 ){
+        if($bank_mode_int != "2" || $bank_mode_int != "0" ){
             return Return_json('9999', 1, "허용되지 않은 접근입니다.", 422, null);
         }
         $bank_code = $request->input('bankCode');
