@@ -179,7 +179,7 @@
                                         입금되지 않았다면 새로고침후 계좌번호를 확인해주세요.</p>
                                     <div class="row justify-content-end">
                                         <div class="col-lg-10">
-                                            <button type="button" onclick="bank_check();"
+                                            <button type="button" onclick="Won_shipment_check();"
                                                     class="btn btn-primary info-change">발급
                                             </button>
                                         </div>
@@ -201,13 +201,13 @@
                                         <div class="row mb-4">
                                             <label class="col-form-label col-lg-2">입금하실 금액*</label>
                                             <div class="col-md-10">
-                                                <input id="verifyVal" value="" type="text" class="form-control"
+                                                <input id="money" value="" type="text" class="form-control"
                                                        placeholder="입금하실 금액을 숫자로만 입력해주세요">
                                             </div>
                                         </div>
                                         <div class="row justify-content-end">
                                             <div class="col-lg-10">
-                                                <button type="button" onclick="bank_check();"
+                                                <button type="button" onclick="Account_temporary_issuance();"
                                                         class="btn btn-primary info-change">발급
                                                 </button>
                                             </div>
@@ -263,8 +263,12 @@
 
 <script src="/assets/js/app.js"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+@if($_GET['mode'] == 1)
 <script  src="/assets/js/ajax/bank_add_viss.js"></script>
-
+@elseif($_GET['mode'] ==0)
+<script  src="/assets/js/ajax/bank_add_vips.js"></script>
+@endif
 <!-- end main content-->
 </body>
 </html>
