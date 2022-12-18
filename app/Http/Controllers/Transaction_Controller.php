@@ -762,14 +762,14 @@ class Transaction_Controller extends Controller
             $key = substr($text, 5);
             //사용자가 존재하는지 확인
             if (!User::where('key', $key)->exists()) {
-                $telegram->sendMessage([
+             return  $telegram->sendMessage([
                     'chat_id' => $userid,
                     'text' => "등록되지 않은 유저 입니다.",
                 ]);
             }
             //이미 등록을 했는지 확인
             if (User::where('key', $key)->value('telegram_id') != null || User::where('key', $key)->value('telegram_id') != "") {
-                $telegram->sendMessage([
+                return  $telegram->sendMessage([
                     'chat_id' => $userid,
                     'text' => "이미 등록한 사용자 입니다.",
                 ]);
@@ -779,7 +779,7 @@ class Transaction_Controller extends Controller
                 $company_key = User::where('key', $key)->value('company_key');
                 $company_name = company::where('company_key', $company_key)->value('company_name');
                 User::where('key', $key)->update(['telegram_id' => $userid]);
-                $telegram->sendMessage([
+                return   $telegram->sendMessage([
                     'chat_id' => $userid,
                     'text' => "사용자 '$user_name' 님 [$company_name] 소속으로 등록되었습니다.",
                 ]);
@@ -788,7 +788,7 @@ class Transaction_Controller extends Controller
             $key = substr($text, 8);
             //사용자가 존재하는지 확인
             if (!User::where('key', $key)->exists()) {
-                $telegram->sendMessage([
+                return   $telegram->sendMessage([
                     'chat_id' => $userid,
                     'text' => "등록되지 않은 유저 입니다.",
                 ]);
@@ -799,12 +799,12 @@ class Transaction_Controller extends Controller
                 $company_key = User::where('key', $key)->value('company_key');
                 $company_name = company::where('company_key', $company_key)->value('company_name');
                 User::where('key', $key)->update(['telegram_id' => ""]);
-                $telegram->sendMessage([
+                return   $telegram->sendMessage([
                     'chat_id' => $userid,
                     'text' => "사용자 '$user_name' 님 [$company_name] 알림이 해제되었습니다.",
                 ]);
             } else {
-                $telegram->sendMessage([
+                return   $telegram->sendMessage([
                     'chat_id' => $userid,
                     'text' => "등록되지 않은 유저 입니다.",
                 ]);
