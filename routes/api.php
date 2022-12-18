@@ -38,7 +38,7 @@ Route::prefix('/v1')->group(function () {
             Route::get('/token_check', function () {return true;}); //토큰 유효여부 체크
             Route::get('/transaction_history_data',[Transaction_Controller::class,'Transaction_history_data']); //거래 내역 가져오기
             Route::get('/calculate_history_data',[Transaction_Controller::class,'Calculate_history_data']); //거래 내역 가져오기
-
+            Route::post('/charge_request',[Transaction_Controller::class,'Charge_request']); //잔액 충전 요청 (Rtpay 혹은 송금을위한 잔액 충전요청)
         });
 
     });

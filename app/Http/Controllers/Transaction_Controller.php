@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\account_list;
 use App\Models\calculate;
+use App\Models\charge_request;
 use App\Models\company;
 use App\Models\company_bank_data;
+use App\Models\rtpay_data;
 use App\Models\transaction_history;
 use App\Models\withdraw;
 use App\Models\User;
@@ -644,6 +646,145 @@ class Transaction_Controller extends Controller
     public function Account_add_view(Request $request, $route_id, $company_id)
     {
         return view('account_add', ['route_id' => $route_id, 'company_id' => $company_id]);
+    }
+
+    //Rtpay 입금 확인 혹은 수동입금 요청 혹은 송금을위한 잔액충전 요청
+    public function Charge_request(Request $request){
+        $mode = $request->input('mode'); // 0 Rtpay 입금확인 요청 , 1 잔액충전을 위한 충전 요청
+        $data = $request->input('data'); // 충전 요청 리스트
+        $company_key = User::where('key', $request->user()->key)->value('company_key');
+        $company_data = company::where('company_key', $company_key)->first();//가맹점 정보
+        $success_count = 0; //Rtpay 테이블에 존재하여 성공한 데이터 건수
+        $failure_count = 0; //Rtpay 테이블에 존재하지 않아 수동승인이 필요한 데이터 건수
+        $total_count = count($data); //총 요청 개수
+        //Rtpay 입금 요청일경우
+        if($mode == 0){
+            foreach ($data as $row){
+                //Rtpay에 데이터가 존재할 경우
+                if(rtpay_data::where('user_name',$row['user_name'])->where('money',$row['money'])->exists()){
+                    $distributor_data = company::where('company_key', $company_data->distributor_key)->first(); //총판 정보
+                    $branch_data = company::where('company_key', $company_data->branch_key)->first(); //지사 정보
+                    $head_data = company::where('company_key', $company_data->head_key)->first(); //본사 정보
+                    $amount = $row['money']; //입금 금액
+                    $clientNm = $row['user_name']; //입금자 이름
+                    $number_amount = number_format($amount); //거래금액 콤마찍기(텔레그램 발송용)
+
+                    //가맹점 수수료 정리
+                    $company_fee = $amount * $company_data->company_margin; //가맹점이 총판에게 올려줄 금액
+                    $company_actual_amount = $amount - $company_fee - $company_data->company_fee; //실제 가맹점이 받는 금액(입금금액 - 가맹점 수수료 - 입금비 (존재할시) )
+                    $company_update_money = $company_data->money + $company_actual_amount; //현재 가맹점 금액 + 입금받은 금액의 수수료제외후 금액
+                    company::where('company_key', $company_key)->update(['money' => $company_update_money]); //가맹점 금액 업데이트
+                    $company_user_telegrams_get = User::where('company_key', $company_key)->get(); //가맹점과 연결된 계정 전부 가져오기
+
+                    //연결된 계정만큼 반복후 텔레그램 설정한 계정만 알림 발송
+                    foreach ($company_user_telegrams_get as $row) {
+                        if ($row['telegram_id'] != null || $row['telegram_id'] != "") {
+                            Telegram_send($row['telegram_id'], "*[입금 알림]*\n입금자명 : $clientNm\n입금 금액 : $number_amount 원\n수수료 : " . number_format($company_fee) . " 원\n입금비 : " . number_format($company_data->company_fee) . " 원\n정산 금액 : " . number_format($company_actual_amount) . " 원");
+                        }
+                    }
+
+                    //총판 수수료 정리
+                    $distributor_fee = $amount * $distributor_data->company_margin; //총판이 지사에게 올려줄 금액
+                    $distributor_actual_amount = $amount * ($company_data->company_margin - $distributor_data->company_margin); //실제 총판이 받는 금액(가맹점 수수료 - 지사 수수료 * 입금금액)
+                    $distributor_update_money = $distributor_data->money + $distributor_actual_amount; //현재 지사 금액 + 입금받은 금액의 수수료
+                    company::where('company_key', $company_data->distributor_key)->update(['money' => $distributor_update_money]); //총판 금액 업데이트
+
+                    $distributor_user_telegrams_get = User::where('company_key', $company_data->distributor_key)->get(); //총판과 연결된 계정 전부 가져오기
+
+                    //연결된 계정만큼 반복후 텔레그램 설정한 계정만 알림 발송
+                    foreach ($distributor_user_telegrams_get as $row) {
+                        if ($row['telegram_id'] != null || $row['telegram_id'] != "") {
+                            Telegram_send($row['telegram_id'], "*[입금 알림]*\n거래 가맹점 : $company_data->company_name\n입금 금액 : $number_amount 원\n정산 금액 : " . number_format($distributor_actual_amount) . " 원");
+                        }
+                    }
+
+                    //지사 수수료 정리
+                    $branch_fee = $amount * $branch_data->company_margin; //지사가 본사에게 올려줄 금액
+                    $branch_actual_amount = $amount * ($distributor_data->company_margin - $branch_data->company_margin); //실제 지사가 받는 금액(총판 수수료 - 지사 수수료 * 입금금액)
+                    $branch_actual_update_money = $branch_data->money + $branch_actual_amount; //현재 지사 금액 + 입금받은 금액의 수수료
+                    company::where('company_key', $company_data->branch_key)->update(['money' => $branch_actual_update_money]); //지사 금액 업데이트
+
+                    $branch_user_telegrams_get = User::where('company_key', $company_data->branch_key)->get(); //지사와 연결된 계정 전부 가져오기
+
+                    //연결된 계정만큼 반복후 텔레그램 설정한 계정만 알림 발송
+                    foreach ($branch_user_telegrams_get as $row) {
+                        if ($row['telegram_id'] != null || $row['telegram_id'] != "") {
+                            Telegram_send($row['telegram_id'], "*[입금 알림]*\n거래 가맹점 : $company_data->company_name\n입금 금액 : $number_amount 원\n정산 금액 : " . number_format($branch_actual_amount) . " 원");
+                        }
+                    }
+
+                    //본사 수수료 정리
+                    $head_fee = $amount * $head_data->company_margin; //본사가 관리자 에게 올려줄 금액
+                    $head_actual_amount = $amount * ($branch_data->company_margin - $head_data->company_margin); //실제 본사가 받는 금액(지사 수수료 - 본사 수수료 * 입금금액)
+                    $head_actual_update_money = $head_data->money + $head_actual_amount; //현재 본사 금액 + 입금받은 금액의 수수료
+                    company::where('company_key', $company_data->head_key)->update(['money' => $head_actual_update_money]); //본사 금액 업데이트
+
+                    $head_user_telegrams_get = User::where('company_key', $company_data->branch_key)->get(); //본사와 연결된 계정 전부 가져오기
+
+                    //연결된 계정만큼 반복후 텔레그램 설정한 계정만 알림 발송
+                    foreach ($head_user_telegrams_get as $row) {
+                        if ($row['telegram_id'] != null || $row['telegram_id'] != "") {
+                            Telegram_send($row['telegram_id'], "*[입금 알림]*\n거래 가맹점 : $company_data->company_name\n입금 금액 : $number_amount 원\n정산 금액 : " . number_format($head_actual_amount) . " 원");
+                        }
+                    }
+
+                    //관리자 금액 업데이트
+                    $super_admin_update_money = User::where('key', 'super_admin')->value('money') + $head_fee + $company_data->company_fee; //현재 관리자 금액 + (본사 수수료 + 입금비(존재할시))
+                    User::where('key', 'super_admin')->update(['money' => $super_admin_update_money]); //관리자 금액 업데이트
+                    if (User::where('key', 'super_admin')->value('telegram_id') != null || User::where('key', 'super_admin')->value('telegram_id') != "") {
+                        Telegram_send($row['telegram_id'], "*[입금 알림]*\n거래 가맹점 : $company_data->company_name\n입금 금액 : $number_amount 원\n정산 금액 : " . number_format($head_fee + $company_data->company_fee) . " 원");
+                    }
+
+                    //거래내역 INSERT
+                    transaction_history::insert([
+                        'transaction_key' => get_uuid_v1(),
+                        'head_key' => $company_data->head_key,
+                        'branch_key' => $company_data->branch_key,
+                        'distributor_key' => $company_data->distributor_key,
+                        'company_key' => $company_key,
+                        'transaction_user_name' => $clientNm,
+                        'transaction_money' => $amount,
+                        'company_name' => $company_data->company_name,
+                        'head_fee' => number_format($head_fee) . "(" . number_format($head_actual_amount) . ")",
+                        'branch_fee' => number_format($branch_fee) . "(" . number_format($branch_actual_amount) . ")",
+                        'distributor_fee' => number_format($distributor_fee) . "(" . number_format($distributor_actual_amount) . ")",
+                        'franchisee_fee' => number_format($company_fee),
+                        'franchisee_money' => number_format($company_actual_amount),
+                        'route_key' => "",
+                        'date_ymd' => date('Y-m-d'),
+                        'date_time' => date('H:i:s')
+                    ]);
+                    rtpay_data::where('user_name',$row['user_name'])->where('money',$row['money'])->delete();
+                    $success_count ++;
+                }else{
+                    charge_request::insert([
+                       'company_key'=>$company_key,
+                       'company_name'=>$company_data->company_name,
+                       'user_name'=>$row['user_name'],
+                       'money'=>$row['money'],
+                       'date_ymd'=>date('Y-m-d'),
+                       'date_time'=>date('H:i:s'),
+                       'state'=>'승인대기',
+                       'charge_request_state'=>"수동입금"
+                    ]);
+                    $failure_count++;
+                }
+            }
+            return Return_json('0000',200,'정상처리',200,"총 $total_count 건중 자동승인 $success_count 건 수동승인 필요 $failure_count 건 으로 처리되었습니다.");
+        //잔액 충전 요청일경우
+        }elseif($mode == 1){
+            charge_request::insert([
+                'company_key'=>$company_key,
+                'company_name'=>$company_data->company_name,
+                'user_name'=>$request->input('user_name'),
+                'money'=>$request->input('money'),
+                'date_ymd'=>date('Y-m-d'),
+                'date_time'=>date('H:i:s'),
+                'state'=>'승인대기',
+                'charge_request_state'=>"잔액충전"
+            ]);
+        }
+
     }
 
     //입금 노티
