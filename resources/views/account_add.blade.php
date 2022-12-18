@@ -1,30 +1,31 @@
 <!doctype html>
-<html lang="ko" data-layout="vertical" data-topbar="light" data-sidebar-size="lg" data-sidebar-image="none" data-body-image="img-1" data-preloader="disable">
+<html lang="ko" data-layout="vertical" data-topbar="light" data-sidebar-size="lg" data-sidebar-image="none"
+      data-body-image="img-1" data-preloader="disable">
 
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <title>페이원 - 계좌발급</title>
-    <meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width" />
-    <meta content="Themesbrand" name="author" />
+    <meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width"/>
+    <meta content="Themesbrand" name="author"/>
     <!-- App favicon -->
     <link rel="shortcut icon" href="/assets/images/favicon.ico">
 
     <!-- jsvectormap css -->
-    <link href="/assets/libs/jsvectormap/css/jsvectormap.min.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/libs/jsvectormap/css/jsvectormap.min.css" rel="stylesheet" type="text/css"/>
 
     <!--Swiper slider css-->
-    <link href="/assets/libs/swiper/swiper-bundle.min.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/libs/swiper/swiper-bundle.min.css" rel="stylesheet" type="text/css"/>
 
     <!-- Layout config Js -->
     <script src="/assets/js/layout.js"></script>
     <!-- Bootstrap Css -->
-    <link href="/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
     <!-- Icons Css -->
-    <link href="/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/css/icons.min.css" rel="stylesheet" type="text/css"/>
     <!-- App Css-->
-    <link href="/assets/css/app.min.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/css/app.min.css" rel="stylesheet" type="text/css"/>
     <!-- custom Css-->
-    <link href="/assets/css/custom.min.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/css/custom.min.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="layout-wrapper">
@@ -60,9 +61,6 @@
                     </div>
                 </div>
                 <!-- end page title -->
-
-
-
                 <div class="row" id="one">
                     <div class="col-lg-12">
                         <form id="three_company_add_form">
@@ -72,13 +70,15 @@
                                     <div class="row mb-4">
                                         <label class="col-form-label col-lg-2">예금주 명 *</label>
                                         <div class="col-md-10">
-                                            <input id="bank_user_name" value="" type="text" class="form-control" placeholder="예금주 명">
+                                            <input id="bank_user_name" value="" type="text" class="form-control"
+                                                   placeholder="예금주 명">
                                         </div>
                                     </div>
                                     <div class="row mb-4">
                                         <label for="projectname" class="col-form-label col-lg-2">계좌번호 *</label>
                                         <div class="col-lg-10">
-                                            <input id="bank_number" value="" type="text" class="form-control" placeholder="계좌번호">
+                                            <input id="bank_number" value="" type="text" class="form-control"
+                                                   placeholder="계좌번호">
                                         </div>
                                     </div>
                                     <div class="row mb-4">
@@ -150,7 +150,9 @@
 
                                     <div class="row justify-content-end">
                                         <div class="col-lg-10">
-                                            <button type="button" onclick="Won_shipment();" class="btn btn-primary info-change">1원인증</button>
+                                            <button type="button" onclick="Won_shipment();"
+                                                    class="btn btn-primary info-change">1원인증
+                                            </button>
                                         </div>
                                     </div>
 
@@ -169,14 +171,17 @@
                                     <div class="row mb-4">
                                         <label class="col-form-label col-lg-2">인증번호*</label>
                                         <div class="col-md-10">
-                                            <input id="verifyVal" value="" type="text" class="form-control" placeholder="기 계좌로 입금된 1원의 입금자명을 적어주세요.">
+                                            <input id="verifyVal" value="" type="text" class="form-control"
+                                                   placeholder="기 계좌로 입금된 1원의 입금자명을 적어주세요.">
                                         </div>
                                     </div>
                                     <p style="color:red">
                                         입금되지 않았다면 새로고침후 계좌번호를 확인해주세요.</p>
                                     <div class="row justify-content-end">
                                         <div class="col-lg-10">
-                                            <button type="button" onclick="bank_check();" class="btn btn-primary info-change">발급</button>
+                                            <button type="button" onclick="bank_check();"
+                                                    class="btn btn-primary info-change">발급
+                                            </button>
                                         </div>
                                     </div>
 
@@ -187,30 +192,33 @@
                     <!-- end row -->
                 </div>
                 @if($_GET['mode'] == 1)
-                <div style="display:none;" class="row" id="three">
-                    <div class="col-lg-12">
-                        <form id="three_company_add_form">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h4 class="card-title mb-4">입금하실 금액</h4>
-                                    <div class="row mb-4">
-                                        <label class="col-form-label col-lg-2">입금하실 금액*</label>
-                                        <div class="col-md-10">
-                                            <input id="verifyVal" value="" type="text" class="form-control" placeholder="입금하실 금액을 숫자로만 입력해주세요">
+                    <div style="display:none;" class="row" id="three">
+                        <div class="col-lg-12">
+                            <form id="three_company_add_form">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="card-title mb-4">입금하실 금액</h4>
+                                        <div class="row mb-4">
+                                            <label class="col-form-label col-lg-2">입금하실 금액*</label>
+                                            <div class="col-md-10">
+                                                <input id="verifyVal" value="" type="text" class="form-control"
+                                                       placeholder="입금하실 금액을 숫자로만 입력해주세요">
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="row justify-content-end">
-                                        <div class="col-lg-10">
-                                            <button type="button" onclick="bank_check();" class="btn btn-primary info-change">발급</button>
+                                        <div class="row justify-content-end">
+                                            <div class="col-lg-10">
+                                                <button type="button" onclick="bank_check();"
+                                                        class="btn btn-primary info-change">발급
+                                                </button>
+                                            </div>
                                         </div>
-                                    </div>
 
+                                    </div>
                                 </div>
-                            </div>
-                        </form>
+                            </form>
+                        </div>
+                        <!-- end row -->
                     </div>
-                    <!-- end row -->
-                </div>
                 @endif
                 <div style="display:none;" class="row" id="for">
                     <div class="col-lg-12">
@@ -239,66 +247,33 @@
                 </div>
                 <!-- End Page-content -->
                 @include('include.fotter')
+
             </div>
             <!-- end main content-->
-
         </div>
-        <!-- END layout-wrapper -->
-
-        <input type="hidden" value="{{$company_id}}" id="company_id">
-        <input type="hidden" value="{{$route_id}}" id="route_id">
-        <!-- JAVASCRIPT -->
-        <script src="/assets/libs/jquery/jquery.min.js"></script>
-        <script src="/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
-        <script src="/assets/libs/metismenu/metisMenu.min.js"></script>
-        <script src="/assets/libs/simplebar/simplebar.min.js"></script>
-        <script src="/assets/libs/node-waves/waves.min.js"></script>
-
-        <!-- bootstrap datepicker -->
-        <script src="/assets/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
-
-        <!-- dropzone plugin -->
-        <script src="/assets/libs/dropzone/min/dropzone.min.js"></script>
-
-        <script src="/assets/js/app.js"></script>
-        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.9/js/select2.min.js"></script>
-
-        <script>
-            let route_id = $('#route_id').val();
-            let company_id = $('#company_id').val();
-
-            function Won_shipment(){
-                $.ajax({
-                    type: "POST",
-                    url: '/api/v1/user/1won_shipment/'+route_id,
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    data:{
-                        bankCode:$('#bank_code').val(),
-                        acctNo:$('#bank_number').val(),
-                        custNm:$('#bank_user_name').val()
-                    },
-                    success: function (res) {
-                        $("#one").css("display","none");
-                        $("#two").css("display","");
-                        Swal.close()
-                    },
-                    error: function (XMLHttpRequest, textStatus, errorThrown) {
-                        let data = XMLHttpRequest.responseJSON;
-                        Swal.fire({
-                            icon: "error",
-                            title: `에러(${data.result.resultCd})`,
-                            text: data.result.advanceMsg,
-                        });
-                    },
-                });
-            }
-        </script>
-
-        <!-- end main content-->
-
+    </div>
 </div>
+<!-- END layout-wrapper -->
+
+<input type="hidden" value="{{$company_id}}" id="company_id">
+<input type="hidden" value="{{$route_id}}" id="route_id">
+<!-- JAVASCRIPT -->
+<script src="/assets/libs/jquery/jquery.min.js"></script>
+<script src="/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/libs/metismenu/metisMenu.min.js"></script>
+<script src="/assets/libs/simplebar/simplebar.min.js"></script>
+<script src="/assets/libs/node-waves/waves.min.js"></script>
+
+<!-- bootstrap datepicker -->
+<script src="/assets/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+
+<!-- dropzone plugin -->
+<script src="/assets/libs/dropzone/min/dropzone.min.js"></script>
+
+<script src="/assets/js/app.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script  src="/assets/js/ajax/bank_add_viss.js"></script>
+
+<!-- end main content-->
 </body>
 </html>
