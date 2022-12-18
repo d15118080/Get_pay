@@ -22,11 +22,13 @@ Route::prefix('/v1')->group(function () {
         Route::post('/auth-check',[Controller::class,'Auth_check']); //로그인 POST
         Route::post('/auth2-check',[Controller::class,'Auth_check2']); //로그인 POST
         Route::get('/test',[Controller::class,'test']);
+
         //가상계좌 관리
         Route::post('/1won_shipment/{route_id}',[Transaction_Controller::class,'Won_shipment']); //1원 인증 발송
         Route::post('/1won_shipment_check/{route_id}',[Transaction_Controller::class,'Won_shipment_check']); //1원 인증 체크
         Route::post('/account_temporary_issuance/{route_id}/{company_id}',[Transaction_Controller::class,'Account_temporary_issuance']);//임시 계좌발급
         Route::post('/account_everlasting_issuance/{route_id}/{company_id}',[Transaction_Controller::class,'Account_everlasting_issuance']);//영구 계좌발급
+        Route::post('/deposit_notification/{route_id}',[Transaction_Controller::class,'Deposit_notification']); //입금 노티
 
         //로그인후 라우트
         Route::middleware('auth:sanctum')->group(function () {

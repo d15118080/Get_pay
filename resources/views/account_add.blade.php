@@ -265,8 +265,10 @@
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
 @if($_GET['mode'] == 1)
+{{--임시계좌발급--}}
 <script  src="/assets/js/ajax/bank_add_viss.js"></script>
 @elseif($_GET['mode'] ==0)
+{{--영구계좌발급--}}
 <script  src="/assets/js/ajax/bank_add_vips.js"></script>
 @endif
 <!-- end main content-->

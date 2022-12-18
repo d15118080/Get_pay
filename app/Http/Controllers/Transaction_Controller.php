@@ -644,4 +644,65 @@ class Transaction_Controller extends Controller
         return view('account_add',['route_id'=>$route_id,'company_id'=>$company_id]);
     }
 
+    //입금 노티
+    public function Deposit_notification(Request $request,$route_id){
+        if(!account_list::where('account_number',$request->input('bankAcctNo'))->exists()){
+            //관리자로 텔레 발송 DB에 없는 계좌가 입금되었음
+        }
+        $company_key = account_list::where('account_number',$request->input('bankAcctNo'))->value('company_key');
+
+        $company_data = company::where('company_key' ,$company_key)->first();//가맹점 정보
+        $distributor_data = company::where('distributor_key',$company_data->distributor_key)->first(); //총판 정보
+        $branch_data = company::where('distributor_key',$company_data->branch_key)->first(); //지사 정보
+        $head_data = company::where('distributor_key',$company_data->head_key)->first(); //본사 정보
+        $amount = $request->input('amount'); //입금 금액
+
+        //가맹점 수수료 정리
+        $company_fee = $amount * $company_data->company_margin; //가맹점이 총판에게 올려줄 금액
+        $company_actual_amount =  $amount - $company_fee - $company_data->company_fee; //실제 가맹점이 받는 금액(입금금액 - 가맹점 수수료 - 입금비 (존재할시) )
+        $company_update_money = $company_data->money + $company_actual_amount; //현재 가맹점 금액 + 입금받은 금액의 수수료제외후 금액
+        company::where('company_key',$company_key)->update(['money' => $company_update_money]); //가맹점 금액 업데이트
+
+        //총판 수수료 정리
+        $distributor_fee = $amount * $distributor_data->company_margin; //총판이 지사에게 올려줄 금액
+        $distributor_actual_amount =  $amount * ($company_data->company_margin - $distributor_data->company_margin); //실제 총판이 받는 금액(가맹점 수수료 - 지사 수수료 * 입금금액)
+        $distributor_update_money = $distributor_data->money + $distributor_actual_amount; //현재 지사 금액 + 입금받은 금액의 수수료
+        company::where('company_key',$company_data->distributor_key)->update(['money' => $distributor_update_money]); //총판 금액 업데이트
+
+        //지사 수수료 정리
+        $branch_fee = $amount * $branch_data->company_margin; //지사가 본사에게 올려줄 금액
+        $branch_actual_amount = $amount * ($distributor_data->company_margin - $branch_data->company_margin); //실제 지사가 받는 금액(총판 수수료 - 지사 수수료 * 입금금액)
+        $branch_actual_update_money = $branch_data->money + $branch_actual_amount; //현재 지사 금액 + 입금받은 금액의 수수료
+        company::where('company_key',$company_data->branch_key)->update(['money' => $branch_actual_update_money]); //지사 금액 업데이트
+
+        //본사 수수료 정리
+        $head_fee = $amount * $head_data->company_margin; //본사가 관리자 에게 올려줄 금액
+        $head_actual_amount = $amount * ($branch_data->company_margin - $head_data->company_margin); //실제 본사가 받는 금액(지사 수수료 - 본사 수수료 * 입금금액)
+        $head_actual_update_money = $head_data->money + $head_actual_amount; //현재 본사 금액 + 입금받은 금액의 수수료
+        company::where('company_key',$company_data->head_key)->update(['money' => $head_actual_update_money]); //본사 금액 업데이트
+
+        //관리자 금액 업데이트
+        $super_admin_update_money = User::where('key','super_admin')->value('money') + $head_fee + $company_data->company_fee; //현재 관리자 금액 + (본사 수수료 + 입금비(존재할시))
+        User::where('key','super_admin')->update(['money' => $super_admin_update_money]); //관리자 금액 업데이트
+
+        transaction_history::insert([
+           'transaction_key'=>get_uuid_v1(),
+           'head_key'=>$company_data->head_key,
+           'branch_key'=>$company_data->branch_key,
+           'distributor_key'=>$company_data->distributor_key,
+           'company_key'=>$company_key,
+           'transaction_user_name'=>$request->input('clientNm'),
+           'transaction_money'=>$amount,
+           'company_name'=>$company_data->company_name,
+           'head_fee'=>number_format($head_fee)."(".number_format($head_actual_amount).")",
+           'branch_fee'=>number_format($branch_fee)."(".number_format($branch_actual_amount).")",
+           'distributor_fee'=>number_format($distributor_fee)."(".number_format($distributor_actual_amount).")",
+           'franchisee_fee'=>number_format($company_fee),
+           'franchisee_money'=>number_format($company_actual_amount),
+           'route_key'=>$route_id,
+           'date_ymd'=>date('Y-m-d'),
+           'date_time'=>date('H:i:s')
+        ]);
+        return response()->json(['code'=>"0000",'message'=>"정상"] ,200);
+    }
 }

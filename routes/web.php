@@ -20,8 +20,7 @@ Route::get('/',[Controller::class,'Index'] )->middleware('Token_Check');
 
 //가상계좌 연결 관리(본사)
 Route::get('/account_management',[Controller::class,'Account_management'])->middleware('Token_Check');
-//계좌 발급 페이지
-Route::get('/account_everlasting_issuance/{route_id}/{company_id}',[Transaction_Controller::class,'Account_add_view']);
+
 
 //업체 리스트
 Route::get('/company_lists',[Controller::class,'company_lists'])->middleware('Token_Check');
@@ -33,6 +32,10 @@ Route::get('/transaction_history',[Controller::class,'Transaction_history'])->mi
 Route::get('/calculates',[Controller::class,'Calculate'])->middleware('Token_Check');
 
 
+/*일반 유저*/
+
+//계좌 발급 페이지
+Route::get('/account_issuance/{route_id}/{company_id}',[Transaction_Controller::class,'Account_add_view']);
 
 //로그인
 Route::get('/login', function () {
