@@ -36,10 +36,10 @@ class Transaction_Controller extends Controller
             //출금 금액 배열 생성
             for ($i = 6; $i > 0; $i--) {
                 $data = date("Y-m-d", strtotime(date('Y-m-d') . " -$i day"));
-                $pu_arr_withdraw = calculate::where('date_ymd', $data)->sum('calculate_money');
+                $pu_arr_withdraw = calculate::where('date_ymd', $data)->where('state','완료')->sum('calculate_money');
                 array_push($arr_withdraw, $pu_arr_withdraw);
             }
-            $today_withdraw_money = calculate::where('date_ymd', date('Y-m-d'))->sum('calculate_money');
+            $today_withdraw_money = calculate::where('date_ymd', date('Y-m-d'))->where('state','완료')->sum('calculate_money');
             array_push($arr_withdraw, $today_withdraw_money); //당일 금액 배열넣기
             array_push($arr_date, date('Y-m-d')); //당일 일자 넣기
         } //본사 요청
@@ -57,10 +57,10 @@ class Transaction_Controller extends Controller
             //출금 금액 배열 생성
             for ($i = 6; $i > 0; $i--) {
                 $data = date("Y-m-d", strtotime(date('Y-m-d') . " -$i day"));
-                $pu_arr_withdraw = calculate::where('date_ymd', $data)->where('head_key', $company_key)->sum('calculate_money');
+                $pu_arr_withdraw = calculate::where('date_ymd', $data)->where('head_key', $company_key)->where('state','완료')->sum('calculate_money');
                 array_push($arr_withdraw, $pu_arr_withdraw);
             }
-            $today_withdraw_money = calculate::where('date_ymd', date('Y-m-d'))->where('head_key', $company_key)->sum('calculate_money');
+            $today_withdraw_money = calculate::where('date_ymd', date('Y-m-d'))->where('head_key', $company_key)->where('state','완료')->sum('calculate_money');
             array_push($arr_withdraw, $today_withdraw_money); //당일 금액 배열넣기
             array_push($arr_date, date('Y-m-d')); //당일 일자 넣기
         } //지사 요청
@@ -78,10 +78,10 @@ class Transaction_Controller extends Controller
             //출금 금액 배열 생성
             for ($i = 6; $i > 0; $i--) {
                 $data = date("Y-m-d", strtotime(date('Y-m-d') . " -$i day"));
-                $pu_arr_withdraw = calculate::where('date_ymd', $data)->where('company_key', $company_key)->sum('calculate_money');
+                $pu_arr_withdraw = calculate::where('date_ymd', $data)->where('company_key', $company_key)->where('state','완료')->sum('calculate_money');
                 array_push($arr_withdraw, $pu_arr_withdraw);
             }
-            $today_withdraw_money = calculate::where('date_ymd', date('Y-m-d'))->where('company_key', $company_key)->sum('calculate_money');
+            $today_withdraw_money = calculate::where('date_ymd', date('Y-m-d'))->where('company_key', $company_key)->where('state','완료')->sum('calculate_money');
             array_push($arr_withdraw, $today_withdraw_money); //당일 금액 배열넣기
             array_push($arr_date, date('Y-m-d')); //당일 일자 넣기
         } //총판 요청
@@ -99,10 +99,10 @@ class Transaction_Controller extends Controller
             //출금 금액 배열 생성
             for ($i = 6; $i > 0; $i--) {
                 $data = date("Y-m-d", strtotime(date('Y-m-d') . " -$i day"));
-                $pu_arr_withdraw = calculate::where('date_ymd', $data)->where('company_key', $company_key)->sum('calculate_money');
+                $pu_arr_withdraw = calculate::where('date_ymd', $data)->where('company_key', $company_key)->where('state','완료')->sum('calculate_money');
                 array_push($arr_withdraw, $pu_arr_withdraw);
             }
-            $today_withdraw_money = calculate::where('date_ymd', date('Y-m-d'))->where('company_key', $company_key)->sum('calculate_money');
+            $today_withdraw_money = calculate::where('date_ymd', date('Y-m-d'))->where('company_key', $company_key)->where('state','완료')->sum('calculate_money');
             array_push($arr_withdraw, $today_withdraw_money); //당일 금액 배열넣기
             array_push($arr_date, date('Y-m-d')); //당일 일자 넣기
         } //가맹점 요청
@@ -120,10 +120,10 @@ class Transaction_Controller extends Controller
             //출금 금액 배열 생성
             for ($i = 6; $i > 0; $i--) {
                 $data = date("Y-m-d", strtotime(date('Y-m-d') . " -$i day"));
-                $pu_arr_withdraw = calculate::where('date_ymd', $data)->where('company_key', $company_key)->sum('calculate_money');
+                $pu_arr_withdraw = calculate::where('date_ymd', $data)->where('company_key', $company_key)->where('state','완료')->sum('calculate_money');
                 array_push($arr_withdraw, $pu_arr_withdraw);
             }
-            $today_withdraw_money = calculate::where('date_ymd', date('Y-m-d'))->where('company_key', $company_key)->sum('calculate_money');
+            $today_withdraw_money = calculate::where('date_ymd', date('Y-m-d'))->where('company_key', $company_key)->where('state','완료')->sum('calculate_money');
             array_push($arr_withdraw, $today_withdraw_money); //당일 금액 배열넣기
             array_push($arr_date, date('Y-m-d')); //당일 일자 넣기
         }
