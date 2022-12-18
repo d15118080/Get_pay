@@ -92,7 +92,7 @@ function Account_temporary_issuance() {
             $("#three").css("display", "none");
             $("#for").css("display", "");
             $("#bankAcctNo").val(res.data.bank_no);
-            $("#money").val(res.data.money);
+            $("#amount").val(res.data.money);
             Swal.close()
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {

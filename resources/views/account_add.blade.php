@@ -236,7 +236,7 @@
                                         <div class="row mb-4">
                                             <label class="col-form-label col-lg-2">입금 금액</label>
                                             <div class="col-md-10">
-                                                <input id="money" value="" type="text" class="form-control" disabled>
+                                                <input id="amount" value="" type="text" class="form-control" disabled>
                                             </div>
                                         </div>
                                     @endif
