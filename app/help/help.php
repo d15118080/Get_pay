@@ -81,3 +81,22 @@ function Return_json($code = "", $info = "", $msg = "", $state = "", $data = "")
     }
 }
 
+function Telegram_send($chat_id,$msg){
+    $mes_data = array('chat_id' => $chat_id, 'text' => "$msg", "parse_mode" => "markdown");
+    $curl = curl_init();
+
+    curl_setopt_array($curl, array(
+        CURLOPT_URL => 'https://api.telegram.org/bot5789475794:AAHvr7CoRUqHktPQkNh_6Kp-0sO3uXUabcs/sendmessage',
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'POST',
+        CURLOPT_POSTFIELDS => $mes_data,
+    ));
+    $response = curl_exec($curl);
+    curl_close($curl);
+}
+

@@ -30,6 +30,8 @@ Route::prefix('/v1')->group(function () {
         Route::post('/account_everlasting_issuance/{route_id}/{company_id}',[Transaction_Controller::class,'Account_everlasting_issuance']);//영구 계좌발급
         Route::post('/deposit_notification/{route_id}',[Transaction_Controller::class,'Deposit_notification']); //입금 노티
 
+        Route::post('/telegram_setting',[Transaction_Controller::class,'Telegram_setting']);//텔레그램 셋팅
+
         //로그인후 라우트
         Route::middleware('auth:sanctum')->group(function () {
             Route::get('/index_transaction_history_data',[Transaction_Controller::class,'Index_data']); //INDEX 정보 가져오기

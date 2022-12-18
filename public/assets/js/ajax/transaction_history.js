@@ -36,6 +36,7 @@ function transaction_history_data_init() {
                     language: lang_kor,
                     data: data.data.data,
                     destroy: true,
+                    order: [[0, 'desc']],
                     columns: [
                         {data: "id"},
                         {data: "transaction_key"},
@@ -56,6 +57,7 @@ function transaction_history_data_init() {
                     language: lang_kor,
                     data: data.data.data,
                     destroy: true,
+                    order: [[0, 'desc']],
                     columns: [
                         {data: "id"},
                         {data: "transaction_key"},
@@ -75,6 +77,7 @@ function transaction_history_data_init() {
                     language: lang_kor,
                     data: data.data.data,
                     destroy: true,
+                    order: [[0, 'desc']],
                     columns: [
                         {data: "id"},
                         {data: "transaction_key"},
@@ -93,6 +96,7 @@ function transaction_history_data_init() {
                     language: lang_kor,
                     data: data.data.data,
                     destroy: true,
+                    order: [[0, 'desc']],
                     columns: [
                         {data: "id"},
                         {data: "transaction_key"},
