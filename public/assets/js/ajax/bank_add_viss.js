@@ -6,9 +6,6 @@
     $.ajax({
         type: "POST",
         url: '/api/v1/user/1won_shipment/' + route_id,
-        headers: {
-            "Content-Type": "application/json",
-        },
         data: {
             bankCode: $('#bank_code').val(),
             acctNo: $('#bank_number').val(),
