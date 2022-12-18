@@ -41,6 +41,9 @@ function calculate_history() {
                         {data: "calculate_money"},
                         {data: "calculate_to_money"},
                         {data: "fee"},
+                        {data:"bank_name"},
+                        {data:"bank_number"},
+                        {data:"bank_owner"},
                         {data: "date_ymd"},
                         {data: "date_time"},
                         {data: "state"}
