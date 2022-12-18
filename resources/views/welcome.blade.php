@@ -101,7 +101,7 @@
                                             <div class="d-flex align-items-end justify-content-between mt-4">
                                                 <div>
                                                     <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span id="today_money" class="counter-value" data-target="{{$today_money}}">0</span> 원</h4>
-                                                    <a href="" class="text-decoration-underline">매출 내역 보기</a>
+                                                    <a href="/transaction_history" class="text-decoration-underline">매출 내역 보기</a>
                                                 </div>
                                                 <div class="avatar-sm flex-shrink-0">
                                                         <span class="avatar-title bg-soft-primary rounded fs-3">
@@ -124,7 +124,7 @@
                                             <div class="d-flex align-items-end justify-content-between mt-4">
                                                 <div>
                                                     <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span id="today_w_money"  class="counter-value" data-target="{{$today_withdraw_money}}">0</span> 원</h4>
-                                                    <a href="" class="text-decoration-underline">출금 내역 보기</a>
+                                                    <a href="/calculates" class="text-decoration-underline">출금 내역 보기</a>
                                                 </div>
                                                 <div class="avatar-sm flex-shrink-0">
                                                         <span class="avatar-title bg-soft-primary rounded fs-3">
@@ -170,7 +170,7 @@
                                             <div class="d-flex align-items-end justify-content-between mt-4">
                                                 <div>
                                                     <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span id="today_count"  class="counter-value" data-target="{{$today_money_count}}">0</span> 건</h4>
-                                                    <a href="" class="text-decoration-underline">매출 내역 더보기</a>
+                                                    <a href="/transaction_history" class="text-decoration-underline">매출 내역 더보기</a>
                                                 </div>
                                                 <div class="avatar-sm flex-shrink-0">
                                                         <span class="avatar-title bg-soft-primary rounded fs-3">
@@ -193,7 +193,7 @@
                                             <div class="d-flex align-items-end justify-content-between mt-4">
                                                 <div>
                                                     <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span id="today_count"  class="counter-value" data-target="{{$today_withdraw_count}}">0</span> 건</h4>
-                                                    <a href="" class="text-decoration-underline">매출 내역 더보기</a>
+                                                    <a href="/calculates" class="text-decoration-underline">정산 내역 더보기</a>
                                                 </div>
                                                 <div class="avatar-sm flex-shrink-0">
                                                         <span class="avatar-title bg-soft-primary rounded fs-3">
