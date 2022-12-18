@@ -182,7 +182,7 @@ class Transaction_Controller extends Controller
             return Return_json('0000', 200, "정상처리", 200, $return_data);
 
         } else {
-            return Return_json('9999', 1, "$bank_check_response_data->message", 200, null);
+            return Return_json('9999', 1, "$bank_check_response_data->message", 422, null);
         }
     }
 
