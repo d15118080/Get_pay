@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\calculate;
 use App\Models\company_bank_data;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -141,8 +142,8 @@ class Controller extends BaseController
             $data = transaction_history::where('date_ymd',date('Y-m-d'))->orderBy('id', 'desc')->limit(15)->get(); //오늘중 15 개 데이터
             $today_money = transaction_history::where('date_ymd',date('Y-m-d'))->sum('transaction_money'); //금일 입금액
             $today_money_count = transaction_history::where('date_ymd',date('Y-m-d'))->count(); //금일 입금 건수
-            $today_withdraw_money = withdraw::where('date_ymd',date('Y-m-d'))->sum('money'); //금일 출금액
-            $today_withdraw_count = withdraw::where('date_ymd',date('Y-m-d'))->count(); //금일 출금 건수
+            $today_withdraw_money = calculate::where('date_ymd',date('Y-m-d'))->where('state','완료')->sum('calculate_money'); //금일 출금액
+            $today_withdraw_count = calculate::where('date_ymd',date('Y-m-d'))->where('state','완료')->count(); //금일 출금 건수
             $my_money = User::where('key',$HToken)->value('money'); //현재 잔액
             $bank_mode_int = null;
             $bank_route = null;
@@ -153,8 +154,8 @@ class Controller extends BaseController
             $data = transaction_history::where('date_ymd',date('Y-m-d'))->where('head_key',$company_key)->orderBy('id', 'desc')->limit(15)->get(); //오늘중 15 개 데이터
             $today_money = transaction_history::where('date_ymd',date('Y-m-d'))->where('head_key',$company_key)->sum('transaction_money'); //금일 입금액
             $today_money_count = transaction_history::where('date_ymd',date('Y-m-d'))->where('head_key',$company_key)->count(); //금일 입금 건수
-            $today_withdraw_money = withdraw::where('date_ymd',date('Y-m-d'))->where('head_key',$company_key)->sum('money'); //금일 출금액
-            $today_withdraw_count = withdraw::where('date_ymd',date('Y-m-d'))->where('head_key',$company_key)->count(); //금일 출금 건수
+            $today_withdraw_money = calculate::where('date_ymd',date('Y-m-d'))->where('state','완료')->where('head_key',$company_key)->sum('calculate_money'); //금일 출금액
+            $today_withdraw_count = calculate::where('date_ymd',date('Y-m-d'))->where('state','완료')->where('head_key',$company_key)->count(); //금일 출금 건수
             $my_money = company::where('company_key',$company_key)->value('money'); //현재 잔액
             $bank_mode_int = null;
             $bank_route = null;
@@ -165,8 +166,8 @@ class Controller extends BaseController
             $data = transaction_history::where('date_ymd',date('Y-m-d'))->where('branch_key',$company_key)->orderBy('id', 'desc')->limit(15)->get(); //오늘중 15 개 데이터
             $today_money = transaction_history::where('date_ymd',date('Y-m-d'))->where('branch_key',$company_key)->sum('transaction_money'); //금일 입금액
             $today_money_count = transaction_history::where('date_ymd',date('Y-m-d'))->where('branch_key',$company_key)->count(); //금일 입금 건수
-            $today_withdraw_money = withdraw::where('date_ymd',date('Y-m-d'))->where('company_key',$company_key)->sum('money'); //금일 출금액
-            $today_withdraw_count = withdraw::where('date_ymd',date('Y-m-d'))->where('company_key',$company_key)->count(); //금일 출금 건수
+            $today_withdraw_money = calculate::where('date_ymd',date('Y-m-d'))->where('state','완료')->where('company_key',$company_key)->sum('calculate_money'); //금일 출금액
+            $today_withdraw_count = calculate::where('date_ymd',date('Y-m-d'))->where('state','완료')->where('company_key',$company_key)->count(); //금일 출금 건수
             $my_money = company::where('company_key',$company_key)->value('money'); //현재 잔액
             $bank_mode_int = null;
             $bank_route = null;
@@ -177,8 +178,8 @@ class Controller extends BaseController
             $data = transaction_history::where('date_ymd',date('Y-m-d'))->where('distributor_key',$company_key)->orderBy('id', 'desc')->limit(15)->get(); //오늘중 15 개 데이터
             $today_money = transaction_history::where('date_ymd',date('Y-m-d'))->where('distributor_key',$company_key)->sum('transaction_money'); //금일 입금액
             $today_money_count = transaction_history::where('date_ymd',date('Y-m-d'))->where('distributor_key',$company_key)->count(); //금일 입금 건수
-            $today_withdraw_money = withdraw::where('date_ymd',date('Y-m-d'))->where('company_key',$company_key)->sum('money'); //금일 출금액
-            $today_withdraw_count = withdraw::where('date_ymd',date('Y-m-d'))->where('company_key',$company_key)->count(); //금일 출금 건수
+            $today_withdraw_money = calculate::where('date_ymd',date('Y-m-d'))->where('state','완료')->where('company_key',$company_key)->sum('calculate_money'); //금일 출금액
+            $today_withdraw_count = calculate::where('date_ymd',date('Y-m-d'))->where('state','완료')->where('company_key',$company_key)->count(); //금일 출금 건수
             $my_money = company::where('company_key',$company_key)->value('money'); //현재 잔액
             $bank_mode_int = null;
             $bank_route = null;
@@ -189,8 +190,8 @@ class Controller extends BaseController
             $data = transaction_history::where('date_ymd',date('Y-m-d'))->where('company_key',$company_key)->orderBy('id', 'desc')->limit(15)->get(); //오늘중 15 개 데이터
             $today_money = transaction_history::where('date_ymd',date('Y-m-d'))->where('company_key',$company_key)->sum('transaction_money'); //금일 입금액
             $today_money_count = transaction_history::where('date_ymd',date('Y-m-d'))->where('company_key',$company_key)->count(); //금일 입금 건수
-            $today_withdraw_money = withdraw::where('date_ymd',date('Y-m-d'))->where('company_key',$company_key)->sum('money'); //금일 출금액
-            $today_withdraw_count = withdraw::where('date_ymd',date('Y-m-d'))->where('company_key',$company_key)->count(); //금일 출금 건수
+            $today_withdraw_money = calculate::where('date_ymd',date('Y-m-d'))->where('state','완료')->where('company_key',$company_key)->sum('calculate_money'); //금일 출금액
+            $today_withdraw_count = calculate::where('date_ymd',date('Y-m-d'))->where('state','완료')->where('company_key',$company_key)->count(); //금일 출금 건수
             $my_money = company::where('company_key',$company_key)->value('money'); //현재 잔액
             $bank_mode_int = company::where('company_key',$company_key)->value('bank_mode_int'); //가상계좌 영구만 사용인지, 임시만 사용인지
 
