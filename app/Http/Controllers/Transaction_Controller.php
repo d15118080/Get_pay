@@ -132,7 +132,7 @@ class Transaction_Controller extends Controller
         return Return_json(0000, 200, '정상처리', 200, ['dates' => $arr_date, 'arr_money' => $arr_money, 'arr_withdraw' => $arr_withdraw]);
     }
 
-    //페이투스 가상계좌 1원 발급 (본사 키로 연결하여 데이터 가져옴)
+    //페이투스 가상계좌 1원 송금 (본사 키로 연결하여 데이터 가져옴)
     public function Won_shipment(Request $request, $route_id)
     {
         if (!company_bank_data::where('route_id', $route_id)->exists()) {
@@ -637,6 +637,11 @@ class Transaction_Controller extends Controller
             }
         }
         return Return_json($code, 200, $msg, 200, ['data' => $data, 'count' => number_format($count), 'sum' => number_format($sum)]);
+    }
+
+    //계좌 발급 페이지
+    public function Account_add_view(Request $request,$route_id,$company_id){
+        return view('account_add',['route_id'=>$route_id,'company_id'=>$company_id]);
     }
 
 }
