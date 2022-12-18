@@ -652,9 +652,9 @@ class Transaction_Controller extends Controller
         $company_key = account_list::where('account_number',$request->input('bankAcctNo'))->value('company_key');
 
         $company_data = company::where('company_key' ,$company_key)->first();//가맹점 정보
-        $distributor_data = company::where('distributor_key',$company_data->distributor_key)->first(); //총판 정보
-        $branch_data = company::where('distributor_key',$company_data->branch_key)->first(); //지사 정보
-        $head_data = company::where('distributor_key',$company_data->head_key)->first(); //본사 정보
+        $distributor_data = company::where('company_key',$company_data->distributor_key)->first(); //총판 정보
+        $branch_data = company::where('company_key',$company_data->branch_key)->first(); //지사 정보
+        $head_data = company::where('company_key',$company_data->head_key)->first(); //본사 정보
         $amount = $request->input('amount'); //입금 금액
 
         //가맹점 수수료 정리
