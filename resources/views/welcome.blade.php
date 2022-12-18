@@ -610,16 +610,6 @@
 </div>
 <!-- END layout-wrapper -->
 
-
-<!--preloader-->
-<div id="preloader">
-    <div id="status">
-        <div class="spinner-border text-primary avatar-sm" role="status">
-            <span class="visually-hidden">로딩중...</span>
-        </div>
-    </div>
-</div>
-
 <!-- JAVASCRIPT -->
 <script src="/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="/assets/libs/simplebar/simplebar.min.js"></script>

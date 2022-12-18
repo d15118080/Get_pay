@@ -213,4 +213,104 @@ class Controller extends BaseController
             'bank_mode_int'=>$bank_mode_int
         ]);
     }
+
+    //업체 리스트
+    public function company_lists(Request $request){
+
+            //관리자가 본사 리스트 요청
+            if($_GET['mode'] == "all" && session('state') == 0) {
+                $data = company::where('state', 1)->get();
+                foreach ($data as $row) {
+                    $row['branch_count'] = company::where('head_key', $row->company_key)->where('state', 2)->count(); //각 본사의 연결된 지사 카운팅
+                    $row['distributor_key'] = company::where('head_key', $row->company_key)->where('state', 3)->count(); //각 본사의 연결된 총판 카운팅
+                    $row['franchisee_count'] = company::where('head_key', $row->company_key)->where('state', 4)->count(); //각 본사의 연결된 가맹점 카운팅
+                }
+            }
+
+            //관리자가 지사 리스트 요청
+            if ($_GET['mode'] == "branch" && session('state') == 0){
+                $data = company::where('state', 2)->get();
+                foreach ($data as $row) {
+                    $row['distributor_key'] = company::where('branch_key', $row->company_key)->where('state', 3)->count(); //각 지사의 연결된 총판 카운팅
+                    $row['franchisee_count'] = company::where('branch_key', $row->company_key)->where('state', 4)->count(); //각 지사의 연결된 가맹점 카운팅
+                }
+            }
+
+            //관리자가 총판 리스트 요청
+            if ($_GET['mode'] == "distributor" && session('state') == 0){
+                $data = company::where('state', 3)->get();
+                foreach ($data as $row) {
+                    $row['franchisee_count'] = company::where('distributor_key', $row->company_key)->where('state', 4)->count(); //각 총판의 연결된 가맹점 카운팅
+                }
+            }
+
+            //관리자가 가맹점 리스트 요청
+            if ($_GET['mode'] == "franchisee" && session('state') == 0){
+                $data = company::where('state', 4)->get();
+            }
+
+            //본사가 지사 리스트 요청
+            if ($_GET['mode'] == "branch" && session('state') == 1) {
+                $HToken = base_64_end_code_de($_COOKIE['H-Token'], _key_, _iv_);
+                $company_key = User::where('key', $HToken)->value('company_key');
+                $data = company::where('head_key', $company_key)->where('state', 2)->get();
+                foreach ($data as $row) {
+                    $row['distributor_key'] = company::where('branch_key', $row->company_key)->where('state', 3)->count(); //각 지사의 연결된 총판 카운팅
+                    $row['franchisee_count'] = company::where('branch_key', $row->company_key)->where('state', 4)->count(); //각 지사의 연결된 가맹점 카운팅
+                }
+            }
+
+            //본사가 총판 리스트 요청
+            if ($_GET['mode'] == "distributor" && session('state') == 1) {
+                $HToken = base_64_end_code_de($_COOKIE['H-Token'], _key_, _iv_);
+                $company_key = User::where('key', $HToken)->value('company_key');
+                $data = company::where('head_key', $company_key)->where('state', 3)->get();
+                foreach ($data as $row) {
+                    $row['franchisee_count'] = company::where('distributor_key', $row->company_key)->where('state', 4)->count(); //각 총판의 연결된 가맹점 카운팅
+                }
+            }
+
+            //본사가 가맹점 리스트 요청
+            if ($_GET['mode'] == "franchisee" && session('state') == 1) {
+                $HToken = base_64_end_code_de($_COOKIE['H-Token'], _key_, _iv_);
+                $company_key = User::where('key', $HToken)->value('company_key');
+                $data = company::where('head_key', $company_key)->where('state', 4)->get();
+            }
+
+            //지사가 총판 리스트 요청
+            if ($_GET['mode'] == "distributor" && session('state') == 2) {
+                $HToken = base_64_end_code_de($_COOKIE['H-Token'], _key_, _iv_);
+                $company_key = User::where('key', $HToken)->value('company_key');
+                $data = company::where('branch_key', $company_key)->where('state', 3)->get();
+                foreach ($data as $row) {
+                    $row['franchisee_count'] = company::where('distributor_key', $row->company_key)->where('state', 4)->count(); //각 총판의 연결된 가맹점 카운팅
+                }
+            }
+
+            //지사가 가맹점 리스트 요청
+            if ($_GET['mode'] == "franchisee" && session('state') == 2) {
+                $HToken = base_64_end_code_de($_COOKIE['H-Token'], _key_, _iv_);
+                $company_key = User::where('key', $HToken)->value('company_key');
+                $data = company::where('branch_key', $company_key)->where('state', 4)->get();
+            }
+
+            //총판이 가맹점 리스트 요청
+            if ($_GET['mode'] == "franchisee" && session('state') == 3) {
+                $HToken = base_64_end_code_de($_COOKIE['H-Token'], _key_, _iv_);
+                $company_key = User::where('key', $HToken)->value('company_key');
+                $data = company::where('distributor_key', $company_key)->where('state', 4)->get();
+            }
+        return view('company_lists',['data'=>$data]);
+    }
+
+    //정산 내역 페이지
+    public function Calculate(Request $request){
+        return view('calculate_history');
+    }
+
+    //거래 내역 페이지
+    public function Transaction_history(Request $request){
+        return view('transaction_history');
+    }
+
 }

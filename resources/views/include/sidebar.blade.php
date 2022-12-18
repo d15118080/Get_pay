@@ -2,7 +2,7 @@
     <!-- LOGO -->
     <div class="navbar-brand-box">
         <!-- Dark Logo-->
-        <a href="index.html" class="logo logo-dark">
+        <a href="/" class="logo logo-dark">
                     <span class="logo-sm">
                         <img src="/assets/images/logo-sm.png" alt="" height="22">
                     </span>
@@ -11,7 +11,7 @@
                     </span>
         </a>
         <!-- Light Logo-->
-        <a href="index.html" class="logo logo-light">
+        <a href="/" class="logo logo-light">
                     <span class="logo-sm">
                         <img src="/assets/images/logo-sm.png" alt="" height="22">
                     </span>
@@ -43,10 +43,10 @@
                     <div class="collapse menu-dropdown" id="sidebardeal">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="" class="nav-link" data-key="t-calendar"> 거래 내역 </a>
+                                <a href="/transaction_history" class="nav-link" data-key="t-calendar"> 거래 내역 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="" class="nav-link" data-key="t-chat"> 정산 내역 </a>
+                                <a href="/calculates" class="nav-link" data-key="t-chat"> 정산 내역 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="#" class="nav-link" data-key="t-email"> 송금 내역</a>
@@ -69,7 +69,7 @@
                     <div class="collapse menu-dropdown" id="sidebarAccount-1">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="#" target="_blank" class="nav-link" data-key="t-horizontal">본사 리스트</a>
+                                <a href="/company_lists?mode=all"  class="nav-link" data-key="t-horizontal">본사 리스트</a>
                             </li>
                             <li class="nav-item">
                                 <a href="#" target="_blank" class="nav-link" data-key="t-detached">본사 추가</a>
@@ -88,7 +88,7 @@
                     <div class="collapse menu-dropdown" id="sidebarAccount-2">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="#" target="_blank" class="nav-link" data-key="t-horizontal">지사 리스트</a>
+                                <a href="/company_lists?mode=branch"  class="nav-link" data-key="t-horizontal">지사 리스트</a>
                             </li>
                             <li class="nav-item">
                                 <a href="#" target="_blank" class="nav-link" data-key="t-detached">지사 추가</a>
@@ -107,7 +107,7 @@
                     <div class="collapse menu-dropdown" id="sidebarAccount-3">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="#" target="_blank" class="nav-link" data-key="t-horizontal">총판 리스트</a>
+                                <a href="/company_lists?mode=distributor"  class="nav-link" data-key="t-horizontal">총판 리스트</a>
                             </li>
                             @if(session('state') == 1 || session('state') == 0)
                             <li class="nav-item">
@@ -128,7 +128,7 @@
                     <div class="collapse menu-dropdown" id="sidebarAccount-4">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="#" target="_blank" class="nav-link" data-key="t-horizontal">가맹점 리스트</a>
+                                <a href="/company_lists?mode=franchisee"  class="nav-link" data-key="t-horizontal">가맹점 리스트</a>
                             </li>
                             @if(session('state') == 1 || session('state') == 0)
                             <li class="nav-item">

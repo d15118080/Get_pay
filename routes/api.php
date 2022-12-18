@@ -21,7 +21,7 @@ Route::prefix('/v1')->group(function () {
     Route::prefix('/user')->group(function () {
         Route::post('/auth-check',[Controller::class,'Auth_check']); //로그인 POST
         Route::post('/auth2-check',[Controller::class,'Auth_check2']); //로그인 POST
-
+        Route::get('/test',[Controller::class,'test']);
         //가상계좌 관리
         Route::post('/1won_shipment/{route_id}',[Transaction_Controller::class,'Won_shipment']); //1원 인증 발송
         Route::post('/1won_shipment_check/{route_id}',[Transaction_Controller::class,'Won_shipment_check']); //1원 인증 체크
@@ -32,6 +32,9 @@ Route::prefix('/v1')->group(function () {
         Route::middleware('auth:sanctum')->group(function () {
             Route::get('/index_transaction_history_data',[Transaction_Controller::class,'Index_data']); //INDEX 정보 가져오기
             Route::get('/token_check', function () {return true;}); //토큰 유효여부 체크
+            Route::get('/transaction_history_data',[Transaction_Controller::class,'Transaction_history_data']); //거래 내역 가져오기
+            Route::get('/calculate_history_data',[Transaction_Controller::class,'Calculate_history_data']); //거래 내역 가져오기
+
         });
 
     });
