@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\account_list;
 use App\Models\calculate;
 use App\Models\company;
 use App\Models\company_bank_data;
@@ -286,7 +287,17 @@ class Transaction_Controller extends Controller
 
 
         if ($bank_check_response_data->code == "0000") {
-            //DB INSERT 부분 넣어줘야함
+            if(account_list::where('account_number',$bank_check_response_data->response->bankAcctNo)->exists()){
+                account_list::where('account_number',$bank_check_response_data->response->bankAcctNo)->delete();
+            }
+            account_list::insert([
+                'company_key'=>$company_key,
+                'account_number'=>$bank_check_response_data->response->bankAcctNo,
+                'user_name'=>$user_name,
+                'account_state'=>"임시계좌",
+                'date_ymd'=>date('Y-m-d'),
+                'date_time'=>date('H:i:s')
+            ]);
             return Return_json('0000', 200, "정상", 200, ['bank_no' => $bank_check_response_data->response->bankAcctNo, 'money' => number_format($amount)]);
         } else {
             return Return_json('9999', 1, "$bank_check_response_data->message", 422, null);
@@ -339,7 +350,17 @@ class Transaction_Controller extends Controller
 
 
         if ($bank_check_response_data->code == "0000") {
-            //DB INSERT 부분 넣어줘야함
+            if(account_list::where('account_number',$bank_check_response_data->response->bankAcctNo)->exists()){
+                account_list::where('account_number',$bank_check_response_data->response->bankAcctNo)->delete();
+            }
+            account_list::insert([
+                'company_key'=>$company_key,
+                'account_number'=>$bank_check_response_data->response->bankAcctNo,
+                'user_name'=>$user_name,
+                'account_state'=>"영구계좌",
+                'date_ymd'=>date('Y-m-d'),
+                'date_time'=>date('H:i:s')
+            ]);
             return Return_json('0000', 200, "정상", 200, ['bank_no' => $bank_check_response_data->response->bankAcctNo]);
         } else {
             return Return_json('9999', 1, "$bank_check_response_data->message", 422, null);
