@@ -23,7 +23,8 @@ function transaction_history_data_init() {
         url: "/api/v1/user/transaction_history_data",
         data: {
             start_date: $('#start_date').val(),
-            end_date: $('#end_date').val()
+            end_date: $('#end_date').val(),
+            company_id : $('#company_id').val()
         },
         headers: {
             Authorization: "Bearer " + $.cookie("X-Token"),

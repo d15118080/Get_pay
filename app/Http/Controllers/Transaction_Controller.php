@@ -7,12 +7,14 @@ use App\Models\calculate;
 use App\Models\charge_request;
 use App\Models\company;
 use App\Models\company_bank_data;
+use App\Models\head_rtpay;
 use App\Models\rtpay_data;
 use App\Models\transaction_history;
 use App\Models\withdraw;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Telegram\Bot\Api;
+use RTPay;
 
 class Transaction_Controller extends Controller
 {
@@ -370,155 +372,349 @@ class Transaction_Controller extends Controller
         }
     }
 
+    //페이투스 가상계좌 설정 페이지
+    public function Account_setting(Request $request)
+    {
+        $HToken = base_64_end_code_de($_COOKIE['H-Token'], _key_, _iv_);
+        $company_key = User::where('key', $HToken)->value('company_key');
+        if (company_bank_data::where('company_key', $company_key)->exists()) {
+            $data = company_bank_data::where('company_key', $company_key)->first();
+        } else {
+            $data = null;
+        }
+        return view('account_setting', ['data' => $data]);
+    }
+
+    //페이투스 가상계좌 정보 등록및 업데이트
+    public function Account_insert_or_update(Request $request)
+    {
+        $company_key = User::where('key', $request->user()->key)->value('company_key');
+        $p_id = $request->input('p_id');//페이투스 아이디
+        $p_pw = $request->input('p_pw');//페이투스 비밀번호
+        $p_commuid = $request->input('p_commuid');//페이투스 고유번호
+        $p_auth = $request->input('p_auth');//Basic Auth 변환한 것
+        if (company_bank_data::where('company_key', $company_key)->exists()) {
+            $head_account_date = company_bank_data::where('company_key', $company_key)->first();
+            if ($head_account_date->p_id != $p_id) {
+                company_bank_data::where('company_key', $company_key)->update(['p_id' => $p_id]); //아이디 업데이트
+            }
+            if ($head_account_date->p_pw != $p_pw) {
+                company_bank_data::where('company_key', $company_key)->update(['p_pw' => $p_pw]); //비밀번호 업데이트
+            }
+            if ($head_account_date->p_commuid != $p_commuid) {
+                company_bank_data::where('company_key', $company_key)->update(['comp_uuid' => $p_commuid]); //고유번호 업데이트
+            }
+            if ($head_account_date->basic_auth != $p_auth) {
+                company_bank_data::where('company_key', $company_key)->update(['basic_auth' => $p_auth]); // basic_auth업데이트
+            }
+        } else {
+            company_bank_data::insert([
+                "company_key" => $company_key,
+                'p_id' => $p_id,
+                "p_pw" => $p_pw,
+                "type" => 0,
+                "basic_auth" => $p_auth,
+                "comp_uuid" => $p_commuid,
+                "route_id" => get_uuid_v4()
+            ]);
+        }
+        return Return_json("0000", 200, "정상처리", 200);
+    }
+
     //거래내역 가져오기
     public function Transaction_history_data(Request $request)
     {
         if (!$request->user()->tokenCan('Auth:admin')) {
             $company_key = User::where('key', $request->user()->key)->value('company_key');
         }
+        $sh_company_key = $request->input('company_id'); //조회할 가맹점
         //관리자 요청일 경우
         if ($request->user()->tokenCan('Auth:admin')) {
             //데이터가 있을때
-            if (transaction_history::whereBetween('date_ymd', [$request->input('start_date'), $request->input('end_date'),])->exists()) {
-                $data = transaction_history::whereBetween('date_ymd',
-                    [
-                        $request->input('start_date'),
-                        $request->input('end_date'),
-                    ])
-                    ->get();
-                $count = transaction_history::whereBetween('date_ymd',
-                    [
-                        $request->input('start_date'),
-                        $request->input('end_date'),
-                    ])
-                    ->count();
-                $sum = transaction_history::whereBetween('date_ymd',
-                    [
-                        $request->input('start_date'),
-                        $request->input('end_date'),
-                    ])
-                    ->sum('transaction_money');
-                $msg = "정상처리";
-                $code = "0000";
-                foreach ($data as $row) {
-                    $row['transaction_money'] = number_format($row['transaction_money']);
-                    $row['franchisee_money'] = number_format($row['franchisee_money']);
+            if ($sh_company_key == "") {
+                if (transaction_history::whereBetween('date_ymd', [$request->input('start_date'), $request->input('end_date'),])->exists()) {
+                    $data = transaction_history::whereBetween('date_ymd',
+                        [
+                            $request->input('start_date'),
+                            $request->input('end_date'),
+                        ])
+                        ->get();
+                    $count = transaction_history::whereBetween('date_ymd',
+                        [
+                            $request->input('start_date'),
+                            $request->input('end_date'),
+                        ])
+                        ->count();
+                    $sum = transaction_history::whereBetween('date_ymd',
+                        [
+                            $request->input('start_date'),
+                            $request->input('end_date'),
+                        ])
+                        ->sum('transaction_money');
+                    $msg = "정상처리";
+                    $code = "0000";
+                    foreach ($data as $row) {
+                        $row['transaction_money'] = number_format($row['transaction_money']);
+                        $row['franchisee_money'] = number_format($row['franchisee_money']);
+                    }
+                    //없을때
+                } else {
+                    $data = null;
+                    $msg = "데이터가 존재하지 않습니다.";
+                    $code = "0001";
+                    $count = 0;
+                    $sum = 0;
                 }
-                //없을때
             } else {
-                $data = null;
-                $msg = "데이터가 존재하지 않습니다.";
-                $code = "0001";
-                $count = 0;
-                $sum = 0;
+                if (transaction_history::where('company_key',$sh_company_key)->whereBetween('date_ymd', [$request->input('start_date'), $request->input('end_date'),])->exists()) {
+                    $data = transaction_history::whereBetween('date_ymd',
+                        [
+                            $request->input('start_date'),
+                            $request->input('end_date'),
+                        ])
+                        ->get();
+                    $count = transaction_history::where('company_key',$sh_company_key)->whereBetween('date_ymd',
+                        [
+                            $request->input('start_date'),
+                            $request->input('end_date'),
+                        ])
+                        ->count();
+                    $sum = transaction_history::where('company_key',$sh_company_key)->whereBetween('date_ymd',
+                        [
+                            $request->input('start_date'),
+                            $request->input('end_date'),
+                        ])
+                        ->sum('transaction_money');
+                    $msg = "정상처리";
+                    $code = "0000";
+                    foreach ($data as $row) {
+                        $row['transaction_money'] = number_format($row['transaction_money']);
+                        $row['franchisee_money'] = number_format($row['franchisee_money']);
+                    }
+                    //없을때
+                } else {
+                    $data = null;
+                    $msg = "데이터가 존재하지 않습니다.";
+                    $code = "0001";
+                    $count = 0;
+                    $sum = 0;
+                }
             }
             //본사 요청시
         } else if ($request->user()->tokenCan('Auth:head')) {
             //데이터가 있을때
-            if (transaction_history::where('head_key', $company_key)->whereBetween('date_ymd', [$request->input('start_date'), $request->input('end_date'),])->exists()) {
-                $data = transaction_history::where('head_key', $company_key)->whereBetween('date_ymd',
-                    [
-                        $request->input('start_date'),
-                        $request->input('end_date'),
-                    ])
-                    ->get();
-                $count = transaction_history::where('head_key', $company_key)->whereBetween('date_ymd',
-                    [
-                        $request->input('start_date'),
-                        $request->input('end_date'),
-                    ])
-                    ->count();
-                $sum = transaction_history::where('head_key', $company_key)->whereBetween('date_ymd',
-                    [
-                        $request->input('start_date'),
-                        $request->input('end_date'),
-                    ])
-                    ->sum('transaction_money');
-                $msg = "정상처리";
-                $code = "0001";
-                foreach ($data as $row) {
-                    $row['transaction_money'] = number_format($row['transaction_money']);
-                    $row['franchisee_money'] = number_format($row['franchisee_money']);
+            if ($sh_company_key == "") {
+                if (transaction_history::where('head_key', $company_key)->whereBetween('date_ymd', [$request->input('start_date'), $request->input('end_date'),])->exists()) {
+                    $data = transaction_history::where('head_key', $company_key)->whereBetween('date_ymd',
+                        [
+                            $request->input('start_date'),
+                            $request->input('end_date'),
+                        ])
+                        ->get();
+                    $count = transaction_history::where('head_key', $company_key)->whereBetween('date_ymd',
+                        [
+                            $request->input('start_date'),
+                            $request->input('end_date'),
+                        ])
+                        ->count();
+                    $sum = transaction_history::where('head_key', $company_key)->whereBetween('date_ymd',
+                        [
+                            $request->input('start_date'),
+                            $request->input('end_date'),
+                        ])
+                        ->sum('transaction_money');
+                    $msg = "정상처리";
+                    $code = "0001";
+                    foreach ($data as $row) {
+                        $row['transaction_money'] = number_format($row['transaction_money']);
+                        $row['franchisee_money'] = number_format($row['franchisee_money']);
+                    }
+                    //없을때
+                } else {
+                    $data = null;
+                    $msg = "데이터가 존재하지 않습니다.";
+                    $code = "9999";
+                    $count = 0;
+                    $sum = 0;
                 }
-                //없을때
-            } else {
-                $data = null;
-                $msg = "데이터가 존재하지 않습니다.";
-                $code = "9999";
-                $count = 0;
-                $sum = 0;
+            }else{
+                if (transaction_history::where('head_key', $company_key)->where('company_key',$sh_company_key)->whereBetween('date_ymd', [$request->input('start_date'), $request->input('end_date'),])->exists()) {
+                    $data = transaction_history::where('head_key', $company_key)->where('company_key',$sh_company_key)->whereBetween('date_ymd',
+                        [
+                            $request->input('start_date'),
+                            $request->input('end_date'),
+                        ])
+                        ->get();
+                    $count = transaction_history::where('head_key', $company_key)->where('company_key',$sh_company_key)->whereBetween('date_ymd',
+                        [
+                            $request->input('start_date'),
+                            $request->input('end_date'),
+                        ])
+                        ->count();
+                    $sum = transaction_history::where('head_key', $company_key)->where('company_key',$sh_company_key)->whereBetween('date_ymd',
+                        [
+                            $request->input('start_date'),
+                            $request->input('end_date'),
+                        ])
+                        ->sum('transaction_money');
+                    $msg = "정상처리";
+                    $code = "0001";
+                    foreach ($data as $row) {
+                        $row['transaction_money'] = number_format($row['transaction_money']);
+                        $row['franchisee_money'] = number_format($row['franchisee_money']);
+                    }
+                    //없을때
+                } else {
+                    $data = null;
+                    $msg = "데이터가 존재하지 않습니다.";
+                    $code = "9999";
+                    $count = 0;
+                    $sum = 0;
+                }
             }
             //지사 요청시
         } else if ($request->user()->tokenCan('Auth:branch')) {
             //데이터가 있을때
-            if (transaction_history::where('branch_key', $company_key)->whereBetween('date_ymd', [$request->input('start_date'), $request->input('end_date'),])->exists()) {
-                $data = transaction_history::where('branch_key', $company_key)->whereBetween('date_ymd',
-                    [
-                        $request->input('start_date'),
-                        $request->input('end_date'),
-                    ])
-                    ->get();
-                $count = transaction_history::where('branch_key', $company_key)->whereBetween('date_ymd',
-                    [
-                        $request->input('start_date'),
-                        $request->input('end_date'),
-                    ])
-                    ->count();
-                $sum = transaction_history::where('branch_key', $company_key)->whereBetween('date_ymd',
-                    [
-                        $request->input('start_date'),
-                        $request->input('end_date'),
-                    ])
-                    ->sum('transaction_money');
-                $msg = "정상처리";
-                $code = "0002";
-                foreach ($data as $row) {
-                    $row['transaction_money'] = number_format($row['transaction_money']);
-                    $row['franchisee_money'] = number_format($row['franchisee_money']);
+            if ($sh_company_key == "") {
+                if (transaction_history::where('branch_key', $company_key)->whereBetween('date_ymd', [$request->input('start_date'), $request->input('end_date'),])->exists()) {
+                    $data = transaction_history::where('branch_key', $company_key)->whereBetween('date_ymd',
+                        [
+                            $request->input('start_date'),
+                            $request->input('end_date'),
+                        ])
+                        ->get();
+                    $count = transaction_history::where('branch_key', $company_key)->whereBetween('date_ymd',
+                        [
+                            $request->input('start_date'),
+                            $request->input('end_date'),
+                        ])
+                        ->count();
+                    $sum = transaction_history::where('branch_key', $company_key)->whereBetween('date_ymd',
+                        [
+                            $request->input('start_date'),
+                            $request->input('end_date'),
+                        ])
+                        ->sum('transaction_money');
+                    $msg = "정상처리";
+                    $code = "0002";
+                    foreach ($data as $row) {
+                        $row['transaction_money'] = number_format($row['transaction_money']);
+                        $row['franchisee_money'] = number_format($row['franchisee_money']);
+                    }
+                    //없을때
+                } else {
+                    $data = null;
+                    $msg = "데이터가 존재하지 않습니다.";
+                    $code = "9999";
+                    $count = 0;
+                    $sum = 0;
                 }
-                //없을때
-            } else {
-                $data = null;
-                $msg = "데이터가 존재하지 않습니다.";
-                $code = "9999";
-                $count = 0;
-                $sum = 0;
+            }else{
+                if (transaction_history::where('branch_key', $company_key)->where('company_key',$sh_company_key)->whereBetween('date_ymd', [$request->input('start_date'), $request->input('end_date'),])->exists()) {
+                    $data = transaction_history::where('branch_key', $company_key)->where('company_key',$sh_company_key)->whereBetween('date_ymd',
+                        [
+                            $request->input('start_date'),
+                            $request->input('end_date'),
+                        ])
+                        ->get();
+                    $count = transaction_history::where('branch_key', $company_key)->where('company_key',$sh_company_key)->whereBetween('date_ymd',
+                        [
+                            $request->input('start_date'),
+                            $request->input('end_date'),
+                        ])
+                        ->count();
+                    $sum = transaction_history::where('branch_key', $company_key)->where('company_key',$sh_company_key)->whereBetween('date_ymd',
+                        [
+                            $request->input('start_date'),
+                            $request->input('end_date'),
+                        ])
+                        ->sum('transaction_money');
+                    $msg = "정상처리";
+                    $code = "0002";
+                    foreach ($data as $row) {
+                        $row['transaction_money'] = number_format($row['transaction_money']);
+                        $row['franchisee_money'] = number_format($row['franchisee_money']);
+                    }
+                    //없을때
+                } else {
+                    $data = null;
+                    $msg = "데이터가 존재하지 않습니다.";
+                    $code = "9999";
+                    $count = 0;
+                    $sum = 0;
+                }
             }
             //총판 요청시
         } else if ($request->user()->tokenCan('Auth:distributor')) {
             //데이터가 있을때
-            if (transaction_history::where('distributor_key', $company_key)->whereBetween('date_ymd', [$request->input('start_date'), $request->input('end_date'),])->exists()) {
-                $data = transaction_history::where('distributor_key', $company_key)->whereBetween('date_ymd',
-                    [
-                        $request->input('start_date'),
-                        $request->input('end_date'),
-                    ])
-                    ->get();
-                $count = transaction_history::where('distributor_key', $company_key)->whereBetween('date_ymd',
-                    [
-                        $request->input('start_date'),
-                        $request->input('end_date'),
-                    ])
-                    ->count();
-                $sum = transaction_history::where('distributor_key', $company_key)->whereBetween('date_ymd',
-                    [
-                        $request->input('start_date'),
-                        $request->input('end_date'),
-                    ])
-                    ->sum('transaction_money');
-                $msg = "정상처리";
-                $code = "0003";
-                foreach ($data as $row) {
-                    $row['transaction_money'] = number_format($row['transaction_money']);
-                    $row['franchisee_money'] = number_format($row['franchisee_money']);
+            if ($sh_company_key == "") {
+                if (transaction_history::where('distributor_key', $company_key)->whereBetween('date_ymd', [$request->input('start_date'), $request->input('end_date'),])->exists()) {
+                    $data = transaction_history::where('distributor_key', $company_key)->whereBetween('date_ymd',
+                        [
+                            $request->input('start_date'),
+                            $request->input('end_date'),
+                        ])
+                        ->get();
+                    $count = transaction_history::where('distributor_key', $company_key)->whereBetween('date_ymd',
+                        [
+                            $request->input('start_date'),
+                            $request->input('end_date'),
+                        ])
+                        ->count();
+                    $sum = transaction_history::where('distributor_key', $company_key)->whereBetween('date_ymd',
+                        [
+                            $request->input('start_date'),
+                            $request->input('end_date'),
+                        ])
+                        ->sum('transaction_money');
+                    $msg = "정상처리";
+                    $code = "0003";
+                    foreach ($data as $row) {
+                        $row['transaction_money'] = number_format($row['transaction_money']);
+                        $row['franchisee_money'] = number_format($row['franchisee_money']);
+                    }
+                    //없을때
+                } else {
+                    $data = null;
+                    $msg = "데이터가 존재하지 않습니다.";
+                    $code = "9999";
+                    $count = 0;
+                    $sum = 0;
                 }
-                //없을때
-            } else {
-                $data = null;
-                $msg = "데이터가 존재하지 않습니다.";
-                $code = "9999";
-                $count = 0;
-                $sum = 0;
+            }else{
+                if (transaction_history::where('distributor_key', $company_key)->where('company_key',$sh_company_key)->whereBetween('date_ymd', [$request->input('start_date'), $request->input('end_date'),])->exists()) {
+                    $data = transaction_history::where('distributor_key', $company_key)->where('company_key',$sh_company_key)->whereBetween('date_ymd',
+                        [
+                            $request->input('start_date'),
+                            $request->input('end_date'),
+                        ])
+                        ->get();
+                    $count = transaction_history::where('distributor_key', $company_key)->where('company_key',$sh_company_key)->whereBetween('date_ymd',
+                        [
+                            $request->input('start_date'),
+                            $request->input('end_date'),
+                        ])
+                        ->count();
+                    $sum = transaction_history::where('distributor_key', $company_key)->where('company_key',$sh_company_key)->whereBetween('date_ymd',
+                        [
+                            $request->input('start_date'),
+                            $request->input('end_date'),
+                        ])
+                        ->sum('transaction_money');
+                    $msg = "정상처리";
+                    $code = "0003";
+                    foreach ($data as $row) {
+                        $row['transaction_money'] = number_format($row['transaction_money']);
+                        $row['franchisee_money'] = number_format($row['franchisee_money']);
+                    }
+                    //없을때
+                } else {
+                    $data = null;
+                    $msg = "데이터가 존재하지 않습니다.";
+                    $code = "9999";
+                    $count = 0;
+                    $sum = 0;
+                }
             }
             //가맹점 요청시
         } else if ($request->user()->tokenCan('Auth:franchisee')) {
@@ -567,42 +763,149 @@ class Transaction_Controller extends Controller
         if (!$request->user()->tokenCan('Auth:admin')) {
             $company_key = User::where('key', $request->user()->key)->value('company_key');
         }
+        $sh_company_key = $request->input('company_id'); //조회할 가맹점
         //관리자 호출시
         if ($request->user()->tokenCan('Auth:admin')) {
-            if (calculate::whereBetween('date_ymd', [$request->input('start_date'), $request->input('end_date'),])->exists()) {
-                $data = calculate::whereBetween('date_ymd',
-                    [
-                        $request->input('start_date'),
-                        $request->input('end_date'),
-                    ])
-                    ->get();
-                $count = calculate::where('state', '완료')->whereBetween('date_ymd',
-                    [
-                        $request->input('start_date'),
-                        $request->input('end_date'),
-                    ])
-                    ->count();
-                $sum = calculate::where('state', '완료')->whereBetween('date_ymd',
-                    [
-                        $request->input('start_date'),
-                        $request->input('end_date'),
-                    ])
-                    ->sum('calculate_money');
-                $msg = "정상처리";
-                $code = "0000";
-                foreach ($data as $row) {
-                    $row['calculate_money'] = number_format($row['calculate_money']);
-                    $row['calculate_to_money'] = number_format($row['calculate_to_money']);
+            if ($sh_company_key == "") {
+                if (calculate::whereBetween('date_ymd', [$request->input('start_date'), $request->input('end_date'),])->exists()) {
+                    $data = calculate::whereBetween('date_ymd',
+                        [
+                            $request->input('start_date'),
+                            $request->input('end_date'),
+                        ])
+                        ->get();
+                    $count = calculate::where('state', '완료')->whereBetween('date_ymd',
+                        [
+                            $request->input('start_date'),
+                            $request->input('end_date'),
+                        ])
+                        ->count();
+                    $sum = calculate::where('state', '완료')->whereBetween('date_ymd',
+                        [
+                            $request->input('start_date'),
+                            $request->input('end_date'),
+                        ])
+                        ->sum('calculate_money');
+                    $msg = "정상처리";
+                    $code = "0000";
+                    foreach ($data as $row) {
+                        $row['calculate_money'] = number_format($row['calculate_money']);
+                        $row['calculate_to_money'] = number_format($row['calculate_to_money']);
+                    }
+                    //없을때
+                } else {
+                    $data = null;
+                    $msg = "데이터가 존재하지 않습니다.";
+                    $code = "0001";
+                    $count = 0;
+                    $sum = 0;
                 }
-                //없을때
-            } else {
-                $data = null;
-                $msg = "데이터가 존재하지 않습니다.";
-                $code = "0001";
-                $count = 0;
-                $sum = 0;
+            }else{
+                if (calculate::where('company_key',$sh_company_key)->where('company_key',$sh_company_key)->whereBetween('date_ymd', [$request->input('start_date'), $request->input('end_date'),])->exists()) {
+                    $data = calculate::whereBetween('date_ymd',
+                        [
+                            $request->input('start_date'),
+                            $request->input('end_date'),
+                        ])
+                        ->get();
+                    $count = calculate::where('company_key',$sh_company_key)->where('state', '완료')->whereBetween('date_ymd',
+                        [
+                            $request->input('start_date'),
+                            $request->input('end_date'),
+                        ])
+                        ->count();
+                    $sum = calculate::where('company_key',$sh_company_key)->where('state', '완료')->whereBetween('date_ymd',
+                        [
+                            $request->input('start_date'),
+                            $request->input('end_date'),
+                        ])
+                        ->sum('calculate_money');
+                    $msg = "정상처리";
+                    $code = "0000";
+                    foreach ($data as $row) {
+                        $row['calculate_money'] = number_format($row['calculate_money']);
+                        $row['calculate_to_money'] = number_format($row['calculate_to_money']);
+                    }
+                    //없을때
+                } else {
+                    $data = null;
+                    $msg = "데이터가 존재하지 않습니다.";
+                    $code = "0001";
+                    $count = 0;
+                    $sum = 0;
+                }
             }
-            //그외 호출시
+            //본사 호출시
+        } else if ($request->user()->tokenCan('Auth:head')) {
+            if ($sh_company_key == "") {
+                if (calculate::where('head_key', $company_key)->whereBetween('date_ymd', [$request->input('start_date'), $request->input('end_date'),])->exists()) {
+                    $data = calculate::where('head_key', $company_key)->whereBetween('date_ymd',
+                        [
+                            $request->input('start_date'),
+                            $request->input('end_date'),
+                        ])
+                        ->get();
+                    $count = calculate::where('head_key', $company_key)->where('state', '완료')->whereBetween('date_ymd',
+                        [
+                            $request->input('start_date'),
+                            $request->input('end_date'),
+                        ])
+                        ->count();
+                    $sum = calculate::where('head_key', $company_key)->where('state', '완료')->whereBetween('date_ymd',
+                        [
+                            $request->input('start_date'),
+                            $request->input('end_date'),
+                        ])
+                        ->sum('calculate_money');
+                    $msg = "정상처리";
+                    $code = "0004";
+                    foreach ($data as $row) {
+                        $row['calculate_money'] = number_format($row['calculate_money']);
+                        $row['calculate_to_money'] = number_format($row['calculate_to_money']);
+                    }
+                    //없을때
+                } else {
+                    $data = null;
+                    $msg = "데이터가 존재하지 않습니다.";
+                    $code = "9999";
+                    $count = 0;
+                    $sum = 0;
+                }
+            }else{
+                if (calculate::where('company_key',$sh_company_key)->where('head_key', $company_key)->whereBetween('date_ymd', [$request->input('start_date'), $request->input('end_date'),])->exists()) {
+                    $data = calculate::where('company_key',$sh_company_key)->where('head_key', $company_key)->whereBetween('date_ymd',
+                        [
+                            $request->input('start_date'),
+                            $request->input('end_date'),
+                        ])
+                        ->get();
+                    $count = calculate::where('company_key',$sh_company_key)->where('head_key', $company_key)->where('state', '완료')->whereBetween('date_ymd',
+                        [
+                            $request->input('start_date'),
+                            $request->input('end_date'),
+                        ])
+                        ->count();
+                    $sum = calculate::where('company_key',$sh_company_key)->where('head_key', $company_key)->where('state', '완료')->whereBetween('date_ymd',
+                        [
+                            $request->input('start_date'),
+                            $request->input('end_date'),
+                        ])
+                        ->sum('calculate_money');
+                    $msg = "정상처리";
+                    $code = "0004";
+                    foreach ($data as $row) {
+                        $row['calculate_money'] = number_format($row['calculate_money']);
+                        $row['calculate_to_money'] = number_format($row['calculate_to_money']);
+                    }
+                    //없을때
+                } else {
+                    $data = null;
+                    $msg = "데이터가 존재하지 않습니다.";
+                    $code = "9999";
+                    $count = 0;
+                    $sum = 0;
+                }
+            }
         } else {
             //데이터가 있을때
             if (calculate::where('company_key', $company_key)->whereBetween('date_ymd', [$request->input('start_date'), $request->input('end_date'),])->exists()) {
@@ -648,20 +951,57 @@ class Transaction_Controller extends Controller
         return view('account_add', ['route_id' => $route_id, 'company_id' => $company_id]);
     }
 
+    //Rtpay 설정 페이지
+    public function Rtpay_setting(Request $request)
+    {
+        $HToken = base_64_end_code_de($_COOKIE['H-Token'], _key_, _iv_);
+        $company_key = User::where('key', $HToken)->value('company_key');
+        if (head_rtpay::where('head_key', $company_key)->exists()) {
+            $data = head_rtpay::where('head_key', $company_key)->first();
+        } else {
+            $data = null;
+        }
+        return view('rtpay_setting', ['data' => $data]);
+    }
+
+    //Rtpay 등록및 업데이트
+    public function Rtpay_insert_or_update(Request $request)
+    {
+        $company_key = User::where('key', $request->user()->key)->value('company_key');
+        $req_rtpay_key = $request->input('rtpay_key');
+        if (head_rtpay::where('head_key', $company_key)->exists()) {
+            $Rtpay_key = head_rtpay::where('head_key', $company_key)->value('RTP_KEY'); //기존 등록된 Rtpay key
+            if ($Rtpay_key != $req_rtpay_key) {
+                head_rtpay::where('head_key', $company_key)->update(['RTP_KEY' => $req_rtpay_key]); //키 업데이트
+            }
+        } else {
+            head_rtpay::insert([
+                'head_key' => $company_key,
+                'route_key' => get_uuid_v4(),
+                'RTP_KEY' => $req_rtpay_key
+            ]);
+        }
+        return Return_json("0000", 200, "정상처리", 200);
+    }
+
     //Rtpay 입금 확인 혹은 수동입금 요청 혹은 송금을위한 잔액충전 요청
-    public function Charge_request(Request $request){
+    public function Charge_request(Request $request)
+    {
         $mode = $request->input('mode'); // 0 Rtpay 입금확인 요청 , 1 잔액충전을 위한 충전 요청
         $data = $request->input('data'); // 충전 요청 리스트
         $company_key = User::where('key', $request->user()->key)->value('company_key');
         $company_data = company::where('company_key', $company_key)->first();//가맹점 정보
-        $success_count = 0; //Rtpay 테이블에 존재하여 성공한 데이터 건수
-        $failure_count = 0; //Rtpay 테이블에 존재하지 않아 수동승인이 필요한 데이터 건수
-        $total_count = count($data); //총 요청 개수
+        $head_key = $company_data->head_key; //연결된 본사 키
+
         //Rtpay 입금 요청일경우
-        if($mode == 0){
-            foreach ($data as $row){
+        if ($mode == "Rtpay") {
+            $success_count = 0; //Rtpay 테이블에 존재하여 성공한 데이터 건수
+            $failure_count = 0; //Rtpay 테이블에 존재하지 않아 수동승인이 필요한 데이터 건수
+            $total_count = count($data); //총 요청 개수
+            foreach ($data as $row) {
                 //Rtpay에 데이터가 존재할 경우
-                if(rtpay_data::where('user_name',$row['user_name'])->where('money',$row['money'])->exists()){
+                if (rtpay_data::where('user_name', $row['user_name'])->where('money', $row['money'])->where('head_key', $head_key)->exists()) {
+                    $rtpay_id = rtpay_data::where('user_name', $row['user_name'])->where('money', $row['money'])->where('head_key', $head_key)->value('id');
                     $distributor_data = company::where('company_key', $company_data->distributor_key)->first(); //총판 정보
                     $branch_data = company::where('company_key', $company_data->branch_key)->first(); //지사 정보
                     $head_data = company::where('company_key', $company_data->head_key)->first(); //본사 정보
@@ -734,7 +1074,7 @@ class Transaction_Controller extends Controller
                     if (User::where('key', 'super_admin')->value('telegram_id') != null || User::where('key', 'super_admin')->value('telegram_id') != "") {
                         Telegram_send($row['telegram_id'], "*[입금 알림]*\n거래 가맹점 : $company_data->company_name\n입금 금액 : $number_amount 원\n정산 금액 : " . number_format($head_fee + $company_data->company_fee) . " 원");
                     }
-
+                    rtpay_data::where('id', $rtpay_id)->delete();
                     //거래내역 INSERT
                     transaction_history::insert([
                         'transaction_key' => get_uuid_v1(),
@@ -748,46 +1088,47 @@ class Transaction_Controller extends Controller
                         'head_fee' => number_format($head_fee) . "(" . number_format($head_actual_amount) . ")",
                         'branch_fee' => number_format($branch_fee) . "(" . number_format($branch_actual_amount) . ")",
                         'distributor_fee' => number_format($distributor_fee) . "(" . number_format($distributor_actual_amount) . ")",
-                        'franchisee_fee' => number_format($company_fee),
-                        'franchisee_money' => number_format($company_actual_amount),
+                        'franchisee_fee' => $company_fee + $company_data->company_fee,
+                        'franchisee_money' => $company_actual_amount,
                         'route_key' => "",
                         'date_ymd' => date('Y-m-d'),
                         'date_time' => date('H:i:s')
                     ]);
-                    rtpay_data::where('user_name',$row['user_name'])->where('money',$row['money'])->delete();
-                    $success_count ++;
-                }else{
+
+                    $success_count++;
+                } else {
                     charge_request::insert([
-                       'company_key'=>$company_key,
-                       'company_name'=>$company_data->company_name,
-                       'user_name'=>$row['user_name'],
-                       'money'=>$row['money'],
-                       'date_ymd'=>date('Y-m-d'),
-                       'date_time'=>date('H:i:s'),
-                       'state'=>'승인대기',
-                       'charge_request_state'=>"수동입금"
+                        'company_key' => $company_key,
+                        'company_name' => $company_data->company_name,
+                        'user_name' => $row['user_name'],
+                        'money' => $row['money'],
+                        'date_ymd' => date('Y-m-d'),
+                        'date_time' => date('H:i:s'),
+                        'state' => '승인대기',
+                        'charge_request_state' => "수동입금"
                     ]);
                     $failure_count++;
                 }
             }
-            return Return_json('0000',200,'정상처리',200,"총 $total_count 건중 자동승인 $success_count 건 수동승인 필요 $failure_count 건 으로 처리되었습니다.");
-        //잔액 충전 요청일경우
-        }elseif($mode == 1){
+            return Return_json('0000', 200, "총 $total_count 건중 자동승인 $success_count 건 수동승인 필요 $failure_count 건 으로 처리되었습니다.", 200,);
+            //잔액 충전 요청일경우
+        } elseif ($mode == "money_charge") {
             charge_request::insert([
-                'company_key'=>$company_key,
-                'company_name'=>$company_data->company_name,
-                'user_name'=>$request->input('user_name'),
-                'money'=>$request->input('money'),
-                'date_ymd'=>date('Y-m-d'),
-                'date_time'=>date('H:i:s'),
-                'state'=>'승인대기',
-                'charge_request_state'=>"잔액충전"
+                'company_key' => $company_key,
+                'company_name' => $company_data->company_name,
+                'user_name' => $request->input('user_name'),
+                'money' => $request->input('money'),
+                'date_ymd' => date('Y-m-d'),
+                'date_time' => date('H:i:s'),
+                'state' => '승인대기',
+                'charge_request_state' => "잔액충전"
             ]);
+            return Return_json('0000', 200, '정상처리', 200,);
         }
 
     }
 
-    //입금 노티
+    //페이투스 입금 노티
     public function Deposit_notification(Request $request, $route_id)
     {
         if (!account_list::where('account_number', $request->input('bankAcctNo'))->exists()) {
@@ -881,13 +1222,75 @@ class Transaction_Controller extends Controller
             'head_fee' => number_format($head_fee) . "(" . number_format($head_actual_amount) . ")",
             'branch_fee' => number_format($branch_fee) . "(" . number_format($branch_actual_amount) . ")",
             'distributor_fee' => number_format($distributor_fee) . "(" . number_format($distributor_actual_amount) . ")",
-            'franchisee_fee' => number_format($company_fee),
-            'franchisee_money' => number_format($company_actual_amount),
+            'franchisee_fee' => $company_fee + $company_data->company_fee,
+            'franchisee_money' => $company_actual_amount,
             'route_key' => $route_id,
             'date_ymd' => date('Y-m-d'),
             'date_time' => date('H:i:s')
         ]);
         return response()->json(['code' => "0000", 'message' => "정상"], 200);
+    }
+
+    //Rtpay 입금 노티
+    public function Rtpay_noti_v1(Request $request, $route_id)
+    {
+        $RTP_KEY = head_rtpay::where('route_id', $route_id)->value('RTP_KEY');
+        $head_key = head_rtpay::where('route_id', $route_id)->value('head_key');
+        $RTPay = new RTPay;
+        $RTPay->RTP_KEY = "$RTP_KEY"; //인증키값 설정
+
+        $resultArray = array();
+        $resultArray['PCHK'] = "NO";
+
+        if ($_POST['regPkey'] == $RTPay->RTP_KEY) {
+            if ($RTPay->checkCURL()) {
+                if ($_POST['ugrd'] < 20) {
+                    $RTPay->RTP_URL = "https://rtpay.net/CheckPay/test_checkpay.php";
+                } else {
+                    $RTPay->RTP_URL = "https://rtpay.net/CheckPay/checkpay.php";
+                }
+
+                $retRTP = $RTPay->getRTPay();
+
+                if ($retRTP->RCODE == '200') {
+                    $pbank = $retRTP->RBANK; //은행명
+                    $pname = $retRTP->RNAME; //입금자명
+                    $pmoney = $retRTP->RPAY; //입금금액
+                    $tall = $retRTP->RTEXT; //전송 데이터 전문
+
+                    rtpay_data::insert([
+                        'head_key' => $head_key,
+                        'user_name' => mb_substr($pname, 0, 3, 'utf-8'),
+                        'money' => $pmoney,
+                        'date_ymd' => date('Y-m-d'),
+                        'date_time' => date('H:i:s'),
+                    ]);
+                    $resultArray['PCHK'] = "OK";
+                    //========================== 인증키값 설정과 이 부분만 고쳐주세요. =======================
+
+                    //입금신청을 기록하신 기존 DB 데이터와 비교하는 코드 입력부분
+                    //입금자명과 금액이 일치하는 갯수를 비교하여 한개 이상이면 입금완료 처리 보류
+
+                    //입금데이터와 비교하여 매칭이 되었을 경우 $resultArray['PCHK'] =  "OK";
+                    //입금데이터와 비교하여 매칭이 되지 않았을 경우 $resultArray['PCHK'] =  "NO";
+
+                    //========================== 인증키값 설정과 이 부분만 고쳐주세요. =======================
+                }
+
+                $resultArray['RCODE'] = $retRTP->RCODE;
+            } else {
+                $resultArray['RCODE'] = "300";
+            }
+        } else {
+            if (!$_POST['regPkey']) {
+                $_POST['regPkey'] = $RTPay->RTP_KEY;
+                $RTPay->RTP_URL = "https://rtpay.net/CheckPay/setPurl.php";
+                $retRTP = $RTPay->getRTPay();
+            }
+            $resultArray['RCODE'] = "400";
+        }
+
+        echo json_encode($resultArray);
     }
 
     //텔레그램 셋팅

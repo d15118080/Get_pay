@@ -18,9 +18,6 @@ use App\Http\Controllers\Transaction_Controller;
 
 Route::get('/',[Controller::class,'Index'] )->middleware('Token_Check');
 
-//가상계좌 연결 관리(본사)
-Route::get('/account_management',[Controller::class,'Account_management'])->middleware('Token_Check');
-
 
 //업체 리스트
 Route::get('/company_lists',[Controller::class,'company_lists'])->middleware('Token_Check');
@@ -31,6 +28,11 @@ Route::get('/transaction_history',[Controller::class,'Transaction_history'])->mi
 //정산 내역
 Route::get('/calculates',[Controller::class,'Calculate'])->middleware('Token_Check');
 
+//본사 Rtpay 설정
+Route::get('/rtpay_setting',[Transaction_Controller::class,'Rtpay_setting'])->middleware('Token_Check');
+
+//본사 가상계좌 설정
+Route::get('/account_setting',[Transaction_Controller::class,'Account_setting'])->middleware('Token_Check');
 
 /*일반 유저*/
 

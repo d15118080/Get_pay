@@ -29,8 +29,9 @@ Route::prefix('/v1')->group(function () {
         Route::post('/account_temporary_issuance/{route_id}/{company_id}',[Transaction_Controller::class,'Account_temporary_issuance']);//임시 계좌발급
         Route::post('/account_everlasting_issuance/{route_id}/{company_id}',[Transaction_Controller::class,'Account_everlasting_issuance']);//영구 계좌발급
         Route::post('/deposit_notification/{route_id}',[Transaction_Controller::class,'Deposit_notification']); //입금 노티
-
         Route::post('/telegram_setting',[Transaction_Controller::class,'Telegram_setting']);//텔레그램 셋팅
+        //Rtpay 관련
+        Route::post('/rtpay_v1/{route_id}',[Transaction_Controller::class,'Rtpay_noti_v1']);//Rtpay
 
         //로그인후 라우트
         Route::middleware('auth:sanctum')->group(function () {
@@ -39,6 +40,10 @@ Route::prefix('/v1')->group(function () {
             Route::get('/transaction_history_data',[Transaction_Controller::class,'Transaction_history_data']); //거래 내역 가져오기
             Route::get('/calculate_history_data',[Transaction_Controller::class,'Calculate_history_data']); //거래 내역 가져오기
             Route::post('/charge_request',[Transaction_Controller::class,'Charge_request']); //잔액 충전 요청 (Rtpay 혹은 송금을위한 잔액 충전요청)
+            Route::post('/rtpay_insert_or_update',[Transaction_Controller::class,'Rtpay_insert_or_update']); //Rtpay 등록 및 수정
+            Route::post('/account_insert_or_update',[Transaction_Controller::class,'Account_insert_or_update']); //가상계좌 등록 및 수정
+            Route::get('/get_company_data',[Controller::class,'Get_company_data']); //업체 정보 가져오기 (리스트 내 수정하기위하여)
+            Route::post('/company_update',[Controller::class,'Company_update']); //업체 정보 업데이트
         });
 
     });

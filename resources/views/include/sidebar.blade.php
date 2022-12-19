@@ -150,15 +150,15 @@
                             <li class="nav-item">
                                 <a href="#" class="nav-link" data-key="t-starter"> 하부계정 관리 </a>
                             </li>
-                            @if(session('state') == 4)
+                            @if(session('state') == 1 || session('state') == 1)
                                 @if(session('bank_mode') == 1 || session('bank_mode') == 2)
                                 <li class="nav-item">
-                                    <a href="pages-team.html" class="nav-link" data-key="t-team"> RTpay(뱅킹) 관리 </a>
+                                    <a href="/rtpay_setting" class="nav-link" data-key="t-team"> RTpay(뱅킹) 설정 </a>
                                 </li>
                                 @endif
-                                @if(session('bank_mode') == 0 || session('bank_mode') == 2)
+                                @if(session('bank_mode') == 1 || session('bank_mode') == 2)
                                 <li class="nav-item">
-                                    <a href="pages-timeline.html" class="nav-link" data-key="t-timeline"> 가상계좌 관리 </a>
+                                    <a href="/account_setting" class="nav-link" data-key="t-timeline"> 가상계좌 설정 </a>
                                 </li>
                                 @endif
                             @endif

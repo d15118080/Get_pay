@@ -31,5 +31,5 @@ $.ajax({
         });
     },
 });
-let s = "Basic "+btoa("vicetablex"+':'+"vicetablex1!");
-console.log(s)
+
+

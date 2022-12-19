@@ -129,7 +129,20 @@
                                     <div class="col-sm-auto">
                                         <input class="form-control" id="end_date" type="date">
                                     </div>
-
+                                    @if(session('state') == "0" || session('state') =="1")
+                                    <div class="col-sm-auto">
+                                        <select id="company_id" class="form-select test">
+                                                @if($data == null)
+                                                    <option value="" >--가맹점 없음--</option>
+                                                @else
+                                                    <option value="" >--가맹점 선택--</option>
+                                                    @foreach($data as $row)
+                                                        <option value="{{$row->company_key}}" >{{$row->company_name}}</option>
+                                                    @endforeach
+                                                @endif
+                                        </select>
+                                    </div>
+                                    @endif
                                     <div class="col-sm-auto">
                                         <button id="Lookup" class="btn btn-primary w-md">조회</button>
                                     </div>

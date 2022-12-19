@@ -50,7 +50,7 @@ class auth_check
                         'name' => company::where('company_key',$user_data->company_key)->value('company_name'),
                         'position' =>$position,
                         'bank_mode'=> $bank_mode,
-                        'bank_mode_int' =>$bank_mode_int
+                        'bank_mode_int' =>$bank_mode_int,
                     ]);
                 }else{
                     session([
