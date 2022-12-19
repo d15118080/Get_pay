@@ -467,7 +467,7 @@ class Transaction_Controller extends Controller
                 }
             } else {
                 if (transaction_history::where('company_key',$sh_company_key)->whereBetween('date_ymd', [$request->input('start_date'), $request->input('end_date'),])->exists()) {
-                    $data = transaction_history::whereBetween('date_ymd',
+                    $data = transaction_history::where('company_key',$sh_company_key)->whereBetween('date_ymd',
                         [
                             $request->input('start_date'),
                             $request->input('end_date'),
@@ -801,8 +801,8 @@ class Transaction_Controller extends Controller
                     $sum = 0;
                 }
             }else{
-                if (calculate::where('company_key',$sh_company_key)->where('company_key',$sh_company_key)->whereBetween('date_ymd', [$request->input('start_date'), $request->input('end_date'),])->exists()) {
-                    $data = calculate::whereBetween('date_ymd',
+                if (calculate::where('company_key',$sh_company_key)->whereBetween('date_ymd', [$request->input('start_date'), $request->input('end_date'),])->exists()) {
+                    $data = calculate::where('company_key',$sh_company_key)->whereBetween('date_ymd',
                         [
                             $request->input('start_date'),
                             $request->input('end_date'),
