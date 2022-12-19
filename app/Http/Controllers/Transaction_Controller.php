@@ -14,7 +14,7 @@ use App\Models\withdraw;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Telegram\Bot\Api;
-use RTPay;
+use App\Fucntions\RTPay;
 
 class Transaction_Controller extends Controller
 {

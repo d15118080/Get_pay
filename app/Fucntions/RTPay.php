@@ -1,5 +1,8 @@
 <?php
-Class RTPay
+
+namespace App\Fucntions;
+
+class RTPay
 {
     var $RTP_KEY;
     var $RTP_URL;
@@ -35,4 +38,3 @@ Class RTPay
         return json_decode($res);
     }
 }
-?>
