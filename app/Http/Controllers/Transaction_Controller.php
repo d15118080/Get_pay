@@ -1234,8 +1234,8 @@ class Transaction_Controller extends Controller
     //Rtpay 입금 노티
     public function Rtpay_noti_v1(Request $request, $route_id)
     {
-        $RTP_KEY = head_rtpay::where('route_id', $route_id)->value('RTP_KEY');
-        $head_key = head_rtpay::where('route_id', $route_id)->value('head_key');
+        $RTP_KEY = head_rtpay::where('route_key', $route_id)->value('RTP_KEY');
+        $head_key = head_rtpay::where('route_key', $route_id)->value('head_key');
         $RTPay = new RTPay;
         $RTPay->RTP_KEY = "$RTP_KEY"; //인증키값 설정
 
