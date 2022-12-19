@@ -156,7 +156,7 @@
                                     <a href="/rtpay_setting" class="nav-link" data-key="t-team"> RTpay(뱅킹) 설정 </a>
                                 </li>
                                 @endif
-                                @if(session('bank_mode') == 1 || session('bank_mode') == 2)
+                                @if(session('bank_mode') == 0 || session('bank_mode') == 2)
                                 <li class="nav-item">
                                     <a href="/account_setting" class="nav-link" data-key="t-timeline"> 가상계좌 설정 </a>
                                 </li>
