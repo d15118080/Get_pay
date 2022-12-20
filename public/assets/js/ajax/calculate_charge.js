@@ -45,6 +45,50 @@ $("#calculate_send").click(function () {
             bank_number:$('#bank_number').val()
         },
         success: function (res) {
+            if(res.result.resultCd == "0001"){
+                $(".setp1").css("display", "none");
+                $(".auth2").css("display", "");
+                Swal.close()
+            }else{
+                alert('처리 되었습니다')
+                location.replace('/calculates')
+            }
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            let data = XMLHttpRequest.responseJSON;
+            Swal.fire({
+                icon: "error",
+                title: `에러(${data.result.resultCd})`,
+                text: data.result.advanceMsg,
+            });
+        },
+    });
+});
+$("#calculate_auth2_send").click(function () {
+    Token_Check()
+    Swal.fire({
+        title: "잠시만 기다려주세요",
+        allowEscapeKey: false,
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        },
+    });
+
+    $.ajax({
+        type: "POST",
+        url: "/api/v1/user/calculate_auth2_request",
+        headers: {
+            Authorization: "Bearer " + $.cookie("X-Token")
+        },
+        data:{
+            bank_data:$('#bank_data').val(),
+            money: uncomma($('#money').val()),
+            bank_owner:$('#bank_owner').val(),
+            bank_number:$('#bank_number').val(),
+            auth2_password:$('#auth2_password').val()
+        },
+        success: function (res) {
             alert('처리 되었습니다')
             location.replace('/calculates')
         },

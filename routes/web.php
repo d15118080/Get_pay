@@ -31,6 +31,12 @@ Route::get('/calculates',[Controller::class,'Calculate'])->middleware('Token_Che
 Route::get('/calculate_view',[Controller::class,'Calculate_view'])->middleware('Token_Check');
 //정산 요청 승인/거절 페이지
 Route::get('/calculate_admin_view',[Controller::class,'Calculate_admin_view'])->middleware('Token_Check');
+//텔레그램 알림 설정 페이지
+Route::get('/user_telegram_setting',[Controller::class,'Telegarm_setting'])->middleware('Token_Check');
+//사용자 계정설정 페이지
+Route::get('/user_setting',[Controller::class,'User_setting'])->middleware('Token_Check');
+//업체 추가 페이지
+Route::get('/add_company',[Controller::class,'Add_compnays']);
 //본사 Rtpay 설정
 Route::get('/rtpay_setting',[Transaction_Controller::class,'Rtpay_setting'])->middleware('Token_Check');
 

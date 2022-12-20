@@ -1,7 +1,7 @@
 import { Token_Check } from './export.js';
 Token_Check();
 let ids
-$("#head_edit").click(function () {
+$(".head_edit").click(function () {
     ids = $(this).data("id");
     Swal.fire({
         title:"잠시만 기다려주세요",

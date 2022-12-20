@@ -126,7 +126,7 @@
                                                                             @endif
                                                                         </td>
                                                                         <td>
-                                                                            <a id="head_edit" data-id="{{$row->id}}">수정</a>
+                                                                            <a class="head_edit" data-id="{{$row->id}}">수정</a>
                                                                         </td>
                                                                     </tr><!-- end tr -->
                                                                     @endforeach
@@ -158,7 +158,6 @@
                                                                 <th scope="col">현재 잔액</th>
                                                                 <th scope="col">생성일</th>
                                                                 <th scope="col">상태</th>
-                                                                <th scope="col">상세보기</th>
                                                             </tr>
                                                             </thead>
                                                             <tbody>
@@ -179,9 +178,6 @@
                                                                         @else
                                                                             <span class="badge badge-soft-danger">출금 차단</span>
                                                                         @endif
-                                                                    </td>
-                                                                    <td>
-                                                                        <a href="#">상세보기</a>
                                                                     </td>
                                                                 </tr><!-- end tr -->
                                                             @endforeach
@@ -212,7 +208,7 @@
                                                                     <th scope="col">현재 잔액</th>
                                                                     <th scope="col">생성일</th>
                                                                     <th scope="col">상태</th>
-                                                                    <th scope="col">상세보기</th>
+
                                                                 </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -232,9 +228,6 @@
                                                                             @else
                                                                                 <span class="badge badge-soft-danger">출금 차단</span>
                                                                             @endif
-                                                                        </td>
-                                                                        <td>
-                                                                            <a href="#">상세보기</a>
                                                                         </td>
                                                                     </tr><!-- end tr -->
                                                                 @endforeach
@@ -264,7 +257,7 @@
                                                                     <th scope="col">현재 잔액</th>
                                                                     <th scope="col">생성일</th>
                                                                     <th scope="col">상태</th>
-                                                                    <th scope="col">상세보기</th>
+
                                                                 </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -283,9 +276,6 @@
                                                                             @else
                                                                                 <span class="badge badge-soft-danger">출금 차단</span>
                                                                             @endif
-                                                                        </td>
-                                                                        <td>
-                                                                            <a href="#">상세보기</a>
                                                                         </td>
                                                                     </tr><!-- end tr -->
                                                                 @endforeach

@@ -90,7 +90,7 @@
                                 <a href="/company_lists?mode=all"  class="nav-link" data-key="t-horizontal">본사 리스트</a>
                             </li>
                             <li class="nav-item">
-                                <a href="#" target="_blank" class="nav-link" data-key="t-detached">본사 추가</a>
+                                <a href="http://127.0.0.1:8000/add_company?mode=0" class="nav-link" data-key="t-detached">본사 추가</a>
                             </li>
                         </ul>
                     </div>
@@ -109,7 +109,7 @@
                                 <a href="/company_lists?mode=branch"  class="nav-link" data-key="t-horizontal">지사 리스트</a>
                             </li>
                             <li class="nav-item">
-                                <a href="#" target="_blank" class="nav-link" data-key="t-detached">지사 추가</a>
+                                <a href="http://127.0.0.1:8000/add_company?mode=1" class="nav-link" data-key="t-detached">지사 추가</a>
                             </li>
                         </ul>
                     </div>
@@ -129,7 +129,7 @@
                             </li>
                             @if(session('state') == 1 || session('state') == 0)
                             <li class="nav-item">
-                                <a href="#" target="_blank" class="nav-link" data-key="t-detached">총판 추가</a>
+                                <a href="http://127.0.0.1:8000/add_company?mode=2"  class="nav-link" data-key="t-detached">총판 추가</a>
                             </li>
                             @endif
                         </ul>
@@ -150,7 +150,7 @@
                             </li>
                             @if(session('state') == 1 || session('state') == 0)
                             <li class="nav-item">
-                                <a href="#" target="_blank" class="nav-link" data-key="t-detached">가맹점 추가</a>
+                                <a href="http://127.0.0.1:8000/add_company?mode=3"  class="nav-link" data-key="t-detached">가맹점 추가</a>
                             </li>
                             @endif
                         </ul>
@@ -165,15 +165,16 @@
                     </a>
                     <div class="collapse menu-dropdown" id="sidebarSetting">
                         <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="#" class="nav-link" data-key="t-starter"> 하부계정 관리 </a>
-                            </li>
-                            @if(session('state') == 1 || session('state') == 1)
+{{--                            <li class="nav-item">--}}
+{{--                                <a href="#" class="nav-link" data-key="t-starter"> 하부계정 관리 </a>--}}
+{{--                            </li>--}}
+
 {{--                                @if(session('bank_mode') == 1 || session('bank_mode') == 2)--}}
 {{--                                <li class="nav-item">--}}
 {{--                                    <a href="/rtpay_setting" class="nav-link" data-key="t-team"> RTpay(뱅킹) 설정 </a>--}}
 {{--                                </li>--}}
 {{--                                @endif--}}
+                            @if(session('state') == 1)
                                 @if(session('bank_mode') == 0 || session('bank_mode') == 2)
                                 <li class="nav-item">
                                     <a href="/account_setting" class="nav-link" data-key="t-timeline"> 가상계좌 설정 </a>
@@ -181,23 +182,19 @@
                                 @endif
                             @endif
                             <li class="nav-item">
-                                <a href="pages-faqs.html" class="nav-link" data-key="t-faqs"> 2차인증 관리 </a>
+                                <a href="/user_telegram_setting" class="nav-link" data-key="t-faqs"> 텔레그램 알림 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="pages-faqs.html" class="nav-link" data-key="t-faqs"> 텔레그램 알림 </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="pages-pricing.html" class="nav-link" data-key="t-pricing"> 계정 관리 </a>
+                                <a href="/user_setting" class="nav-link" data-key="t-pricing"> 계정 설정 </a>
                             </li>
                         </ul>
                     </div>
                 </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="/">
-                        <i class="ri-notification-4-line"></i> <span data-key="t-noti">공지사항</span>
-                    </a>
-                </li>
+{{--                <li class="nav-item">--}}
+{{--                    <a class="nav-link" href="/">--}}
+{{--                        <i class="ri-notification-4-line"></i> <span data-key="t-noti">공지사항</span>--}}
+{{--                    </a>--}}
+{{--                </li>--}}
             </ul>
         </div>
         <!-- Sidebar -->

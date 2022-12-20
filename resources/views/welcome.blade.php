@@ -572,21 +572,29 @@
                                     <div class="live-preview">
                                         <div action="javascript:void(0);">
                                             <div class="row">
-                                                @if($bank_mode_int == 0 || $bank_mode_int == 2)
-                                                <div class="col-md-12">
-                                                    <div class="mb-3">
-                                                        <label for="firstNameinput" class="form-label">영구 계좌 발급 링크</label>
-                                                        <input type="text" class="form-control" value="https://paysone.kr/account_issuance/{{$bank_route}}?mode=0" id="firstNameinput" disabled>
+                                                @if($bank_route == "" || $bank_route == null)
+                                                    <div class="col-md-12">
+                                                        <div class="mb-3">
+                                                            본사 가상게좌 등록 대기중입니다.
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                @endif
-                                                @if($bank_mode_int == 1 || $bank_mode_int == 2)
-                                                <div class="col-md-12">
-                                                    <div class="mb-3">
-                                                        <label for="lastNameinput" class="form-label">임시 계좌 발급 링크</label>
-                                                        <input type="text" class="form-control" value="https://paysone.kr/account_issuance/{{$bank_route}}?mode=1" id="lastNameinput" disabled>
+                                                @else
+                                                    @if($bank_mode_int == 0 || $bank_mode_int == 2)
+                                                    <div class="col-md-12">
+                                                        <div class="mb-3">
+                                                            <label for="firstNameinput" class="form-label">영구 계좌 발급 링크</label>
+                                                            <input type="text" class="form-control" value="https://paysone.kr/account_issuance/{{$bank_route}}?mode=0" id="firstNameinput" disabled>
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                    @endif
+                                                    @if($bank_mode_int == 1 || $bank_mode_int == 2)
+                                                    <div class="col-md-12">
+                                                        <div class="mb-3">
+                                                            <label for="lastNameinput" class="form-label">임시 계좌 발급 링크</label>
+                                                            <input type="text" class="form-control" value="https://paysone.kr/account_issuance/{{$bank_route}}?mode=1" id="lastNameinput" disabled>
+                                                        </div>
+                                                    </div>
+                                                    @endif
                                                 @endif
                                             </div>
                                             <!--end row-->

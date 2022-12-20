@@ -13,6 +13,7 @@ use App\Models\transaction_history;
 use App\Models\withdraw;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use PhpParser\Node\Stmt\Return_;
 use Telegram\Bot\Api;
 use App\Fucntions\RTPay;
@@ -467,20 +468,20 @@ class Transaction_Controller extends Controller
                     $sum = 0;
                 }
             } else {
-                if (transaction_history::where('company_key',$sh_company_key)->whereBetween('date_ymd', [$request->input('start_date'), $request->input('end_date'),])->exists()) {
-                    $data = transaction_history::where('company_key',$sh_company_key)->whereBetween('date_ymd',
+                if (transaction_history::where('company_key', $sh_company_key)->whereBetween('date_ymd', [$request->input('start_date'), $request->input('end_date'),])->exists()) {
+                    $data = transaction_history::where('company_key', $sh_company_key)->whereBetween('date_ymd',
                         [
                             $request->input('start_date'),
                             $request->input('end_date'),
                         ])
                         ->get();
-                    $count = transaction_history::where('company_key',$sh_company_key)->whereBetween('date_ymd',
+                    $count = transaction_history::where('company_key', $sh_company_key)->whereBetween('date_ymd',
                         [
                             $request->input('start_date'),
                             $request->input('end_date'),
                         ])
                         ->count();
-                    $sum = transaction_history::where('company_key',$sh_company_key)->whereBetween('date_ymd',
+                    $sum = transaction_history::where('company_key', $sh_company_key)->whereBetween('date_ymd',
                         [
                             $request->input('start_date'),
                             $request->input('end_date'),
@@ -538,21 +539,21 @@ class Transaction_Controller extends Controller
                     $count = 0;
                     $sum = 0;
                 }
-            }else{
-                if (transaction_history::where('head_key', $company_key)->where('company_key',$sh_company_key)->whereBetween('date_ymd', [$request->input('start_date'), $request->input('end_date'),])->exists()) {
-                    $data = transaction_history::where('head_key', $company_key)->where('company_key',$sh_company_key)->whereBetween('date_ymd',
+            } else {
+                if (transaction_history::where('head_key', $company_key)->where('company_key', $sh_company_key)->whereBetween('date_ymd', [$request->input('start_date'), $request->input('end_date'),])->exists()) {
+                    $data = transaction_history::where('head_key', $company_key)->where('company_key', $sh_company_key)->whereBetween('date_ymd',
                         [
                             $request->input('start_date'),
                             $request->input('end_date'),
                         ])
                         ->get();
-                    $count = transaction_history::where('head_key', $company_key)->where('company_key',$sh_company_key)->whereBetween('date_ymd',
+                    $count = transaction_history::where('head_key', $company_key)->where('company_key', $sh_company_key)->whereBetween('date_ymd',
                         [
                             $request->input('start_date'),
                             $request->input('end_date'),
                         ])
                         ->count();
-                    $sum = transaction_history::where('head_key', $company_key)->where('company_key',$sh_company_key)->whereBetween('date_ymd',
+                    $sum = transaction_history::where('head_key', $company_key)->where('company_key', $sh_company_key)->whereBetween('date_ymd',
                         [
                             $request->input('start_date'),
                             $request->input('end_date'),
@@ -610,21 +611,21 @@ class Transaction_Controller extends Controller
                     $count = 0;
                     $sum = 0;
                 }
-            }else{
-                if (transaction_history::where('branch_key', $company_key)->where('company_key',$sh_company_key)->whereBetween('date_ymd', [$request->input('start_date'), $request->input('end_date'),])->exists()) {
-                    $data = transaction_history::where('branch_key', $company_key)->where('company_key',$sh_company_key)->whereBetween('date_ymd',
+            } else {
+                if (transaction_history::where('branch_key', $company_key)->where('company_key', $sh_company_key)->whereBetween('date_ymd', [$request->input('start_date'), $request->input('end_date'),])->exists()) {
+                    $data = transaction_history::where('branch_key', $company_key)->where('company_key', $sh_company_key)->whereBetween('date_ymd',
                         [
                             $request->input('start_date'),
                             $request->input('end_date'),
                         ])
                         ->get();
-                    $count = transaction_history::where('branch_key', $company_key)->where('company_key',$sh_company_key)->whereBetween('date_ymd',
+                    $count = transaction_history::where('branch_key', $company_key)->where('company_key', $sh_company_key)->whereBetween('date_ymd',
                         [
                             $request->input('start_date'),
                             $request->input('end_date'),
                         ])
                         ->count();
-                    $sum = transaction_history::where('branch_key', $company_key)->where('company_key',$sh_company_key)->whereBetween('date_ymd',
+                    $sum = transaction_history::where('branch_key', $company_key)->where('company_key', $sh_company_key)->whereBetween('date_ymd',
                         [
                             $request->input('start_date'),
                             $request->input('end_date'),
@@ -682,21 +683,21 @@ class Transaction_Controller extends Controller
                     $count = 0;
                     $sum = 0;
                 }
-            }else{
-                if (transaction_history::where('distributor_key', $company_key)->where('company_key',$sh_company_key)->whereBetween('date_ymd', [$request->input('start_date'), $request->input('end_date'),])->exists()) {
-                    $data = transaction_history::where('distributor_key', $company_key)->where('company_key',$sh_company_key)->whereBetween('date_ymd',
+            } else {
+                if (transaction_history::where('distributor_key', $company_key)->where('company_key', $sh_company_key)->whereBetween('date_ymd', [$request->input('start_date'), $request->input('end_date'),])->exists()) {
+                    $data = transaction_history::where('distributor_key', $company_key)->where('company_key', $sh_company_key)->whereBetween('date_ymd',
                         [
                             $request->input('start_date'),
                             $request->input('end_date'),
                         ])
                         ->get();
-                    $count = transaction_history::where('distributor_key', $company_key)->where('company_key',$sh_company_key)->whereBetween('date_ymd',
+                    $count = transaction_history::where('distributor_key', $company_key)->where('company_key', $sh_company_key)->whereBetween('date_ymd',
                         [
                             $request->input('start_date'),
                             $request->input('end_date'),
                         ])
                         ->count();
-                    $sum = transaction_history::where('distributor_key', $company_key)->where('company_key',$sh_company_key)->whereBetween('date_ymd',
+                    $sum = transaction_history::where('distributor_key', $company_key)->where('company_key', $sh_company_key)->whereBetween('date_ymd',
                         [
                             $request->input('start_date'),
                             $request->input('end_date'),
@@ -801,21 +802,21 @@ class Transaction_Controller extends Controller
                     $count = 0;
                     $sum = 0;
                 }
-            }else{
-                if (calculate::where('company_key',$sh_company_key)->whereBetween('date_ymd', [$request->input('start_date'), $request->input('end_date'),])->exists()) {
-                    $data = calculate::where('company_key',$sh_company_key)->whereBetween('date_ymd',
+            } else {
+                if (calculate::where('company_key', $sh_company_key)->whereBetween('date_ymd', [$request->input('start_date'), $request->input('end_date'),])->exists()) {
+                    $data = calculate::where('company_key', $sh_company_key)->whereBetween('date_ymd',
                         [
                             $request->input('start_date'),
                             $request->input('end_date'),
                         ])
                         ->get();
-                    $count = calculate::where('company_key',$sh_company_key)->where('state', '완료')->whereBetween('date_ymd',
+                    $count = calculate::where('company_key', $sh_company_key)->where('state', '완료')->whereBetween('date_ymd',
                         [
                             $request->input('start_date'),
                             $request->input('end_date'),
                         ])
                         ->count();
-                    $sum = calculate::where('company_key',$sh_company_key)->where('state', '완료')->whereBetween('date_ymd',
+                    $sum = calculate::where('company_key', $sh_company_key)->where('state', '완료')->whereBetween('date_ymd',
                         [
                             $request->input('start_date'),
                             $request->input('end_date'),
@@ -872,21 +873,21 @@ class Transaction_Controller extends Controller
                     $count = 0;
                     $sum = 0;
                 }
-            }else{
-                if (calculate::where('company_key',$sh_company_key)->where('head_key', $company_key)->whereBetween('date_ymd', [$request->input('start_date'), $request->input('end_date'),])->exists()) {
-                    $data = calculate::where('company_key',$sh_company_key)->where('head_key', $company_key)->whereBetween('date_ymd',
+            } else {
+                if (calculate::where('company_key', $sh_company_key)->where('head_key', $company_key)->whereBetween('date_ymd', [$request->input('start_date'), $request->input('end_date'),])->exists()) {
+                    $data = calculate::where('company_key', $sh_company_key)->where('head_key', $company_key)->whereBetween('date_ymd',
                         [
                             $request->input('start_date'),
                             $request->input('end_date'),
                         ])
                         ->get();
-                    $count = calculate::where('company_key',$sh_company_key)->where('head_key', $company_key)->where('state', '완료')->whereBetween('date_ymd',
+                    $count = calculate::where('company_key', $sh_company_key)->where('head_key', $company_key)->where('state', '완료')->whereBetween('date_ymd',
                         [
                             $request->input('start_date'),
                             $request->input('end_date'),
                         ])
                         ->count();
-                    $sum = calculate::where('company_key',$sh_company_key)->where('head_key', $company_key)->where('state', '완료')->whereBetween('date_ymd',
+                    $sum = calculate::where('company_key', $sh_company_key)->where('head_key', $company_key)->where('state', '완료')->whereBetween('date_ymd',
                         [
                             $request->input('start_date'),
                             $request->input('end_date'),
@@ -946,80 +947,154 @@ class Transaction_Controller extends Controller
         return Return_json($code, 200, $msg, 200, ['data' => $data, 'count' => number_format($count), 'sum' => number_format($sum)]);
     }
 
-    //정산 요청
-    public function Calculate_request(Request $request){
+    //정산 요청 2차인증 X
+    public function Calculate_request(Request $request)
+    {
 
-        if (!$request->user()->tokenCan('Auth:admin')) {
-            $company_key = User::where('key', $request->user()->key)->value('company_key');
-            $head_key = company::where('company_key',$company_key)->value('head_key');
-            $company_name= company::where('company_key',$company_key)->value('company_name');
-            $calculate_fee = company::where('company_key',$company_key)->value('calculate_fee'); //출금 수수료
-
-        }
-        if($request->user()->tokenCan('Auth:head')){
-            return Return_json('9999',1,'본사는 정산 요청이 불가합니다.',422);
+        if ($request->user()->tokenCan('Auth:head')) {
+            return Return_json('9999', 1, '본사는 정산 요청이 불가합니다.', 422);
         }
         $money = $request->input('money'); //정산 요청 금액
-        $bank_owner= $request->input('bank_owner'); // 정산받을 계좌의 예금주
-        $bank_data = explode( ',', $request->input('bank_data'));
+        $bank_owner = $request->input('bank_owner'); // 정산받을 계좌의 예금주
+        $bank_data = explode(',', $request->input('bank_data'));
         $bank_code = $bank_data[0]; //정산받을 계좌의 은행코드
         $bank_name = $bank_data[1]; //정산받을 계좌의 은행명
-        $bank_number =$request->input('bank_number');//계좌번호
-        $company_money = company::where('company_key',$company_key)->value('money'); //현재 업체의 잔액
-        if($money == ""){
-            return Return_json('9999',1,'정산 요청 금액을 입력해주세요',422);
-        }
-        if($bank_owner == ""){
-            return Return_json('9999',1,'예금주 를 입력해주세요',422);
-        }
-        if($bank_name == ""){
-            return Return_json('9999',1,'은행명 을 선택해주세요.',422);
-        }
+        $bank_number = $request->input('bank_number');//계좌번호
+        if (!$request->user()->tokenCan('Auth:admin')) {
+            $company_key = User::where('key', $request->user()->key)->value('company_key');
+            $head_key = company::where('company_key', $company_key)->value('head_key');
+            $company_name = company::where('company_key', $company_key)->value('company_name');
+            $calculate_fee = company::where('company_key', $company_key)->value('calculate_fee'); //출금 수수료
 
-        if ($company_money < $money+$calculate_fee) {
-            return Return_json('9999', 1, "출금 가능액 보다 클수없습니다 현재 출금하려는 금액은 " . number_format($money) . " 원 이며 수수료는 $calculate_fee 원 입니다", 400, null);
-        }
-        company::where('company_key', $company_key)->update(['money' => $company_money-$money-$calculate_fee]); //가맹점 잔액 업데이트
-        calculate::insert([
-           'head_key'=> $head_key,
-           'company_key'=>$company_key,
-           'company_name'=>$company_name,
-           'calculate_money'=>$money,
-           'calculate_to_money'=>$company_money-$money-$calculate_fee,
-            'bank_code'=>$bank_code,
-            'bank_number'=>$bank_number,
-            'bank_owner'=>$bank_owner,
-            'bank_name'=>$bank_name,
-            'date_ymd'=>date('Y-m-d'),
-            'date_time'=>date('H:i:s'),
-            'fee'=>$calculate_fee,
-            'state'=>'대기중'
-        ]);
-
-        $head_user_telegrams_get = User::where('company_key', $head_key)->get(); //본사와 연결된 계정 전부 가져오기
-
-        //연결된 계정만큼 반복후 텔레그램 설정한 계정만 알림 발송
-        foreach ($head_user_telegrams_get as $row) {
-            if ($row['telegram_id'] != null || $row['telegram_id'] != "") {
-                $number_amount = number_format($money);//출금 요청금액 콤마
-                Telegram_send($row['telegram_id'], "*[정산 요청 알림]*\n거래 가맹점 : $company_name\n정산 요청 금액 : $number_amount 원\n정산 후 잔액 : " . number_format($company_money-$money-$calculate_fee) . " 원");
+            $company_money = company::where('company_key', $company_key)->value('money'); //현재 업체의 잔액
+            if ($money == "") {
+                return Return_json('9999', 1, '정산 요청 금액을 입력해주세요', 422);
             }
+            if ($bank_owner == "") {
+                return Return_json('9999', 1, '예금주 를 입력해주세요', 422);
+            }
+            if ($bank_name == "") {
+                return Return_json('9999', 1, '은행명 을 선택해주세요.', 422);
+            }
+            if ($company_money < $money + $calculate_fee) {
+                return Return_json('9999', 1, "출금 가능액 보다 클수없습니다 현재 출금하려는 금액은 " . number_format($money) . " 원 이며 수수료는 $calculate_fee 원 입니다", 400, null);
+            }
+            if($request->user()->auth_2 == 1){
+                return Return_json('0001', 200, '2차인증 필요', 200);
+            }
+            company::where('company_key', $company_key)->update(['money' => $company_money - $money - $calculate_fee]); //가맹점 잔액 업데이트
+            calculate::insert([
+                'head_key' => $head_key,
+                'company_key' => $company_key,
+                'company_name' => $company_name,
+                'calculate_money' => $money,
+                'calculate_to_money' => $company_money - $money - $calculate_fee,
+                'bank_code' => $bank_code,
+                'bank_number' => $bank_number,
+                'bank_owner' => $bank_owner,
+                'bank_name' => $bank_name,
+                'date_ymd' => date('Y-m-d'),
+                'date_time' => date('H:i:s'),
+                'fee' => $calculate_fee,
+                'state' => '대기중'
+            ]);
+
+            $head_user_telegrams_get = User::where('company_key', $head_key)->get(); //본사와 연결된 계정 전부 가져오기
+
+            //연결된 계정만큼 반복후 텔레그램 설정한 계정만 알림 발송
+            foreach ($head_user_telegrams_get as $row) {
+                if ($row['telegram_id'] != null || $row['telegram_id'] != "") {
+                    $number_amount = number_format($money);//출금 요청금액 콤마
+                    Telegram_send($row['telegram_id'], "*[정산 요청 알림]*\n거래 가맹점 : $company_name\n정산 요청 금액 : $number_amount 원\n정산 후 잔액 : " . number_format($company_money - $money - $calculate_fee) . " 원");
+                }
+            }
+        //관리자 정산 요청 할경우
         }
-        return Return_json('0000',200,'정상 처리되었습니다',200);
+        return Return_json('0000', 200, '정상 처리되었습니다', 200);
+
+    }
+
+    //정산 요청 2차인증 O
+    public function Calculate_auth2_request(Request $request)
+    {
+
+        if ($request->user()->tokenCan('Auth:head')) {
+            return Return_json('9999', 1, '본사는 정산 요청이 불가합니다.', 422);
+        }
+        $money = $request->input('money'); //정산 요청 금액
+        $bank_owner = $request->input('bank_owner'); // 정산받을 계좌의 예금주
+        $bank_data = explode(',', $request->input('bank_data'));
+        $bank_code = $bank_data[0]; //정산받을 계좌의 은행코드
+        $bank_name = $bank_data[1]; //정산받을 계좌의 은행명
+        $bank_number = $request->input('bank_number');//계좌번호
+        $auth2_password = $request->input('auth2_password');//2차인증 비밀번호
+        if (!$request->user()->tokenCan('Auth:admin')) {
+            $company_key = User::where('key', $request->user()->key)->value('company_key');
+            $head_key = company::where('company_key', $company_key)->value('head_key');
+            $company_name = company::where('company_key', $company_key)->value('company_name');
+            $calculate_fee = company::where('company_key', $company_key)->value('calculate_fee'); //출금 수수료
+
+            $company_money = company::where('company_key', $company_key)->value('money'); //현재 업체의 잔액
+            if ($money == "") {
+                return Return_json('9999', 1, '정산 요청 금액을 입력해주세요', 422);
+            }
+            if ($bank_owner == "") {
+                return Return_json('9999', 1, '예금주 를 입력해주세요', 422);
+            }
+            if ($bank_name == "") {
+                return Return_json('9999', 1, '은행명 을 선택해주세요.', 422);
+            }
+
+            if ($company_money < $money + $calculate_fee) {
+                return Return_json('9999', 1, "출금 가능액 보다 클수없습니다 현재 출금하려는 금액은 " . number_format($money) . " 원 이며 수수료는 $calculate_fee 원 입니다", 400, null);
+            }
+            if (!Hash::check($auth2_password, $request->user()->auth_2_password)) {
+                return Return_json('9999', 1, '2차 비밀번호가 일치하지 않습니다.', 422);
+            }
+            company::where('company_key', $company_key)->update(['money' => $company_money - $money - $calculate_fee]); //가맹점 잔액 업데이트
+            calculate::insert([
+                'head_key' => $head_key,
+                'company_key' => $company_key,
+                'company_name' => $company_name,
+                'calculate_money' => $money,
+                'calculate_to_money' => $company_money - $money - $calculate_fee,
+                'bank_code' => $bank_code,
+                'bank_number' => $bank_number,
+                'bank_owner' => $bank_owner,
+                'bank_name' => $bank_name,
+                'date_ymd' => date('Y-m-d'),
+                'date_time' => date('H:i:s'),
+                'fee' => $calculate_fee,
+                'state' => '대기중'
+            ]);
+
+            $head_user_telegrams_get = User::where('company_key', $head_key)->get(); //본사와 연결된 계정 전부 가져오기
+
+            //연결된 계정만큼 반복후 텔레그램 설정한 계정만 알림 발송
+            foreach ($head_user_telegrams_get as $row) {
+                if ($row['telegram_id'] != null || $row['telegram_id'] != "") {
+                    $number_amount = number_format($money);//출금 요청금액 콤마
+                    Telegram_send($row['telegram_id'], "*[정산 요청 알림]*\n거래 가맹점 : $company_name\n정산 요청 금액 : $number_amount 원\n정산 후 잔액 : " . number_format($company_money - $money - $calculate_fee) . " 원");
+                }
+            }
+            //관리자 정산 요청 할경우
+        }
+        return Return_json('0000', 200, '정상 처리되었습니다', 200);
 
     }
 
     //정산 요청 승인 / 거절
-    public function Calculate_state_change(Request $request){
+    public function Calculate_state_change(Request $request)
+    {
         $mode = $request->input('mode');//승인 인지 거절인지
-        $id= $request->input('id');//수정할 테이블 아이디
+        $id = $request->input('id');//수정할 테이블 아이디
 
         if ($request->user()->tokenCan('Auth:admin') || $request->user()->tokenCan('Auth:head')) {
             //승인 일경우
             if ($mode == "OK") {
                 $calculate_data = calculate::where('id', $id)->first(); //출금 요청한 정보
                 $head_data = company::where('company_key', $calculate_data->head_key)->first();//본사 정보
-                $updte_money =$head_data->money + $calculate_data->fee;
+                $updte_money = $head_data->money + $calculate_data->fee;
                 company::where('company_key', $calculate_data->head_key)->update(['money' => $updte_money]); //본사 수수료 업데이트
                 calculate::where('id', $id)->update(['state' => '완료']); //정산 상태 변경
                 $company_user_telegrams_get = User::where('company_key', $calculate_data->company_key)->get(); //가맹점과 연결된 계정 전부 가져오기
@@ -1036,7 +1111,7 @@ class Transaction_Controller extends Controller
                 $company_data = company::where('company_key', $calculate_data->company_key)->first();//가맹점 정보
                 $updte_money = $company_data->money + $calculate_data->calculate_money + $calculate_data->fee;
 
-                company::where('company_key', $calculate_data->head_key)->update(['money' =>$updte_money ]); //가맹점 금액 원상복구
+                company::where('company_key', $calculate_data->company_key)->update(['money' => $updte_money]); //가맹점 금액 원상복구
                 $company_user_telegrams_get = User::where('company_key', $calculate_data->company_key)->get(); //가맹점과 연결된 계정 전부 가져오기
                 calculate::where('id', $id)->update(['state' => '반려']); //정산 상태 변경
                 //연결된 계정만큼 반복후 텔레그램 설정한 계정만 알림 발송
@@ -1046,8 +1121,8 @@ class Transaction_Controller extends Controller
                     }
                 }
             }
-            return Return_json('0000',200,'정상처리',200);
-        }else{
+            return Return_json('0000', 200, '정상처리', 200);
+        } else {
             return Return_json('9999', 1, '처리할수 없는 계정입니다', 422);
         }
 
@@ -1100,7 +1175,7 @@ class Transaction_Controller extends Controller
         $company_key = User::where('key', $request->user()->key)->value('company_key');
         $company_data = company::where('company_key', $company_key)->first();//가맹점 정보
         $head_key = $company_data->head_key; //연결된 본사 키
-        if(!head_rtpay::where('head_key',$head_key)->exists()){
+        if (!head_rtpay::where('head_key', $head_key)->exists()) {
             return Return_json('9999', 1, "해당 기능을 지원하지 않는 업체입니다.", 422,);
         }
         //Rtpay 입금 요청일경우

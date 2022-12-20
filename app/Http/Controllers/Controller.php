@@ -17,6 +17,7 @@ use  App\Models\company;
 use App\Models\transaction_history;
 use App\Models\withdraw;
 use Illuminate\Routing\Controller as BaseController;
+use PhpParser\Node\Stmt\Return_;
 
 class Controller extends BaseController
 {
@@ -390,10 +391,11 @@ class Controller extends BaseController
             $company_key = User::where('key', $HToken)->value('company_key');
             $calculate_fee= company::where('company_key',$company_key)->value('calculate_fee'); //출금 수수료
             $company_money = company::where('company_key',$company_key)->value('money'); //현재 잔액
+            return view('calculate_request',['data'=>$bank_data,'calculate_fee'=>$calculate_fee,'company_money'=>$company_money]);
 
+        }else{
+            return "관리자는 정산 요청 페이지 접근이 불가합니다";
         }
-
-        return view('calculate_request',['data'=>$bank_data,'calculate_fee'=>$calculate_fee,'company_money'=>$company_money]);
     }
 
     //정산 요청 승인/거절 페이지
@@ -406,6 +408,202 @@ class Controller extends BaseController
             $data = calculate::where('state', '대기중')->orWhere('state', '반려')->where('head_key',$company_key)->get();
         }
         return view('calculate_admin_view',['data'=>$data]);
+    }
+
+    //업체 추가 페이지
+    public function Add_compnays(Request $request){
+        $mode = $_GET['mode'];
+        $HToken = base_64_end_code_de($_COOKIE['H-Token'], _key_, _iv_);
+        if(session('state') == 0){
+            if($mode == 1){
+                $data = company::where('state',1)->get();
+            }elseif ($mode ==2){
+                $data = company::where('state',2)->get();
+            }elseif ($mode ==3){
+                $data = company::where('state',3)->get();
+            }else{
+                $data=null;
+            }
+        }else{
+            $company_key = User::where('key', $HToken)->value('company_key');
+            if($mode == 1){
+                $data = company::where('state',1)->where('head_key',$company_key)->get();
+            }elseif ($mode == 2){
+                $data = company::where('state',2)->where('head_key',$company_key)->get();
+            }elseif ($mode == 3){
+                $data = company::where('state',3)->where('head_key',$company_key)->get();
+            }
+        }
+
+        return view('add_company',['data'=>$data]);
+
+    }
+
+    //업체 추가
+    public function Add_company_req(Request $request){
+        $mode = $request->input('mode'); //추가 업체 구분
+        $company_name = $request->input('company_name');// 업체이름
+        $company_id =$request->input('user_id');//업체 아이디
+        $company_password = $request->input('user_password');//업체 비밀번호
+        $company_margin = $request->input('company_margin');//업체 수수료
+        $uuid = get_uuid_v3();
+        if($company_name == "" || $company_id ==""|| $company_password == "" || $company_margin ==""){
+            return Return_json('9999',1,'필수값을 입력해주세요',422);
+        }
+        if(User::where('user_id',$company_id)->exists()){
+            return Return_json('9999',1,'이미 존재하는 아이디 입니다',422);
+        }
+
+        //본사 추가
+        if($mode == 0){
+            company::insert([
+                'company_key'=>$uuid,
+                'company_name'=>$company_name,
+                'money'=>0,
+                'company_margin'=>$company_margin,
+                'state'=>1,
+                'bank_mode'=>0,
+                'bank_mode_int'=>3,
+                'withdraw_state'=>0,
+                'company_state'=>1,
+                'date_ymd'=>date('Y-m-d'),
+                'date_time'=>date('H:i:s')
+            ]);
+            User::insert([
+                'key'=>get_uuid_v3(),
+                'user_name'=>$company_name,
+                'user_id'=>$company_id,
+                'user_password'=>Hash::make($company_password),
+                'user_authority'=>1,
+                'company_key'=>$uuid,
+                'auth_2'=>0,
+            ]);
+        //지사 추가
+        }elseif ($mode ==1){
+            $set_key = $request->input('set_key'); //연결 본사키
+            company::insert([
+                'company_key'=>$uuid,
+                'company_name'=>$company_name,
+                'head_key'=>$set_key,
+                'money'=>0,
+                'company_margin'=>$company_margin,
+                'state'=>2,
+                'bank_mode'=>0,
+                'bank_mode_int'=>3,
+                'withdraw_state'=>0,
+                'company_state'=>1,
+                'date_ymd'=>date('Y-m-d'),
+                'date_time'=>date('H:i:s')
+            ]);
+            User::insert([
+                'key'=>get_uuid_v3(),
+                'user_name'=>$company_name,
+                'user_id'=>$company_id,
+                'user_password'=>Hash::make($company_password),
+                'user_authority'=>2,
+                'company_key'=>$uuid,
+                'auth_2'=>0,
+            ]);
+        //총판 추가
+        }elseif ($mode ==2){
+            $set_key = $request->input('set_key'); //연결 지사키
+            $data = company::where('company_key',$set_key)->first(); //연결된 지사의 정보
+            company::insert([
+                'company_key'=>$uuid,
+                'company_name'=>$company_name,
+                'head_key'=>$data->head_key,
+                'branch_key'=>$set_key,
+                'money'=>0,
+                'company_margin'=>$company_margin,
+                'state'=>3,
+                'bank_mode'=>0,
+                'bank_mode_int'=>3,
+                'withdraw_state'=>0,
+                'company_state'=>1,
+                'date_ymd'=>date('Y-m-d'),
+                'date_time'=>date('H:i:s')
+            ]);
+            User::insert([
+                'key'=>get_uuid_v3(),
+                'user_name'=>$company_name,
+                'user_id'=>$company_id,
+                'user_password'=>Hash::make($company_password),
+                'user_authority'=>3,
+                'company_key'=>$uuid,
+                'auth_2'=>0,
+            ]);
+        //가맹점 추가
+        }elseif ($mode ==3){
+            $set_key = $request->input('set_key'); //연결 총판키
+            $data = company::where('company_key',$set_key)->first(); //연결된 총판의 정보
+            $company_fee = $request->input('company_fee');//입금비
+            $calculate_fee = $request->input('calculate_fee');//출금 수수료
+            $bank_mode= $request->input('bank_mode');//영구계좌 허용 : 0 , 임시계좌 허용 : 1 , 둘다허용 : 2 , 사용안함 3
+            company::insert([
+                'company_key'=>$uuid,
+                'company_name'=>$company_name,
+                'head_key'=>$data->head_key,
+                'branch_key'=>$data->branch_key,
+                'distributor_key'=>$set_key,
+                'money'=>0,
+                'company_margin'=>$company_margin,
+                'state'=>4,
+                'bank_mode'=>0,
+                'bank_mode_int'=>3,
+                'withdraw_state'=>0,
+                'company_state'=>0,
+                'company_fee'=>$company_fee,
+                'calculate_fee'=>$calculate_fee,
+                'bank_mode_int'=>$bank_mode,
+                'date_ymd'=>date('Y-m-d'),
+                'date_time'=>date('H:i:s')
+            ]);
+            User::insert([
+                'key'=>get_uuid_v3(),
+                'user_name'=>$company_name,
+                'user_id'=>$company_id,
+                'user_password'=>Hash::make($company_password),
+                'user_authority'=>4,
+                'company_key'=>$uuid,
+                'auth_2'=>0,
+            ]);
+        }
+        return Return_json('0000',200,'생성 되었습니다',200);
+    }
+
+    //사용자 설정
+    public function User_setting(Request $request){
+        $HToken = base_64_end_code_de($_COOKIE['H-Token'], _key_, _iv_);
+        $data = User::where('key',$HToken)->first();
+        return view('user_setting',['data'=>$data]);
+    }
+
+    //사용자 설정 업데이트
+    public function User_setting_req(Request $request){
+        $auth2_state = $request->input('auth_state'); //2차인증 사용여부
+        $auth2_password = $request->input('auth_password'); //2차 비밀번호
+        $user_password = $request->input('user_password');//사용자 비밀번호
+        $key = $request->user()->key;
+        if($auth2_password !="" || $auth2_password != null){
+            User::where('key', $key)->update(['auth_2_password' => Hash::make($auth2_password)]); //2차인증 비밀번호 업데이트
+        }
+        if($user_password !="" || $user_password != null){
+            User::where('key', $key)->update(['user_password' => Hash::make($user_password)]); //비밀번호 업데이트
+        }
+            if($auth2_state == 1){
+                if(User::where('key',$key)->value('auth_2_password') ==null){
+                    return Return_json('9999',1,'2차인증 비밀번호도 입력해주세요',422);
+                }
+                User::where('key', $key)->update(['auth_2' => $auth2_state]); //2차인증 사용여부 업데이트
+            }
+        return Return_json('0000',200,'정상처리',200);
+
+    }
+
+    //텔레그램 알림 설정 페이지
+    public function Telegarm_setting(Request $request){
+        $HToken = base_64_end_code_de($_COOKIE['H-Token'], _key_, _iv_);
+        return view('telegram_setting',['id'=>$HToken]);
     }
 
 }
