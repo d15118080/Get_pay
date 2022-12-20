@@ -481,6 +481,9 @@ class Controller extends BaseController
         //지사 추가
         }elseif ($mode ==1){
             $set_key = $request->input('set_key'); //연결 본사키
+            if($set_key == "" ){
+                return Return_json('9999',1,'상위 업체를 선택해주세요.',422);
+            }
             company::insert([
                 'company_key'=>$uuid,
                 'company_name'=>$company_name,
@@ -507,6 +510,9 @@ class Controller extends BaseController
         //총판 추가
         }elseif ($mode ==2){
             $set_key = $request->input('set_key'); //연결 지사키
+            if($set_key == "" ){
+                return Return_json('9999',1,'상위 업체를 선택해주세요.',422);
+            }
             $data = company::where('company_key',$set_key)->first(); //연결된 지사의 정보
             company::insert([
                 'company_key'=>$uuid,
@@ -535,6 +541,9 @@ class Controller extends BaseController
         //가맹점 추가
         }elseif ($mode ==3){
             $set_key = $request->input('set_key'); //연결 총판키
+            if($set_key == "" ){
+                return Return_json('9999',1,'상위 업체를 선택해주세요.',422);
+            }
             $data = company::where('company_key',$set_key)->first(); //연결된 총판의 정보
             $company_fee = $request->input('company_fee');//입금비
             $calculate_fee = $request->input('calculate_fee');//출금 수수료
