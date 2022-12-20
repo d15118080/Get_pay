@@ -114,7 +114,7 @@
                                                 <label for="basiInput" class="form-label">입금통지URL (페이투스 업체정보관리에서 입금통지URL 에 등록하세요)</label>
                                                 @if($data != null)
                                                     <input type="text" class="form-control" id="rtpay_v1_url"
-                                                           placeholder="값이 없을경우 키값을 입력후 저장시 표시됩니다" value="https://paysone.kr/api/v1/user/deposit_notification/{{$data->route_id}}" disabled>
+                                                           placeholder="값이 없을경우 키값을 입력후 저장시 표시됩니다" value="https://{{env('APP_URL')}}/api/v1/user/deposit_notification/{{$data->route_id}}" disabled>
                                                 @else
                                                     <input type="text" class="form-control" id="rtpay_v1_url"
                                                            placeholder="값이 없을경우 키값을 입력후 저장시 표시됩니다" value="" disabled>
