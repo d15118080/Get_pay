@@ -44,6 +44,7 @@ Route::prefix('/v1')->group(function () {
             Route::post('/account_insert_or_update',[Transaction_Controller::class,'Account_insert_or_update']); //가상계좌 등록 및 수정
             Route::get('/get_company_data',[Controller::class,'Get_company_data']); //업체 정보 가져오기 (리스트 내 수정하기위하여)
             Route::post('/company_update',[Controller::class,'Company_update']); //업체 정보 업데이트
+            Route::post('/calculate_request',[Transaction_Controller::class,'Calculate_request']);//정산 요청 Req
         });
 
     });

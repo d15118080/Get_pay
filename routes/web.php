@@ -27,12 +27,17 @@ Route::get('/transaction_history',[Controller::class,'Transaction_history'])->mi
 
 //정산 내역
 Route::get('/calculates',[Controller::class,'Calculate'])->middleware('Token_Check');
-
+//정산 요청 페이지
+Route::get('/calculate_view',[Controller::class,'Calculate_view'])->middleware('Token_Check');
 //본사 Rtpay 설정
 Route::get('/rtpay_setting',[Transaction_Controller::class,'Rtpay_setting'])->middleware('Token_Check');
 
 //본사 가상계좌 설정
 Route::get('/account_setting',[Transaction_Controller::class,'Account_setting'])->middleware('Token_Check');
+
+
+//가맹점 충전 신청
+Route::get('/charge',[Controller::class,'Charge_view'])->middleware('Token_Check');
 
 /*일반 유저*/
 

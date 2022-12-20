@@ -49,17 +49,30 @@
                                 <a href="/calculates" class="nav-link" data-key="t-chat"> 정산 내역 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="#" class="nav-link" data-key="t-email"> 송금 내역</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#" class="nav-link" data-key="t-email"> 정산 요청</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#" class="nav-link" data-key="t-email"> 송금 요청</a>
+                                <a href="/calculate_view" class="nav-link" data-key="t-email"> 정산 요청</a>
                             </li>
                         </ul>
                     </div>
                 </li>
+{{--                이노페이 / Rtpay 관련 추후 추가예정--}}
+{{--                <li class="nav-item">--}}
+{{--                    <a class="nav-link menu-link" href="#money_setting" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarApps">--}}
+{{--                        <i class="ri-apps-2-line"></i> <span data-key="t-apps">잔액 관리</span>--}}
+{{--                    </a>--}}
+{{--                    <div class="collapse menu-dropdown" id="money_setting">--}}
+{{--                        <ul class="nav nav-sm flex-column">--}}
+{{--                            <li class="nav-item">--}}
+{{--                                <a href="/charge" class="nav-link" data-key="t-calendar"> 충전 요청(입금확인요청) </a>--}}
+{{--                            </li>--}}
+{{--                            <li class="nav-item">--}}
+{{--                                <a href="#" class="nav-link" data-key="t-email"> 송금 요청</a>--}}
+{{--                            </li>--}}
+{{--                            <li class="nav-item">--}}
+{{--                                <a href="#" class="nav-link" data-key="t-email"> 송금 내역</a>--}}
+{{--                            </li>--}}
+{{--                        </ul>--}}
+{{--                    </div>--}}
+{{--                </li>--}}
                 @if(session('state') == 0)
                 {{--관리자메뉴--}}
                 <li class="nav-item">
@@ -151,11 +164,11 @@
                                 <a href="#" class="nav-link" data-key="t-starter"> 하부계정 관리 </a>
                             </li>
                             @if(session('state') == 1 || session('state') == 1)
-                                @if(session('bank_mode') == 1 || session('bank_mode') == 2)
-                                <li class="nav-item">
-                                    <a href="/rtpay_setting" class="nav-link" data-key="t-team"> RTpay(뱅킹) 설정 </a>
-                                </li>
-                                @endif
+{{--                                @if(session('bank_mode') == 1 || session('bank_mode') == 2)--}}
+{{--                                <li class="nav-item">--}}
+{{--                                    <a href="/rtpay_setting" class="nav-link" data-key="t-team"> RTpay(뱅킹) 설정 </a>--}}
+{{--                                </li>--}}
+{{--                                @endif--}}
                                 @if(session('bank_mode') == 0 || session('bank_mode') == 2)
                                 <li class="nav-item">
                                     <a href="/account_setting" class="nav-link" data-key="t-timeline"> 가상계좌 설정 </a>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\bank_list;
 use App\Models\calculate;
 use App\Models\company_bank_data;
 use App\Models\head_rtpay;
@@ -310,10 +311,10 @@ class Controller extends BaseController
         }
         //관리자 일경우
         if(session('state') == 0){
-            $compay_lists = company::where('state',4)->get();
+            $compay_lists = company::get();
             //본사일 경우
         }elseif (session('state') == 1){
-            $compay_lists = company::where('head_key',$company_key)->where('state',4)->get();
+            $compay_lists = company::where('head_key',$company_key)->get();
         }else{
             $compay_lists = null;
         }
@@ -352,6 +353,7 @@ class Controller extends BaseController
         return Return_json("0000", 200, '정상처리', 200, $data);
     }
 
+    //업체 정보 업데이트
     public function Company_update(Request $request)
     {
         $id = $request->input('id');
@@ -374,4 +376,24 @@ class Controller extends BaseController
         return Return_json("0000",200,"정상처리",200);
 
     }
+
+    //충전 요청 페이지
+    public function Charge_view(Request $request){
+        return view('charge');
+    }
+
+    //정산 요청 페이지
+    public function Calculate_view(Request $request){
+        $bank_data = bank_list::get();
+        $HToken = base_64_end_code_de($_COOKIE['H-Token'], _key_, _iv_);
+        if (!session('state') == 0) {
+            $company_key = User::where('key', $HToken)->value('company_key');
+            $calculate_fee= company::where('company_key',$company_key)->value('calculate_fee'); //출금 수수료
+            $company_money = company::where('company_key',$company_key)->value('money'); //현재 잔액
+
+        }
+
+        return view('calculate_request',['data'=>$bank_data,'calculate_fee'=>$calculate_fee,'company_money'=>$company_money]);
+    }
+
 }

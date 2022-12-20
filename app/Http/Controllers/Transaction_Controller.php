@@ -945,11 +945,74 @@ class Transaction_Controller extends Controller
         return Return_json($code, 200, $msg, 200, ['data' => $data, 'count' => number_format($count), 'sum' => number_format($sum)]);
     }
 
+    //정산 요청
+    public function Calculate_request(Request $request){
+
+        if (!$request->user()->tokenCan('Auth:admin')) {
+            $company_key = User::where('key', $request->user()->key)->value('company_key');
+            $head_key = company::where('company_key',$company_key)->value('head_key');
+            $company_name= company::where('company_key',$company_key)->value('company_name');
+            $calculate_fee = company::where('company_key',$company_key)->value('calculate_fee'); //출금 수수료
+
+        }
+        if($request->user()->tokenCan('Auth:head')){
+            return Return_json('9999',1,'본사는 정산 요청이 불가합니다.',422);
+        }
+        $money = $request->input('money'); //정산 요청 금액
+        $bank_owner= $request->input('bank_owner'); // 정산받을 계좌의 예금주
+        $bank_data = explode( ',', $request->input('bank_data'));
+        $bank_code = $bank_data[0]; //정산받을 계좌의 은행코드
+        $bank_name = $bank_data[1]; //정산받을 계좌의 은행명
+        $bank_number =$request->input('bank_number');//계좌번호
+        $company_money = company::where('company_key',$company_key)->value('money'); //현재 업체의 잔액
+        if($money == ""){
+            return Return_json('9999',1,'정산 요청 금액을 입력해주세요',422);
+        }
+        if($bank_owner == ""){
+            return Return_json('9999',1,'예금주 를 입력해주세요',422);
+        }
+        if($bank_name == ""){
+            return Return_json('9999',1,'은행명 을 선택해주세요.',422);
+        }
+
+        if ($company_money < $money+$calculate_fee) {
+            return Return_json('9999', 1, "출금 가능액 보다 클수없습니다 현재 출금하려는 금액은 " . number_format($money) . " 원 이며 수수료는 $calculate_fee 원 입니다", 400, null);
+        }
+        company::where('company_key', $company_key)->update(['money' => $company_money-$money-$calculate_fee]); //가맹점 잔액 업데이트
+        calculate::insert([
+           'head_key'=> $head_key,
+           'company_key'=>$company_key,
+           'company_name'=>$company_name,
+           'calculate_money'=>$money,
+           'calculate_to_money'=>$company_money-$money-$calculate_fee,
+            'bank_code'=>$bank_code,
+            'bank_number'=>$bank_number,
+            'bank_owner'=>$bank_owner,
+            'bank_name'=>$bank_name,
+            'date_ymd'=>date('Y-m-d'),
+            'date_time'=>date('H:i:s'),
+            'fee'=>$calculate_fee,
+            'state'=>'대기중'
+        ]);
+
+        $head_user_telegrams_get = User::where('company_key', $head_key)->get(); //본사와 연결된 계정 전부 가져오기
+
+        //연결된 계정만큼 반복후 텔레그램 설정한 계정만 알림 발송
+        foreach ($head_user_telegrams_get as $row) {
+            if ($row['telegram_id'] != null || $row['telegram_id'] != "") {
+                $number_amount = number_format($money);//출금 요청금액 콤마
+                Telegram_send($row['telegram_id'], "*[정산 요청 알림]*\n거래 가맹점 : $company_name\n정산 요청 금액 : $number_amount 원\n정산 후 잔액 : " . number_format($company_money-$money-$calculate_fee) . " 원");
+            }
+        }
+        return Return_json('0000',200,'정상 처리되었습니다',200);
+
+    }
     //계좌 발급 페이지
     public function Account_add_view(Request $request, $route_id, $company_id)
     {
         return view('account_add', ['route_id' => $route_id, 'company_id' => $company_id]);
     }
+
 
     //Rtpay 설정 페이지
     public function Rtpay_setting(Request $request)
@@ -992,7 +1055,9 @@ class Transaction_Controller extends Controller
         $company_key = User::where('key', $request->user()->key)->value('company_key');
         $company_data = company::where('company_key', $company_key)->first();//가맹점 정보
         $head_key = $company_data->head_key; //연결된 본사 키
-
+        if(!head_rtpay::where('head_key',$head_key)->exists()){
+            return Return_json('9999', 1, "해당 기능을 지원하지 않는 업체입니다.", 422,);
+        }
         //Rtpay 입금 요청일경우
         if ($mode == "Rtpay") {
             $success_count = 0; //Rtpay 테이블에 존재하여 성공한 데이터 건수
@@ -1059,7 +1124,7 @@ class Transaction_Controller extends Controller
                     $head_actual_update_money = $head_data->money + $head_actual_amount; //현재 본사 금액 + 입금받은 금액의 수수료
                     company::where('company_key', $company_data->head_key)->update(['money' => $head_actual_update_money]); //본사 금액 업데이트
 
-                    $head_user_telegrams_get = User::where('company_key', $company_data->branch_key)->get(); //본사와 연결된 계정 전부 가져오기
+                    $head_user_telegrams_get = User::where('company_key', $company_data->head_key)->get(); //본사와 연결된 계정 전부 가져오기
 
                     //연결된 계정만큼 반복후 텔레그램 설정한 계정만 알림 발송
                     foreach ($head_user_telegrams_get as $row) {
@@ -1194,7 +1259,7 @@ class Transaction_Controller extends Controller
         $head_actual_update_money = $head_data->money + $head_actual_amount; //현재 본사 금액 + 입금받은 금액의 수수료
         company::where('company_key', $company_data->head_key)->update(['money' => $head_actual_update_money]); //본사 금액 업데이트
 
-        $head_user_telegrams_get = User::where('company_key', $company_data->branch_key)->get(); //본사와 연결된 계정 전부 가져오기
+        $head_user_telegrams_get = User::where('company_key', $company_data->head_key)->get(); //본사와 연결된 계정 전부 가져오기
 
         //연결된 계정만큼 반복후 텔레그램 설정한 계정만 알림 발송
         foreach ($head_user_telegrams_get as $row) {

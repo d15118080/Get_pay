@@ -133,9 +133,9 @@
                                     <div class="col-sm-auto">
                                         <select id="company_id" class="form-select test">
                                                 @if($data == null)
-                                                    <option value="" >--가맹점 없음--</option>
+                                                    <option value="" >--업체 없음--</option>
                                                 @else
-                                                    <option value="" >--가맹점 선택--</option>
+                                                    <option value="" >--업체 선택--</option>
                                                     @foreach($data as $row)
                                                         <option value="{{$row->company_key}}" >{{$row->company_name}}</option>
                                                     @endforeach
