@@ -427,7 +427,7 @@ class Controller extends BaseController
         }else{
             $company_key = User::where('key', $HToken)->value('company_key');
             if($mode == 1){
-                $data = company::where('state',1)->where('head_key',$company_key)->get();
+                $data = company::where('state',1)->where('company_key',$company_key)->get();
             }elseif ($mode == 2){
                 $data = company::where('state',2)->where('head_key',$company_key)->get();
             }elseif ($mode == 3){
