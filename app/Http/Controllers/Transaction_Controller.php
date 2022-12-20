@@ -302,6 +302,7 @@ class Transaction_Controller extends Controller
                 'account_number' => $bank_check_response_data->response->bankAcctNo,
                 'user_name' => $user_name,
                 'account_state' => "임시계좌",
+                'bank_name'=>"경남은행",
                 'date_ymd' => date('Y-m-d'),
                 'date_time' => date('H:i:s')
             ]);
@@ -365,6 +366,7 @@ class Transaction_Controller extends Controller
                 'account_number' => $bank_check_response_data->response->bankAcctNo,
                 'user_name' => $user_name,
                 'account_state' => "영구계좌",
+                'bank_name'=>"경남은행",
                 'date_ymd' => date('Y-m-d'),
                 'date_time' => date('H:i:s')
             ]);
@@ -1132,6 +1134,17 @@ class Transaction_Controller extends Controller
     public function Account_add_view(Request $request, $route_id, $company_id)
     {
         return view('account_add', ['route_id' => $route_id, 'company_id' => $company_id]);
+    }
+
+    //계좌 발급 내역 가져오기
+    public function Accounts_history_data(Request $request){
+        $company_key = User::where('key', $request->user()->key)->value('company_key');
+        if(account_list::where('company_key',$company_key)->exists()){
+            $data = account_list::where('company_key',$company_key)->get();
+        }else{
+            $data = null;
+        }
+        return Return_json('0000',200,'정상처리',200,$data);
     }
 
     //Rtpay 설정 페이지

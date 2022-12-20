@@ -24,6 +24,8 @@ Route::get('/company_lists',[Controller::class,'company_lists'])->middleware('To
 
 //거래내역
 Route::get('/transaction_history',[Controller::class,'Transaction_history'])->middleware('Token_Check');
+//가상계좌 발급 내역
+Route::get('/accounts_history',[Controller::class,'Accounts_history'])->middleware('Token_Check');
 
 //정산 내역
 Route::get('/calculates',[Controller::class,'Calculate'])->middleware('Token_Check');

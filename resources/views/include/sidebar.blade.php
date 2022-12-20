@@ -59,6 +59,20 @@
                         </ul>
                     </div>
                 </li>
+                @if(session('state') == 4)
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#accounts" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarApps">
+                        <i class="ri-apps-2-line"></i> <span data-key="t-apps">가상계좌 관리</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="accounts">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="/accounts_history" class="nav-link" data-key="t-calendar"> 발급 내역 </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                @endif
 {{--                이노페이 / Rtpay 관련 추후 추가예정--}}
 {{--                <li class="nav-item">--}}
 {{--                    <a class="nav-link menu-link" href="#money_setting" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarApps">--}}

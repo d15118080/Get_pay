@@ -615,4 +615,10 @@ class Controller extends BaseController
         return view('telegram_setting',['id'=>$HToken]);
     }
 
+    //가상계좌 발급 내역
+    public function Accounts_history(Request $request)
+    {
+        return view('accounts_history');
+    }
+
 }
