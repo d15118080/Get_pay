@@ -1481,7 +1481,7 @@ class Transaction_Controller extends Controller
     //텔레그램 셋팅
     public function Telegram_setting(Request $request)
     {
-        $telegram = new Api('5789475794:AAHvr7CoRUqHktPQkNh_6Kp-0sO3uXUabcs');
+        $telegram = new Api(env('TELEGRAM_TOKEN'));
         $updates = $telegram->getWebhookUpdates();
 
         $username = $updates['message']['chat']['username'];

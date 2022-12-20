@@ -91,7 +91,7 @@
                                     </div>
                                     <div class="col-xl mt-3">
                                         <div>
-                                            <a href="https://t.me/pay_won_bot" target="_blank">텔레그램 바로가기</a>
+                                            <a href="{{env('TELEGRAM_LINK')}}" target="_blank">텔레그램 바로가기</a>
                                         </div>
                                     </div>
                                     <!--end row-->
