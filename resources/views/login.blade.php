@@ -4,7 +4,7 @@
 <head>
 
     <meta charset="utf-8" />
-    <title>페이원 - 로그인</title>
+    <title>{{env('APP_NAME')}} - 로그인</title>
     <meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width" />
     <meta content="Themesbrand" name="author" />
     <!-- App favicon -->
@@ -44,8 +44,8 @@
                 <div class="col-lg-12">
                     <div class="text-center mt-sm-5 mb-4 text-white-50">
                         <div>
-                            <a href="/" class="d-inline-block auth-logo">
-                                <img src="/assets/images/logo-light.png" alt="" height="20">
+                            <a href="/" class="d-inline-block auth-logo" style="color: white; font-size: 20px">
+                                {{env('APP_NAME')}}
                             </a>
                         </div>
                     </div>
@@ -58,7 +58,7 @@
                     <div class="card mt-4">
                         <div class="card-body p-4">
                             <div class="text-center mt-2">
-                                <h5 class="text-primary">페이원 에이전시 프로그램</h5>
+                                <h5 class="text-primary">{{env('APP_NAME')}} 에이전시 프로그램</h5>
                                 <p class="text-muted">로그인이 필요합니다.</p>
                             </div>
                             <div class="p-2 mt-4">
@@ -91,7 +91,7 @@
                     <div class="card mt-4">
                         <div class="card-body p-4">
                             <div class="text-center mt-2">
-                                <h5 class="text-primary">페이원 에이전시 프로그램</h5>
+                                <h5 class="text-primary">{{env('APP_NAME')}} 에이전시 프로그램</h5>
                                 <p class="text-muted">2차인증</p>
                             </div>
                             <div class="p-2 mt-4">
@@ -124,7 +124,7 @@
                 <div class="col-lg-12">
                     <div class="text-center">
                         <p class="mb-0 text-muted">&copy;
-                            <script>document.write(new Date().getFullYear())</script> 페이원. Crafted with <i class="mdi mdi-heart text-danger"></i> by EZ-Coding
+                            <script>document.write(new Date().getFullYear())</script> {{env('APP_NAME')}}. Crafted with <i class="mdi mdi-heart text-danger"></i> by EZ-Coding
                         </p>
                     </div>
                 </div>

@@ -7,7 +7,7 @@
                         <img src="/assets/images/logo-sm.png" alt="" height="22">
                     </span>
             <span class="logo-lg">
-                        <p>페이원</p>
+                        <p>{{env('APP_NAME')}}</p>
                     </span>
         </a>
         <!-- Light Logo-->

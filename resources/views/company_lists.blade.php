@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>페이원 - 업체리스트</title>
+    <title>{{env('APP_NAME')}} - 업체리스트</title>
     <meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width" />
     <meta content="Themesbrand" name="author" />
     <!-- App favicon -->
@@ -53,7 +53,7 @@
 
                             <div class="page-title-right">
                                 <ol class="breadcrumb m-0">
-                                    <li class="breadcrumb-item"><a href="javascript: void(0);">페이원</a></li>
+                                    <li class="breadcrumb-item"><a href="javascript: void(0);">{{env('APP_NAME')}}</a></li>
                                     <li class="breadcrumb-item active">업체 리스트</li>
                                 </ol>
                             </div>

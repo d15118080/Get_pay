@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8"/>
-    <title>페이원 - 거래내역</title>
+    <title>{{env('APP_NAME')}} - 거래내역</title>
     <meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width" />
     <meta content="Themesbrand" name="author"/>
     <!-- App favicon -->
