@@ -29,6 +29,8 @@ Route::get('/transaction_history',[Controller::class,'Transaction_history'])->mi
 Route::get('/calculates',[Controller::class,'Calculate'])->middleware('Token_Check');
 //정산 요청 페이지
 Route::get('/calculate_view',[Controller::class,'Calculate_view'])->middleware('Token_Check');
+//정산 요청 승인/거절 페이지
+Route::get('/calculate_admin_view',[Controller::class,'Calculate_admin_view'])->middleware('Token_Check');
 //본사 Rtpay 설정
 Route::get('/rtpay_setting',[Transaction_Controller::class,'Rtpay_setting'])->middleware('Token_Check');
 

@@ -45,6 +45,7 @@ Route::prefix('/v1')->group(function () {
             Route::get('/get_company_data',[Controller::class,'Get_company_data']); //업체 정보 가져오기 (리스트 내 수정하기위하여)
             Route::post('/company_update',[Controller::class,'Company_update']); //업체 정보 업데이트
             Route::post('/calculate_request',[Transaction_Controller::class,'Calculate_request']);//정산 요청 Req
+            Route::post('/calculate_state_change',[Transaction_Controller::class,'Calculate_state_change']);//정산 승인 거절 본사혹은 관리자 전용
         });
 
     });

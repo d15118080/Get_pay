@@ -13,6 +13,7 @@ use App\Models\transaction_history;
 use App\Models\withdraw;
 use App\Models\User;
 use Illuminate\Http\Request;
+use PhpParser\Node\Stmt\Return_;
 use Telegram\Bot\Api;
 use App\Fucntions\RTPay;
 
@@ -1007,12 +1008,56 @@ class Transaction_Controller extends Controller
         return Return_json('0000',200,'정상 처리되었습니다',200);
 
     }
+
+    //정산 요청 승인 / 거절
+    public function Calculate_state_change(Request $request){
+        $mode = $request->input('mode');//승인 인지 거절인지
+        $id= $request->input('id');//수정할 테이블 아이디
+
+        if ($request->user()->tokenCan('Auth:admin') || $request->user()->tokenCan('Auth:head')) {
+            //승인 일경우
+            if ($mode == "OK") {
+                $calculate_data = calculate::where('id', $id)->first(); //출금 요청한 정보
+                $head_data = company::where('company_key', $calculate_data->head_key)->first();//본사 정보
+                $updte_money =$head_data->money + $calculate_data->fee;
+                company::where('company_key', $calculate_data->head_key)->update(['money' => $updte_money]); //본사 수수료 업데이트
+                calculate::where('id', $id)->update(['state' => '완료']); //정산 상태 변경
+                $company_user_telegrams_get = User::where('company_key', $calculate_data->company_key)->get(); //가맹점과 연결된 계정 전부 가져오기
+                //연결된 계정만큼 반복후 텔레그램 설정한 계정만 알림 발송
+                foreach ($company_user_telegrams_get as $row) {
+                    if ($row['telegram_id'] != null || $row['telegram_id'] != "") {
+                        Telegram_send($row['telegram_id'], "*[정산 승인 알림]*\n요청 하신 정산요청이 승인되었습니다.");
+                    }
+                }
+            }
+            //거절 일경우
+            if ($mode == "NO") {
+                $calculate_data = calculate::where('id', $id)->first(); //출금 요청한 정보
+                $company_data = company::where('company_key', $calculate_data->company_key)->first();//가맹점 정보
+                $updte_money = $company_data->money + $calculate_data->calculate_money + $calculate_data->fee;
+
+                company::where('company_key', $calculate_data->head_key)->update(['money' =>$updte_money ]); //가맹점 금액 원상복구
+                $company_user_telegrams_get = User::where('company_key', $calculate_data->company_key)->get(); //가맹점과 연결된 계정 전부 가져오기
+                calculate::where('id', $id)->update(['state' => '반려']); //정산 상태 변경
+                //연결된 계정만큼 반복후 텔레그램 설정한 계정만 알림 발송
+                foreach ($company_user_telegrams_get as $row) {
+                    if ($row['telegram_id'] != null || $row['telegram_id'] != "") {
+                        Telegram_send($row['telegram_id'], "*[정산 거절 알림]*\n요청 하신 정산요청이 거절되었습니다.");
+                    }
+                }
+            }
+            return Return_json('0000',200,'정상처리',200);
+        }else{
+            return Return_json('9999', 1, '처리할수 없는 계정입니다', 422);
+        }
+
+    }
+
     //계좌 발급 페이지
     public function Account_add_view(Request $request, $route_id, $company_id)
     {
         return view('account_add', ['route_id' => $route_id, 'company_id' => $company_id]);
     }
-
 
     //Rtpay 설정 페이지
     public function Rtpay_setting(Request $request)
@@ -1420,4 +1465,6 @@ class Transaction_Controller extends Controller
             }
         }
     }
+
+
 }

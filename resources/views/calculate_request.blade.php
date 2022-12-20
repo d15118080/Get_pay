@@ -78,7 +78,7 @@
                                             <div>
                                                 <label for="basiInput" class="form-label">정산 요청 금액</label>
                                                 <input type="text" class="form-control" id="money"
-                                                       placeholder="입금 금액" value="" >
+                                                       placeholder="정산 요청 금액" value="" >
                                             </div>
                                         </div>
                                         <!--end col-->
@@ -88,14 +88,14 @@
                                             <div>
                                                 <label for="basiInput" class="form-label">예금주</label>
                                                 <input type="text" class="form-control" id="bank_owner"
-                                                       placeholder="입금 금액" value="" >
+                                                       placeholder="예금주" value="" >
                                             </div>
                                         </div>
                                         <div class="col-xl col-md-6">
                                             <div>
                                                 <label for="basiInput" class="form-label">계좌번호</label>
                                                 <input type="text" class="form-control" id="bank_number"
-                                                       placeholder="입금 금액" value="" >
+                                                       placeholder="계좌번호" value="" >
                                             </div>
                                         </div>
                                         <div class="col-xl col-md-6">

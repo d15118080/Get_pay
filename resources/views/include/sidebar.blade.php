@@ -51,6 +51,11 @@
                             <li class="nav-item">
                                 <a href="/calculate_view" class="nav-link" data-key="t-email"> 정산 요청</a>
                             </li>
+                            @if(session('state') == 0 || session('state') == 1)
+                            <li class="nav-item">
+                                <a href="/calculate_admin_view" class="nav-link" data-key="t-email"> 정산 요청 승인/거절 </a>
+                            </li>
+                            @endif
                         </ul>
                     </div>
                 </li>

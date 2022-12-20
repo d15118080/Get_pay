@@ -396,4 +396,16 @@ class Controller extends BaseController
         return view('calculate_request',['data'=>$bank_data,'calculate_fee'=>$calculate_fee,'company_money'=>$company_money]);
     }
 
+    //정산 요청 승인/거절 페이지
+    public function Calculate_admin_view(Request $request){
+        if(session('state') == 0) {
+            $data = calculate::where('state', '대기중')->orWhere('state', '반려')->get();
+        }else{
+            $HToken = base_64_end_code_de($_COOKIE['H-Token'], _key_, _iv_);
+            $company_key = User::where('key', $HToken)->value('company_key');
+            $data = calculate::where('state', '대기중')->orWhere('state', '반려')->where('head_key',$company_key)->get();
+        }
+        return view('calculate_admin_view',['data'=>$data]);
+    }
+
 }

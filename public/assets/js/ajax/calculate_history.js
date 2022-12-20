@@ -36,7 +36,7 @@ function calculate_history() {
                     language: lang_kor,
                     data: data.data.data,
                     destroy: true,
-
+                    order: [[0, 'desc']],
                     columns: [
                         {data: "id"},
                         {data: "company_name"},
