@@ -69,6 +69,9 @@
                             <li class="nav-item">
                                 <a href="/accounts_history" class="nav-link" data-key="t-calendar"> 발급 내역 </a>
                             </li>
+                            <li class="nav-item">
+                                <a href="/account_view" class="nav-link" data-key="t-calendar"> 발급 링크 </a>
+                            </li>
                         </ul>
                     </div>
                 </li>

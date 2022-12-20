@@ -18,6 +18,7 @@ use App\Http\Controllers\Transaction_Controller;
 
 Route::get('/',[Controller::class,'Index'] )->middleware('Token_Check');
 
+Route::get('/account_view',[Controller::class,'Account_view'])->middleware('Token_Check');
 
 //업체 리스트
 Route::get('/company_lists',[Controller::class,'company_lists'])->middleware('Token_Check');
