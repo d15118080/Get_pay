@@ -90,7 +90,7 @@
                                 <a href="/company_lists?mode=all"  class="nav-link" data-key="t-horizontal">본사 리스트</a>
                             </li>
                             <li class="nav-item">
-                                <a href="http://127.0.0.1:8000/add_company?mode=0" class="nav-link" data-key="t-detached">본사 추가</a>
+                                <a href="/add_company?mode=0" class="nav-link" data-key="t-detached">본사 추가</a>
                             </li>
                         </ul>
                     </div>
@@ -109,7 +109,7 @@
                                 <a href="/company_lists?mode=branch"  class="nav-link" data-key="t-horizontal">지사 리스트</a>
                             </li>
                             <li class="nav-item">
-                                <a href="http://127.0.0.1:8000/add_company?mode=1" class="nav-link" data-key="t-detached">지사 추가</a>
+                                <a href="/add_company?mode=1" class="nav-link" data-key="t-detached">지사 추가</a>
                             </li>
                         </ul>
                     </div>
@@ -129,7 +129,7 @@
                             </li>
                             @if(session('state') == 1 || session('state') == 0)
                             <li class="nav-item">
-                                <a href="http://127.0.0.1:8000/add_company?mode=2"  class="nav-link" data-key="t-detached">총판 추가</a>
+                                <a href="/add_company?mode=2"  class="nav-link" data-key="t-detached">총판 추가</a>
                             </li>
                             @endif
                         </ul>
@@ -150,7 +150,7 @@
                             </li>
                             @if(session('state') == 1 || session('state') == 0)
                             <li class="nav-item">
-                                <a href="http://127.0.0.1:8000/add_company?mode=3"  class="nav-link" data-key="t-detached">가맹점 추가</a>
+                                <a href="/add_company?mode=3"  class="nav-link" data-key="t-detached">가맹점 추가</a>
                             </li>
                             @endif
                         </ul>

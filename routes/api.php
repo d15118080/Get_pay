@@ -21,7 +21,6 @@ Route::prefix('/v1')->group(function () {
     Route::prefix('/user')->group(function () {
         Route::post('/auth-check',[Controller::class,'Auth_check']); //로그인 POST
         Route::post('/auth2-check',[Controller::class,'Auth_check2']); //로그인 POST
-        Route::get('/test',[Controller::class,'test']);
 
         //가상계좌 관리
         Route::post('/1won_shipment/{route_id}',[Transaction_Controller::class,'Won_shipment']); //1원 인증 발송
