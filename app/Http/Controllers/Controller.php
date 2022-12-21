@@ -676,8 +676,6 @@ class Controller extends BaseController
             'user_authority' => $request->user()->user_authority,
             'company_key' => $company_key,
             'auth_2' => 0,
-            'date_ymd'=>date('Y-m-d'),
-            'date_time'=>date('H:i:s')
         ]);
         return Return_json('0000', 200, '정상처리', 200);
     }
