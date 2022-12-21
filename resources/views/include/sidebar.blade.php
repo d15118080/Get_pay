@@ -19,7 +19,8 @@
                         <img src="/assets/images/logo-light.png" alt="" height="17">
                     </span>
         </a>
-        <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover" id="vertical-hover">
+        <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover"
+                id="vertical-hover">
             <i class="ri-record-circle-line"></i>
         </button>
     </div>
@@ -37,7 +38,8 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebardeal" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarApps">
+                    <a class="nav-link menu-link" href="#sidebardeal" data-bs-toggle="collapse" role="button"
+                       aria-expanded="false" aria-controls="sidebarApps">
                         <i class="ri-apps-2-line"></i> <span data-key="t-apps">매출 관리</span>
                     </a>
                     <div class="collapse menu-dropdown" id="sidebardeal">
@@ -52,152 +54,163 @@
                                 <a href="/calculate_view" class="nav-link" data-key="t-email"> 정산 요청</a>
                             </li>
                             @if(session('state') == 0 || session('state') == 1)
-                            <li class="nav-item">
-                                <a href="/calculate_admin_view" class="nav-link" data-key="t-email"> 정산 요청 승인/거절 </a>
-                            </li>
+                                <li class="nav-item">
+                                    <a href="/calculate_admin_view" class="nav-link" data-key="t-email"> 정산 요청
+                                        승인/거절 </a>
+                                </li>
                             @endif
                         </ul>
                     </div>
                 </li>
                 @if(session('state') == 4)
-                <li class="nav-item">
-                    <a class="nav-link menu-link" href="#accounts" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarApps">
-                        <i class="ri-apps-2-line"></i> <span data-key="t-apps">가상계좌 관리</span>
-                    </a>
-                    <div class="collapse menu-dropdown" id="accounts">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="/accounts_history" class="nav-link" data-key="t-calendar"> 발급 내역 </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="/account_view" class="nav-link" data-key="t-calendar"> 발급 링크 </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link" href="#accounts" data-bs-toggle="collapse" role="button"
+                           aria-expanded="false" aria-controls="sidebarApps">
+                            <i class="ri-apps-2-line"></i> <span data-key="t-apps">가상계좌 관리</span>
+                        </a>
+                        <div class="collapse menu-dropdown" id="accounts">
+                            <ul class="nav nav-sm flex-column">
+                                <li class="nav-item">
+                                    <a href="/accounts_history" class="nav-link" data-key="t-calendar"> 발급 내역 </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/account_view" class="nav-link" data-key="t-calendar"> 발급 링크 </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
                 @endif
-{{--                이노페이 / Rtpay 관련 추후 추가예정--}}
-{{--                <li class="nav-item">--}}
-{{--                    <a class="nav-link menu-link" href="#money_setting" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarApps">--}}
-{{--                        <i class="ri-apps-2-line"></i> <span data-key="t-apps">잔액 관리</span>--}}
-{{--                    </a>--}}
-{{--                    <div class="collapse menu-dropdown" id="money_setting">--}}
-{{--                        <ul class="nav nav-sm flex-column">--}}
-{{--                            <li class="nav-item">--}}
-{{--                                <a href="/charge" class="nav-link" data-key="t-calendar"> 충전 요청(입금확인요청) </a>--}}
-{{--                            </li>--}}
-{{--                            <li class="nav-item">--}}
-{{--                                <a href="#" class="nav-link" data-key="t-email"> 송금 요청</a>--}}
-{{--                            </li>--}}
-{{--                            <li class="nav-item">--}}
-{{--                                <a href="#" class="nav-link" data-key="t-email"> 송금 내역</a>--}}
-{{--                            </li>--}}
-{{--                        </ul>--}}
-{{--                    </div>--}}
-{{--                </li>--}}
+                {{--                이노페이 / Rtpay 관련 추후 추가예정--}}
+                {{--                <li class="nav-item">--}}
+                {{--                    <a class="nav-link menu-link" href="#money_setting" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarApps">--}}
+                {{--                        <i class="ri-apps-2-line"></i> <span data-key="t-apps">잔액 관리</span>--}}
+                {{--                    </a>--}}
+                {{--                    <div class="collapse menu-dropdown" id="money_setting">--}}
+                {{--                        <ul class="nav nav-sm flex-column">--}}
+                {{--                            <li class="nav-item">--}}
+                {{--                                <a href="/charge" class="nav-link" data-key="t-calendar"> 충전 요청(입금확인요청) </a>--}}
+                {{--                            </li>--}}
+                {{--                            <li class="nav-item">--}}
+                {{--                                <a href="#" class="nav-link" data-key="t-email"> 송금 요청</a>--}}
+                {{--                            </li>--}}
+                {{--                            <li class="nav-item">--}}
+                {{--                                <a href="#" class="nav-link" data-key="t-email"> 송금 내역</a>--}}
+                {{--                            </li>--}}
+                {{--                        </ul>--}}
+                {{--                    </div>--}}
+                {{--                </li>--}}
                 @if(session('state') == 0)
-                {{--관리자메뉴--}}
-                <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarAccount-1" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarLayouts">
-                        <i class="ri-account-circle-line"></i> <span data-key="t-layouts">본사 관리</span>
-                    </a>
-                    <div class="collapse menu-dropdown" id="sidebarAccount-1">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="/company_lists?mode=all"  class="nav-link" data-key="t-horizontal">본사 리스트</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="/add_company?mode=0" class="nav-link" data-key="t-detached">본사 추가</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
+                    {{--관리자메뉴--}}
+                    <li class="nav-item">
+                        <a class="nav-link menu-link" href="#sidebarAccount-1" data-bs-toggle="collapse" role="button"
+                           aria-expanded="false" aria-controls="sidebarLayouts">
+                            <i class="ri-account-circle-line"></i> <span data-key="t-layouts">본사 관리</span>
+                        </a>
+                        <div class="collapse menu-dropdown" id="sidebarAccount-1">
+                            <ul class="nav nav-sm flex-column">
+                                <li class="nav-item">
+                                    <a href="/company_lists?mode=all" class="nav-link" data-key="t-horizontal">본사
+                                        리스트</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/add_company?mode=0" class="nav-link" data-key="t-detached">본사 추가</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
                 @endif
 
                 @if(session('state') == 1 ||session('state') == 0)
-                {{--본사메뉴--}}
-                <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarAccount-2" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarLayouts">
-                        <i class="ri-account-circle-line"></i> <span data-key="t-layouts">지사 관리</span>
-                    </a>
-                    <div class="collapse menu-dropdown" id="sidebarAccount-2">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="/company_lists?mode=branch"  class="nav-link" data-key="t-horizontal">지사 리스트</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="/add_company?mode=1" class="nav-link" data-key="t-detached">지사 추가</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
+                    {{--본사메뉴--}}
+                    <li class="nav-item">
+                        <a class="nav-link menu-link" href="#sidebarAccount-2" data-bs-toggle="collapse" role="button"
+                           aria-expanded="false" aria-controls="sidebarLayouts">
+                            <i class="ri-account-circle-line"></i> <span data-key="t-layouts">지사 관리</span>
+                        </a>
+                        <div class="collapse menu-dropdown" id="sidebarAccount-2">
+                            <ul class="nav nav-sm flex-column">
+                                <li class="nav-item">
+                                    <a href="/company_lists?mode=branch" class="nav-link" data-key="t-horizontal">지사
+                                        리스트</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/add_company?mode=1" class="nav-link" data-key="t-detached">지사 추가</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
                 @endif
 
                 @if(session('state') == 2 || session('state') == 1 || session('state') == 0)
-                {{--지사 메뉴--}}
-                <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarAccount-3" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarLayouts">
-                        <i class="ri-account-circle-line"></i> <span data-key="t-layouts">총판 관리</span>
-                    </a>
-                    <div class="collapse menu-dropdown" id="sidebarAccount-3">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="/company_lists?mode=distributor"  class="nav-link" data-key="t-horizontal">총판 리스트</a>
-                            </li>
-                            @if(session('state') == 1 || session('state') == 0)
-                            <li class="nav-item">
-                                <a href="/add_company?mode=2"  class="nav-link" data-key="t-detached">총판 추가</a>
-                            </li>
-                            @endif
-                        </ul>
-                    </div>
-                </li>
+                    {{--지사 메뉴--}}
+                    <li class="nav-item">
+                        <a class="nav-link menu-link" href="#sidebarAccount-3" data-bs-toggle="collapse" role="button"
+                           aria-expanded="false" aria-controls="sidebarLayouts">
+                            <i class="ri-account-circle-line"></i> <span data-key="t-layouts">총판 관리</span>
+                        </a>
+                        <div class="collapse menu-dropdown" id="sidebarAccount-3">
+                            <ul class="nav nav-sm flex-column">
+                                <li class="nav-item">
+                                    <a href="/company_lists?mode=distributor" class="nav-link" data-key="t-horizontal">총판
+                                        리스트</a>
+                                </li>
+                                @if(session('state') == 1 || session('state') == 0)
+                                    <li class="nav-item">
+                                        <a href="/add_company?mode=2" class="nav-link" data-key="t-detached">총판 추가</a>
+                                    </li>
+                                @endif
+                            </ul>
+                        </div>
+                    </li>
                 @endif
 
                 @if(session('state') == 3 || session('state') == 2 || session('state') == 1 || session('state') == 0)
-                {{--총판 메뉴--}}
-                <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarAccount-4" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarLayouts">
-                        <i class="ri-account-circle-line"></i> <span data-key="t-layouts">가맹점 관리</span>
-                    </a>
-                    <div class="collapse menu-dropdown" id="sidebarAccount-4">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="/company_lists?mode=franchisee"  class="nav-link" data-key="t-horizontal">가맹점 리스트</a>
-                            </li>
-                            @if(session('state') == 1 || session('state') == 0)
-                            <li class="nav-item">
-                                <a href="/add_company?mode=3"  class="nav-link" data-key="t-detached">가맹점 추가</a>
-                            </li>
-                            @endif
-                        </ul>
-                    </div>
-                </li>
+                    {{--총판 메뉴--}}
+                    <li class="nav-item">
+                        <a class="nav-link menu-link" href="#sidebarAccount-4" data-bs-toggle="collapse" role="button"
+                           aria-expanded="false" aria-controls="sidebarLayouts">
+                            <i class="ri-account-circle-line"></i> <span data-key="t-layouts">가맹점 관리</span>
+                        </a>
+                        <div class="collapse menu-dropdown" id="sidebarAccount-4">
+                            <ul class="nav nav-sm flex-column">
+                                <li class="nav-item">
+                                    <a href="/company_lists?mode=franchisee" class="nav-link" data-key="t-horizontal">가맹점
+                                        리스트</a>
+                                </li>
+                                @if(session('state') == 1 || session('state') == 0)
+                                    <li class="nav-item">
+                                        <a href="/add_company?mode=3" class="nav-link" data-key="t-detached">가맹점 추가</a>
+                                    </li>
+                                @endif
+                            </ul>
+                        </div>
+                    </li>
                 @endif
 
                 {{--공통메뉴--}}
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarSetting" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarPages">
+                    <a class="nav-link menu-link" href="#sidebarSetting" data-bs-toggle="collapse" role="button"
+                       aria-expanded="false" aria-controls="sidebarPages">
                         <i class="ri-settings-2-line"></i> <span data-key="t-pages">사용자 관리</span>
                     </a>
                     <div class="collapse menu-dropdown" id="sidebarSetting">
                         <ul class="nav nav-sm flex-column">
                             @if(session('state') != 0)
-                            <li class="nav-item">
-                                <a href="/my_company_users" class="nav-link" data-key="t-starter"> 하부계정 관리 </a>
-                            </li>
+                                <li class="nav-item">
+                                    <a href="/my_company_users" class="nav-link" data-key="t-starter"> 하부계정 관리 </a>
+                                </li>
                             @endif
 
-{{--                                @if(session('bank_mode') == 1 || session('bank_mode') == 2)--}}
-{{--                                <li class="nav-item">--}}
-{{--                                    <a href="/rtpay_setting" class="nav-link" data-key="t-team"> RTpay(뱅킹) 설정 </a>--}}
-{{--                                </li>--}}
-{{--                                @endif--}}
+                            {{--                                @if(session('bank_mode') == 1 || session('bank_mode') == 2)--}}
+                            {{--                                <li class="nav-item">--}}
+                            {{--                                    <a href="/rtpay_setting" class="nav-link" data-key="t-team"> RTpay(뱅킹) 설정 </a>--}}
+                            {{--                                </li>--}}
+                            {{--                                @endif--}}
                             @if(session('state') == 1)
                                 @if(session('bank_mode') == 0 || session('bank_mode') == 2)
-                                <li class="nav-item">
-                                    <a href="/account_setting" class="nav-link" data-key="t-timeline"> 가상계좌 설정 </a>
-                                </li>
+                                    <li class="nav-item">
+                                        <a href="/account_setting" class="nav-link" data-key="t-timeline"> 가상계좌 설정 </a>
+                                    </li>
                                 @endif
                             @endif
                             <li class="nav-item">
@@ -209,11 +222,19 @@
                         </ul>
                     </div>
                 </li>
-{{--                <li class="nav-item">--}}
-{{--                    <a class="nav-link" href="/">--}}
-{{--                        <i class="ri-notification-4-line"></i> <span data-key="t-noti">공지사항</span>--}}
-{{--                    </a>--}}
-{{--                </li>--}}
+                @if(env('APP_URL') == "https://mpayment.kr")
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://mexchange.kr/" target="_blank">
+                            <i class="ri-notification-4-line"></i> <span
+                                data-key="t-noti">엠익스체인지 바로가기</span>
+                        </a>
+                    </li>
+                @endif
+                {{--                <li class="nav-item">--}}
+                {{--                    <a class="nav-link" href="/">--}}
+                {{--                        <i class="ri-notification-4-line"></i> <span data-key="t-noti">공지사항</span>--}}
+                {{--                    </a>--}}
+                {{--                </li>--}}
             </ul>
         </div>
         <!-- Sidebar -->
