@@ -70,7 +70,7 @@
                                 <h4 class="card-title mb-0 flex-grow-1">정산 신청</h4>
                                 <b class="mt-3">정산 가능 금액 :{{number_format($company_money)}}  원 <br>출금 수수료 : {{$calculate_fee}} 원</b>
                                 @if(env('APP_URL') == "https://mpayment.kr")
-                                    <p class="mt-3" style="color:red;">02:00/06:00/08:00/10:00/12:00/14:00/15:00/16:00/18:00/ 19:00/21:00/00:00/ 외 <b>해당시간 전에 '정산요청'</b> 하시면 1시간뒤 출금됩니다</p>
+                                    <p class="mt-2" style="color:red;">정산 요청가능 시간 : 02:00/06:00/08:00/10:00/12:00/14:00/15:00/16:00/18:00/ 19:00/21:00/00:00/ 외 <b>해당시간 전에 '정산요청'</b> 하시면 1시간뒤 출금됩니다</p>
                                 @endif
                             </div><!-- end card header -->
 
