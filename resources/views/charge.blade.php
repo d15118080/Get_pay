@@ -69,6 +69,9 @@
                             <div class="card-header align-items-center">
                                 <h4 class="card-title mb-0 flex-grow-1">충전 신청</h4>
                                 <b class="mt-3">입금자 명과 ,입금 금액을 입력후 추가시 아래의 대기열로 이동하며 충전신청 버튼을 클릭시 충전 신청 요청이 됩니다.</b>
+                                @if(env('APP_URL') == "https://mpayment.kr")
+                                <b style="color:red;">출금 가능시간은 01시 / 03시 / 07시/ 09시 11시 / 13시 / 15시 16시 / 17시 / 19시 / 20시 / 22시 입니다 그외 시간에 신청시 반려 됩니다.</b>
+                                @endif
                             </div><!-- end card header -->
 
                             <div class="card-body">
