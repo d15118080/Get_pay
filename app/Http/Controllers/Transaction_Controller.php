@@ -1333,7 +1333,7 @@ class Transaction_Controller extends Controller
             //관리자로 텔레 발송 DB에 없는 계좌가 입금되었음
         }
         $company_key = account_list::where('account_number', $request->input('bankAcctNo'))->value('company_key');
-
+        $acctIssuedSeq = $request->input('acctIssuedSeq');//거래번호
         $company_data = company::where('company_key', $company_key)->first();//가맹점 정보
         $distributor_data = company::where('company_key', $company_data->distributor_key)->first(); //총판 정보
         $branch_data = company::where('company_key', $company_data->branch_key)->first(); //지사 정보
@@ -1341,6 +1341,10 @@ class Transaction_Controller extends Controller
         $amount = $request->input('amount'); //입금 금액
         $clientNm = $request->input('clientNm'); //입금자 이름
         $number_amount = number_format($amount); //거래금액 콤마찍기(텔레그램 발송용)
+
+        if(transaction_history::where('transaction_key',$acctIssuedSeq)->exists()){
+            return response()->json(['code' => "0000", 'message' => "정상"], 200);
+        }
 
         //가맹점 수수료 정리
         $company_fee = $amount * $company_data->company_margin; //가맹점이 총판에게 올려줄 금액
@@ -1409,7 +1413,7 @@ class Transaction_Controller extends Controller
         }
 
         transaction_history::insert([
-            'transaction_key' => get_uuid_v1(),
+            'transaction_key' => $acctIssuedSeq,
             'head_key' => $company_data->head_key,
             'branch_key' => $company_data->branch_key,
             'distributor_key' => $company_data->distributor_key,
