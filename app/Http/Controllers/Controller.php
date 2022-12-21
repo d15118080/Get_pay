@@ -651,4 +651,35 @@ class Controller extends BaseController
         return view('accounts_history');
     }
 
+    //하부계정 리스트
+    public function my_company_users(Request $request){
+        $HToken = base_64_end_code_de($_COOKIE['H-Token'], _key_, _iv_);
+        $company_key = User::where('key',$HToken)->value('company_key');
+        $my_users = User::where('company_key',$company_key)->get();
+        return view('my_company_users',['data'=>$my_users,'key'=>$HToken]);
+    }
+
+    //하부계정 추가 Req
+    public function Add_user(Request $request){
+        $user_id = $request->input('user_id'); //사용자 아이디
+        $user_password = $request->input('user_password'); //사용자 비밀번호
+        $user_name = $request->input('user_name');//사용자 이름
+        $company_key = User::where('key', $request->user()->key)->value('company_key');
+        if (empty($user_id) || empty($user_password) || empty($user_name)) {
+            return Return_json('9999', 1, "필수값을 입력해주세요.", 422, null);
+        }
+        User::insert([
+            'key' => get_uuid_v3(),
+            'user_name' => $user_name,
+            'user_id' => $user_id,
+            'user_password' => Hash::make($user_password),
+            'user_authority' => $request->user()->user_authority,
+            'company_key' => $company_key,
+            'auth_2' => 0,
+            'date_ymd'=>date('Y-m-d'),
+            'date_time'=>date('H:i:s')
+        ]);
+        return Return_json('0000', 200, '정상처리', 200);
+    }
+
 }

@@ -182,7 +182,7 @@
                     </a>
                     <div class="collapse menu-dropdown" id="sidebarSetting">
                         <ul class="nav nav-sm flex-column">
-                            @if(session('state') == 4)
+                            @if(session('state') != 0)
                             <li class="nav-item">
                                 <a href="/my_company_users" class="nav-link" data-key="t-starter"> 하부계정 관리 </a>
                             </li>

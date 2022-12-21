@@ -81,8 +81,13 @@
                                         <div class="col-xl">
                                             <div class="card">
                                                 <div class="card-header align-items-center d-flex">
-                                                    <h4>하부 계정 리스트</h4>
-                                                </div><!-- end card header -->
+                                                    <h4 class="card-title mb-0 flex-grow-1">하부계정 리스트</h4>
+                                                    <div class="flex-shrink-0">
+                                                        <a data-bs-toggle="modal" data-bs-target="#user_add" class="btn btn-soft-info btn-sm">
+                                                            <i class="ri-file-list-3-line align-middle"></i> 계정 추가
+                                                        </a>
+                                                    </div>
+                                                </div>
 
                                                 <div class="card-body">
                                                     <div class="table-responsive table-card">
@@ -98,15 +103,17 @@
                                                             </thead>
                                                             <tbody>
                                                             @foreach($data  as $row)
+                                                                @if($row->key != $key)
                                                                 <tr class="text-center">
                                                                     <td>
                                                                         <a class="fw-medium link-primary text-center">{{$row->id}}</a>
                                                                     </td>
-                                                                    <td>{{$row->company_name}}</td>
-                                                                    <td>{{$row->company_margin * 100}} %</td>
-                                                                    <td>{{$row->branch_count}} 개 업체</td>
-                                                                    <td>{{$row->distributor_key}} 개 업체</td>
+                                                                    <td>{{$row->user_id}}</td>
+                                                                    <td>{{$row->user_name}}</td>
+                                                                    <td>{{$row->date_ymd}} </td>
+                                                                    <td>{{$row->date_time}}</td>
                                                                 </tr><!-- end tr -->
+                                                                @endif
                                                             @endforeach
                                                             </tbody><!-- end tbody -->
                                                         </table><!-- end table -->
@@ -124,11 +131,11 @@
         <!-- End Page-content -->
         <!-- Grids in modals -->
         <!--본사 수정-->
-        <div class="modal fade" id="head_company_edit" tabindex="-1" aria-labelledby="exampleModalgridLabel" aria-modal="true">
+        <div class="modal fade" id="user_add" tabindex="-1" aria-labelledby="exampleModalgridLabel" aria-modal="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalgridLabel">업체수정</h5>
+                        <h5 class="modal-title" id="exampleModalgridLabel">하부 게정 추가</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -136,56 +143,26 @@
                             <div class="row">
                                 <div class="col-lg-12 mb-3">
                                     <div>
-                                        <label for="firstName" class="form-label">업체 이름</label>
-                                        <input type="text" class="form-control" id="company_name" placeholder="">
+                                        <label for="firstName" class="form-label">사용자 이름</label>
+                                        <input type="text" class="form-control" id="user_name" placeholder="">
                                     </div>
                                 </div><!--end col-->
                                 <div class="col-lg-12 mb-3">
                                     <div>
-                                        <label for="lastName" class="form-label">수수료</label>
-                                        <input type="text" class="form-control" id="company_margin" placeholder="">
+                                        <label for="firstName" class="form-label">아이디</label>
+                                        <input type="text" class="form-control" id="user_id" placeholder="">
                                     </div>
                                 </div><!--end col-->
                                 <div class="col-lg-12 mb-3">
                                     <div>
-                                        <label for="lastName" class="form-label">잔액</label>
-                                        <input type="text" class="form-control" id="company_money" placeholder="">
-                                    </div>
-                                </div><!--end col-->
-                                <div class="col-lg-12 mb-3">
-                                    <label for="genderInput" class="form-label">출금 상태</label>
-                                    <div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="w_state" id="w_state" value="0">
-                                            <label class="form-check-label" for="w_state">출금 가능</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="w_state" id="w_state2" value="1">
-                                            <label class="form-check-label" for="w_state2">출금 불가</label>
-                                        </div>
-                                    </div>
-                                </div><!--end col-->
-                                <div class="col-lg-12 mb-3">
-                                    <label for="genderInput" class="form-label">장 구분</label>
-                                    <div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="a_state" id="a_state1" value="0">
-                                            <label class="form-check-label" for="a_state1">가상계좌 사용</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="a_state" id="a_state2" value="1">
-                                            <label class="form-check-label" for="a_state2">RTPay 사용</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="a_state" id="a_state3" value="2">
-                                            <label class="form-check-label" for="a_state2">둘다 사용</label>
-                                        </div>
+                                        <label for="lastName" class="form-label">비밀번호</label>
+                                        <input type="text" class="form-control" id="user_password" placeholder="">
                                     </div>
                                 </div><!--end col-->
                                 <div class="col-lg-12">
                                     <div class="hstack gap-2 justify-content-end">
                                         <button type="button" class="btn btn-light" data-bs-dismiss="modal">취소</button>
-                                        <button id="head_save" type="button" class="btn btn-primary" >저장</button>
+                                        <button id="add_user" type="button" class="btn btn-primary" >추가</button>
                                     </div>
                                 </div><!--end col-->
                             </div><!--end row-->
@@ -228,7 +205,7 @@
 <!-- jquery-cookie -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
 
-<script type="module" src="/assets/js/ajax/company_edit.js"></script>
+<script type="module" src="/assets/js/ajax/add_users.js"></script>
 </body>
 
 </html>
