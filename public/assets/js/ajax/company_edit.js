@@ -212,4 +212,90 @@ $("#franchisee_save").click(function () {
     });
 });
 
+$(".company_edit").click(function () {
+    ids = $(this).data("id");
+    Swal.fire({
+        title:"잠시만 기다려주세요",
+        allowEscapeKey: false,
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        },
+    });
+    $.ajax({
+        type: "GET",
+        url: "/api/v1/user/get_company_data",
+        headers: {
+            Authorization: "Bearer " + $.cookie("X-Token"),
+        },
+        data:{
+            id:$(this).data("id")
+        },
+        success: function (res) {
+            Swal.close()
+            $('#name').val(res.data.company_name);
+            $('#margin').val(res.data.company_margin * 100);
+            $('#money').val(res.data.money);
+            if(res.data.withdraw_state == 0){
+                $('#company_w_state1').prop("checked",true)
+            }else{
+                $('#company_w_state2').prop("checked",true)
+            }
+            $('#company_edit').modal('show');
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            let data = XMLHttpRequest.responseJSON;
+            Swal.fire({
+                icon: "error",
+                title: `에러(${data.result.resultCd})`,
+                text: data.result.advanceMsg,
+            });
+        },
+    });
+});
+
+$("#company_save").click(function () {
+    Swal.fire({
+        title:"잠시만 기다려주세요",
+        allowEscapeKey: false,
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        },
+    });
+    let w_state ;
+    if($('#company_w_state1').is(":checked")){
+        w_state = 0;
+    }else if($('#company_w_state2').is(":checked")){
+        w_state = 1;
+    }
+    $.ajax({
+        type: "POST",
+        url: "/api/v1/user/company_update",
+        headers: {
+            Authorization: "Bearer " + $.cookie("X-Token"),
+        },
+        data:{
+            mode: "company",
+            id:ids,
+            w_state : w_state,
+            company_name : $('#name').val(),
+            company_margin : $('#margin').val() / 100,
+            company_money : $('#money').val(),
+        },
+        success: function (res) {
+            alert('수정이 완료 되었습니다.')
+            location.reload()
+            Swal.close()
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            let data = XMLHttpRequest.responseJSON;
+            Swal.fire({
+                icon: "error",
+                title: `에러(${data.result.resultCd})`,
+                text: data.result.advanceMsg,
+            });
+        },
+    });
+});
 
