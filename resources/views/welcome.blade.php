@@ -637,7 +637,7 @@
 <script src="/assets/libs/swiper/swiper-bundle.min.js"></script>
 
 <!-- Dashboard init -->
-<script src="/assets/js/pages/dashboard-ecommerce.init.js"></script>
+<script type="module"  src="/assets/js/pages/dashboard-ecommerce.init.js"></script>
 
 <!-- App js -->
 <script src="/assets/js/app.js"></script>

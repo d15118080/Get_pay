@@ -16,7 +16,6 @@ $.ajax({
     url: "/api/v1/user/index_transaction_history_data",
     headers: {
         Authorization: "Bearer " + $.cookie("X-Token"),
-        "Content-Type": "application/json",
     },
     success: function (res) {
         chart_init(res.data.dates,res.data.arr_money,res.data.arr_withdraw)

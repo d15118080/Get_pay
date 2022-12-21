@@ -102,7 +102,7 @@
                                                             <div class="col-md-12">
                                                                 <div class="mb-3">
                                                                     <label for="firstNameinput" class="form-label">영구 계좌 발급 링크</label>
-                                                                    <input type="text" class="form-control" value="https://{{env('APP_URL')}}/account_issuance/{{$bank_route}}?mode=0" id="firstNameinput" disabled>
+                                                                    <input type="text" class="form-control" value="{{env('APP_URL')}}/account_issuance/{{$bank_route}}?mode=0" id="firstNameinput" disabled>
                                                                 </div>
                                                             </div>
                                                         @endif
@@ -110,7 +110,7 @@
                                                             <div class="col-md-12">
                                                                 <div class="mb-3">
                                                                     <label for="lastNameinput" class="form-label">임시 계좌 발급 링크</label>
-                                                                    <input type="text" class="form-control" value="https://{{env('APP_URL')}}/account_issuance/{{$bank_route}}?mode=1" id="lastNameinput" disabled>
+                                                                    <input type="text" class="form-control" value="{{env('APP_URL')}}/account_issuance/{{$bank_route}}?mode=1" id="lastNameinput" disabled>
                                                                 </div>
                                                             </div>
                                                         @endif

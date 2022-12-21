@@ -182,9 +182,11 @@
                     </a>
                     <div class="collapse menu-dropdown" id="sidebarSetting">
                         <ul class="nav nav-sm flex-column">
-{{--                            <li class="nav-item">--}}
-{{--                                <a href="#" class="nav-link" data-key="t-starter"> 하부계정 관리 </a>--}}
-{{--                            </li>--}}
+                            @if(session('state') == 4)
+                            <li class="nav-item">
+                                <a href="/my_company_users" class="nav-link" data-key="t-starter"> 하부계정 관리 </a>
+                            </li>
+                            @endif
 
 {{--                                @if(session('bank_mode') == 1 || session('bank_mode') == 2)--}}
 {{--                                <li class="nav-item">--}}
