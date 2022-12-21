@@ -230,11 +230,13 @@
                         </a>
                     </li>
                 @endif
-                {{--                <li class="nav-item">--}}
-                {{--                    <a class="nav-link" href="/">--}}
-                {{--                        <i class="ri-notification-4-line"></i> <span data-key="t-noti">공지사항</span>--}}
-                {{--                    </a>--}}
-                {{--                </li>--}}
+                @if(session('state') == 0)
+                <li class="nav-item">
+                    <a class="nav-link" href="/noti_add">
+                        <i class="ri-notification-4-line"></i> <span data-key="t-noti">공지사항 작성</span>
+                    </a>
+                </li>
+                @endif
             </ul>
         </div>
         <!-- Sidebar -->

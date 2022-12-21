@@ -50,10 +50,15 @@ Route::get('/rtpay_setting',[Transaction_Controller::class,'Rtpay_setting'])->mi
 //본사 가상계좌 설정
 Route::get('/account_setting',[Transaction_Controller::class,'Account_setting'])->middleware('Token_Check');
 
-
 //가맹점 충전 신청
 Route::get('/charge',[Controller::class,'Charge_view'])->middleware('Token_Check');
 
+//공지사항 보기
+Route::get('/noti_view',[Controller::class,'Noti_view']);
+//공지사항 작성
+Route::get('/noti_add',function (){
+   return view('noti_edieter');
+});
 /*일반 유저*/
 
 //계좌 발급 페이지

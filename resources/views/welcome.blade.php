@@ -230,8 +230,11 @@
                                         <!-- card body -->
                                         <div class="card-body" style="overflow: scroll; width: 100%; height: 200px;">
                                             <ul class="list-group list-group-flush">
-                                                <li class="list-group-item"><a href="#"><b>[2022-12-14] [공지]</b> 무중단 점검 안내</a></li>
-
+                                                @if(count($notis) != 0)
+                                                    @foreach($notis as $row)
+                                                <li class="list-group-item"><a href="/noti_view?id={{$row->id}}"><b>[{{$row->date_ymd}} {{$row->date_time}}] [공지]</b> {{$row->noti_title}}</a></li>
+                                                    @endforeach
+                                                @endif
                                             </ul>
                                         </div>
                                         <!-- end card body -->

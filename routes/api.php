@@ -51,6 +51,7 @@ Route::prefix('/v1')->group(function () {
             Route::get('/accounts_history_data',[Transaction_Controller::class,'Accounts_history_data']); //가상계좌 발급내역 가져오기
 
             Route::post('/add_user',[Controller::class,'Add_user']);//사용자 추가
+            Route::post('/noti_add',[Controller::class,'Noti_add']);//공지사항 추가
         });
 
     });

@@ -6,6 +6,7 @@ use App\Models\bank_list;
 use App\Models\calculate;
 use App\Models\company_bank_data;
 use App\Models\head_rtpay;
+use App\Models\Notice;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -200,7 +201,7 @@ class Controller extends BaseController
             }
 
         }
-
+        $notis = Notice::orderBy('id', 'desc')->get();
         return view('welcome', [
             'data' => $data,
             'today_money' => $today_money,
@@ -209,7 +210,8 @@ class Controller extends BaseController
             'today_withdraw_money' => $today_withdraw_money,
             'today_withdraw_count' => $today_withdraw_count,
             'bank_route' => $bank_route,
-            'bank_mode_int' => $bank_mode_int
+            'bank_mode_int' => $bank_mode_int,
+            'notis'=>$notis
         ]);
     }
 
@@ -683,6 +685,27 @@ class Controller extends BaseController
             'user_authority' => $request->user()->user_authority,
             'company_key' => $company_key,
             'auth_2' => 0,
+        ]);
+        return Return_json('0000', 200, '정상처리', 200);
+    }
+
+
+    //공지사항 보기
+    public function Noti_view(Request $request){
+        $id = $_GET['id'];
+        $data = Notice::where('id',$id)->first();
+        return view('noti_view',['data'=>$data]);
+    }
+
+    //공지사항 작성
+    public function Noti_add(Request $request){
+        $noti_title  = $request->input('noti_title');//공지사항 제목
+        $noti_text = $request->input('noti_text');//공지사항 내용
+        Notice::insert([
+           'noti_title'=>$noti_title ,
+           'noti_info_text'=>$noti_text,
+           'date_ymd'=>date('Y-m-d'),
+           'date_time'=>date("H:i:s")
         ]);
         return Return_json('0000', 200, '정상처리', 200);
     }
