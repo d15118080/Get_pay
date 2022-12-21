@@ -102,7 +102,9 @@
                                                                     <th scope="col">현재 잔액</th>
                                                                     <th scope="col">생성일</th>
                                                                     <th scope="col">상태</th>
+                                                                    @if(session('state') == 0 || session('state') == 1)
                                                                     <th scope="col">수정</th>
+                                                                    @endif
                                                                 </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -125,9 +127,11 @@
                                                                             <span class="badge badge-soft-danger">출금 차단</span>
                                                                             @endif
                                                                         </td>
+                                                                        @if(session('state') == 0 || session('state') == 1)
                                                                         <td>
                                                                             <a class="head_edit" data-id="{{$row->id}}" data-mode="head">수정</a>
                                                                         </td>
+                                                                        @endif
                                                                     </tr><!-- end tr -->
                                                                     @endforeach
                                                                 </tbody><!-- end tbody -->
@@ -180,9 +184,11 @@
                                                                             <span class="badge badge-soft-danger">출금 차단</span>
                                                                         @endif
                                                                     </td>
+                                                                    @if(session('state') == 0 || session('state') == 1)
                                                                     <td>
                                                                         <a class="company_edit" data-id="{{$row->id}}" data-mode="franchisee">수정</a>
                                                                     </td>
+                                                                    @endif
                                                                 </tr><!-- end tr -->
                                                             @endforeach
                                                             </tbody><!-- end tbody -->
@@ -212,7 +218,9 @@
                                                                     <th scope="col">현재 잔액</th>
                                                                     <th scope="col">생성일</th>
                                                                     <th scope="col">상태</th>
+                                                                    @if(session('state') == 0 || session('state') == 1)
                                                                     <th scope="col">수정</th>
+                                                                    @endif
                                                                 </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -233,9 +241,11 @@
                                                                                 <span class="badge badge-soft-danger">출금 차단</span>
                                                                             @endif
                                                                         </td>
+                                                                        @if(session('state') == 0 || session('state') == 1)
                                                                         <td>
                                                                             <a class="company_edit" data-id="{{$row->id}}" data-mode="franchisee">수정</a>
                                                                         </td>
+                                                                        @endif
                                                                     </tr><!-- end tr -->
                                                                 @endforeach
                                                                 </tbody><!-- end tbody -->
@@ -264,7 +274,9 @@
                                                                     <th scope="col">현재 잔액</th>
                                                                     <th scope="col">생성일</th>
                                                                     <th scope="col">상태</th>
+                                                                    @if(session('state') == 0 || session('state') == 1)
                                                                     <th scope="col">수정</th>
+                                                                    @endif
                                                                 </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -284,9 +296,11 @@
                                                                                 <span class="badge badge-soft-danger">출금 차단</span>
                                                                             @endif
                                                                         </td>
+                                                                        @if(session('state') == 0 || session('state') == 1)
                                                                         <td>
                                                                             <a class="franchisee_edit" data-id="{{$row->id}}" data-mode="franchisee">수정</a>
                                                                         </td>
+                                                                        @endif
                                                                     </tr><!-- end tr -->
                                                                 @endforeach
                                                                 </tbody><!-- end tbody -->
