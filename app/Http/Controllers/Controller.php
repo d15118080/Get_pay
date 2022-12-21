@@ -394,6 +394,13 @@ class Controller extends BaseController
             company::where('id', $id)->update(['company_name' => $company_name]); //업체 이름 업데이트
             company::where('id', $id)->update(['company_margin' => $company_margin]); //수수료 업데이트
             company::where('id', $id)->update(['money' => $company_money]); //수수료 업데이트
+        }elseif ($mode=="franchisee"){
+            $bank_mode_int= $request->input('bank_mode_int'); //가상계좌 사용 옵션
+            company::where('id', $id)->update(['bank_mode_int' => $bank_mode_int]); //가상계좌 사용 옵션 업데이트
+            company::where('id', $id)->update(['withdraw_state' => $w_state]); //출금 사용여부 업데이트
+            company::where('id', $id)->update(['company_name' => $company_name]); //업체 이름 업데이트
+            company::where('id', $id)->update(['company_margin' => $company_margin]); //수수료 업데이트
+            company::where('id', $id)->update(['money' => $company_money]); //수수료 업데이트
         }
 
         return Return_json("0000", 200, "정상처리", 200);

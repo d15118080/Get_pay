@@ -102,7 +102,7 @@
                                                                     <th scope="col">현재 잔액</th>
                                                                     <th scope="col">생성일</th>
                                                                     <th scope="col">상태</th>
-                                                                    <th scope="col">상세보기</th>
+                                                                    <th scope="col">수정</th>
                                                                 </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -126,7 +126,7 @@
                                                                             @endif
                                                                         </td>
                                                                         <td>
-                                                                            <a class="head_edit" data-id="{{$row->id}}">수정</a>
+                                                                            <a class="head_edit" data-id="{{$row->id}}" data-mode="head">수정</a>
                                                                         </td>
                                                                     </tr><!-- end tr -->
                                                                     @endforeach
@@ -257,7 +257,7 @@
                                                                     <th scope="col">현재 잔액</th>
                                                                     <th scope="col">생성일</th>
                                                                     <th scope="col">상태</th>
-
+                                                                    <th scope="col">수정</th>
                                                                 </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -276,6 +276,9 @@
                                                                             @else
                                                                                 <span class="badge badge-soft-danger">출금 차단</span>
                                                                             @endif
+                                                                        </td>
+                                                                        <td>
+                                                                            <a class="franchisee_edit" data-id="{{$row->id}}" data-mode="franchisee">수정</a>
                                                                         </td>
                                                                     </tr><!-- end tr -->
                                                                 @endforeach
@@ -359,6 +362,77 @@
                                     <div class="hstack gap-2 justify-content-end">
                                         <button type="button" class="btn btn-light" data-bs-dismiss="modal">취소</button>
                                         <button id="head_save" type="button" class="btn btn-primary" >저장</button>
+                                    </div>
+                                </div><!--end col-->
+                            </div><!--end row-->
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--가맹점 수정-->
+        <div class="modal fade" id="franchisee_edit" tabindex="-1" aria-labelledby="exampleModalgridLabel" aria-modal="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalgridLabel">업체수정</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="javascript:void(0);">
+                            <div class="row">
+                                <div class="col-lg-12 mb-3">
+                                    <div>
+                                        <label for="firstName" class="form-label">업체 이름</label>
+                                        <input type="text" class="form-control" id="franchisee_name" placeholder="">
+                                    </div>
+                                </div><!--end col-->
+                                <div class="col-lg-12 mb-3">
+                                    <div>
+                                        <label for="lastName" class="form-label">수수료</label>
+                                        <input type="text" class="form-control" id="franchisee_margin" placeholder="">
+                                    </div>
+                                </div><!--end col-->
+                                <div class="col-lg-12 mb-3">
+                                    <div>
+                                        <label for="lastName" class="form-label">잔액</label>
+                                        <input type="text" class="form-control" id="franchisee_money" placeholder="">
+                                    </div>
+                                </div><!--end col-->
+                                <div class="col-lg-12 mb-3">
+                                    <label for="genderInput" class="form-label">출금 상태</label>
+                                    <div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="franchisee_w_state" id="franchisee_w_state1" value="0">
+                                            <label class="form-check-label" for="franchisee_w_state1">출금 가능</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="franchisee_w_state" id="franchisee_w_state2" value="1">
+                                            <label class="form-check-label" for="franchisee_w_state2">출금 불가</label>
+                                        </div>
+                                    </div>
+                                </div><!--end col-->
+                                <div class="col-lg-12 mb-3">
+                                    <label for="genderInput" class="form-label">가상계좌 옵션</label>
+                                    <div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="franchisee_bank_mode_int" id="franchisee_bank_mode_int1" value="0">
+                                            <label class="form-check-label" for="franchisee_bank_mode_int">영구 계좌만 사용</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="franchisee_bank_mode_int" id="franchisee_bank_mode_int2" value="1">
+                                            <label class="form-check-label" for="franchisee_bank_mode_int">임시 계좌만 사용</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="franchisee_bank_mode_int" id="franchisee_bank_mode_int3" value="2">
+                                            <label class="form-check-label" for="franchisee_bank_mode_int">둘다 사용</label>
+                                        </div>
+                                    </div>
+                                </div><!--end col-->
+                                <div class="col-lg-12">
+                                    <div class="hstack gap-2 justify-content-end">
+                                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">취소</button>
+                                        <button id="franchisee_save" type="button" class="btn btn-primary" >저장</button>
                                     </div>
                                 </div><!--end col-->
                             </div><!--end row-->
