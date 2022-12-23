@@ -646,8 +646,8 @@ class Controller extends BaseController
             if (User::where('key', $key)->value('auth_2_password') == null) {
                 return Return_json('9999', 1, '2차인증 비밀번호도 입력해주세요', 422);
             }
-            User::where('key', $key)->update(['auth_2' => $auth2_state]); //2차인증 사용여부 업데이트
         }
+        User::where('key', $key)->update(['auth_2' => $auth2_state]); //2차인증 사용여부 업데이트
         return Return_json('0000', 200, '정상처리', 200);
 
     }
