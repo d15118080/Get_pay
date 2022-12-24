@@ -1339,7 +1339,8 @@ class Transaction_Controller extends Controller
         $branch_data = company::where('company_key', $company_data->branch_key)->first(); //지사 정보
         $head_data = company::where('company_key', $company_data->head_key)->first(); //본사 정보
         $amount = $request->input('amount'); //입금 금액
-        $clientNm = $request->input('clientNm'); //입금자 이름
+        $clientNm = account_list::where('account_number', $request->input('bankAcctNo'))->value('user_name'); //입금자 이름
+        //$clientNm = $request->input('clientNm'); //입금자 이름 (페이투스 에서 보내준거 12-24 사용X 계좌발급 내역에서 가져옴)
         $number_amount = number_format($amount); //거래금액 콤마찍기(텔레그램 발송용)
 
         if(transaction_history::where('transaction_key',$acctIssuedSeq)->exists()){
