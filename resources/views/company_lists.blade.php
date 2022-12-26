@@ -382,6 +382,7 @@
                                 <div class="col-lg-12">
                                     <div class="hstack gap-2 justify-content-end">
                                         <button type="button" class="btn btn-light" data-bs-dismiss="modal">취소</button>
+                                        <button type="button" class="company_delete btn btn-danger">업체 삭제</button>
                                         <button id="head_save" type="button" class="btn btn-primary" >저장</button>
                                     </div>
                                 </div><!--end col-->
@@ -453,6 +454,8 @@
                                 <div class="col-lg-12">
                                     <div class="hstack gap-2 justify-content-end">
                                         <button type="button" class="btn btn-light" data-bs-dismiss="modal">취소</button>
+                                        <button type="button" class="company_delete btn btn-danger">업체 삭제</button>
+
                                         <button id="franchisee_save" type="button" class="btn btn-primary" >저장</button>
                                     </div>
                                 </div><!--end col-->
@@ -506,7 +509,9 @@
                                 </div><!--end col-->
                                 <div class="col-lg-12">
                                     <div class="hstack gap-2 justify-content-end">
+
                                         <button type="button" class="btn btn-light" data-bs-dismiss="modal">취소</button>
+                                        <button type="button" class="company_delete btn btn-danger">업체 삭제</button>
                                         <button id="company_save" type="button" class="btn btn-primary" >저장</button>
                                     </div>
                                 </div><!--end col-->

@@ -1,10 +1,11 @@
-import { Token_Check } from './export.js';
+import {Token_Check} from './export.js';
+
 Token_Check();
 let ids
 $(".head_edit").click(function () {
     ids = $(this).data("id");
     Swal.fire({
-        title:"잠시만 기다려주세요",
+        title: "잠시만 기다려주세요",
         allowEscapeKey: false,
         allowOutsideClick: false,
         didOpen: () => {
@@ -17,25 +18,25 @@ $(".head_edit").click(function () {
         headers: {
             Authorization: "Bearer " + $.cookie("X-Token"),
         },
-        data:{
-            id:$(this).data("id")
+        data: {
+            id: $(this).data("id")
         },
         success: function (res) {
             Swal.close()
             $('#company_name').val(res.data.company_name);
-            $('#company_margin').val(res.data.company_margin * 100);
+            $('#company_margin').val(res.data.company_margin);
             $('#company_money').val(res.data.money);
-            if(res.data.withdraw_state == 0){
-                $('#w_state').prop("checked",true)
-            }else{
-                $('#w_state2').prop("checked",true)
+            if (res.data.withdraw_state == 0) {
+                $('#w_state').prop("checked", true)
+            } else {
+                $('#w_state2').prop("checked", true)
             }
-            if(res.data.bank_mode == 0){
-                $('#a_state1').prop("checked",true)
-            }else if(res.data.bank_mode == 1){
-                $('#a_state2').prop("checked",true)
-            }else{
-                $('#a_state3').prop("checked",true)
+            if (res.data.bank_mode == 0) {
+                $('#a_state1').prop("checked", true)
+            } else if (res.data.bank_mode == 1) {
+                $('#a_state2').prop("checked", true)
+            } else {
+                $('#a_state3').prop("checked", true)
             }
 
             $('#save').data('id', ids); //저장
@@ -54,26 +55,25 @@ $(".head_edit").click(function () {
 
 $("#head_save").click(function () {
     Swal.fire({
-        title:"잠시만 기다려주세요",
+        title: "잠시만 기다려주세요",
         allowEscapeKey: false,
         allowOutsideClick: false,
         didOpen: () => {
             Swal.showLoading();
         },
     });
-    let w_state ;
-    let a_state ;
-    if($('#w_state').is(":checked")){
+    let w_state;
+    let a_state;
+    if ($('#w_state').is(":checked")) {
         w_state = 0;
-    }else if($('#w_state2').is(":checked")){
+    } else if ($('#w_state2').is(":checked")) {
         w_state = 1;
     }
-    if($('#a_state1').is(":checked")){
+    if ($('#a_state1').is(":checked")) {
         a_state = 0;
-    }else if($('#a_state2').is(":checked")){
+    } else if ($('#a_state2').is(":checked")) {
         a_state = 1;
-    }
-    else if($('#a_state3').is(":checked")){
+    } else if ($('#a_state3').is(":checked")) {
         a_state = 2;
     }
     $.ajax({
@@ -82,14 +82,14 @@ $("#head_save").click(function () {
         headers: {
             Authorization: "Bearer " + $.cookie("X-Token"),
         },
-        data:{
+        data: {
             mode: "head",
-            id:ids,
-            w_state : w_state,
-            a_state : a_state,
-            company_name : $('#company_name').val(),
-            company_margin : $('#company_margin').val() / 100,
-            company_money : $('#company_money').val(),
+            id: ids,
+            w_state: w_state,
+            a_state: a_state,
+            company_name: $('#company_name').val(),
+            company_margin: $('#company_margin').val() / 100,
+            company_money: $('#company_money').val(),
         },
         success: function (res) {
             alert('수정이 완료 되었습니다.')
@@ -110,7 +110,7 @@ $("#head_save").click(function () {
 $(".franchisee_edit").click(function () {
     ids = $(this).data("id");
     Swal.fire({
-        title:"잠시만 기다려주세요",
+        title: "잠시만 기다려주세요",
         allowEscapeKey: false,
         allowOutsideClick: false,
         didOpen: () => {
@@ -123,25 +123,25 @@ $(".franchisee_edit").click(function () {
         headers: {
             Authorization: "Bearer " + $.cookie("X-Token"),
         },
-        data:{
-            id:$(this).data("id")
+        data: {
+            id: $(this).data("id")
         },
         success: function (res) {
             Swal.close()
             $('#franchisee_name').val(res.data.company_name);
-            $('#franchisee_margin').val(res.data.company_margin * 100);
+            $('#franchisee_margin').val(res.data.company_margin);
             $('#franchisee_money').val(res.data.money);
-            if(res.data.withdraw_state == 0){
-                $('#franchisee_w_state1').prop("checked",true)
-            }else{
-                $('#franchisee_w_state2').prop("checked",true)
+            if (res.data.withdraw_state == 0) {
+                $('#franchisee_w_state1').prop("checked", true)
+            } else {
+                $('#franchisee_w_state2').prop("checked", true)
             }
-            if(res.data.bank_mode_int == 0){
-                $('#franchisee_bank_mode_int1').prop("checked",true)
-            }else if(res.data.bank_mode_int == 1){
-                $('#franchisee_bank_mode_int2').prop("checked",true)
-            }else{
-                $('#franchisee_bank_mode_int3').prop("checked",true)
+            if (res.data.bank_mode_int == 0) {
+                $('#franchisee_bank_mode_int1').prop("checked", true)
+            } else if (res.data.bank_mode_int == 1) {
+                $('#franchisee_bank_mode_int2').prop("checked", true)
+            } else {
+                $('#franchisee_bank_mode_int3').prop("checked", true)
             }
             $('#save').data('id', ids); //저장
             $('#franchisee_edit').modal('show');
@@ -159,26 +159,25 @@ $(".franchisee_edit").click(function () {
 
 $("#franchisee_save").click(function () {
     Swal.fire({
-        title:"잠시만 기다려주세요",
+        title: "잠시만 기다려주세요",
         allowEscapeKey: false,
         allowOutsideClick: false,
         didOpen: () => {
             Swal.showLoading();
         },
     });
-    let w_state ;
-    let bank_mode_int ;
-    if($('#franchisee_w_state1').is(":checked")){
+    let w_state;
+    let bank_mode_int;
+    if ($('#franchisee_w_state1').is(":checked")) {
         w_state = 0;
-    }else if($('#franchisee_w_state2').is(":checked")){
+    } else if ($('#franchisee_w_state2').is(":checked")) {
         w_state = 1;
     }
-    if($('#franchisee_bank_mode_int1').is(":checked")){
+    if ($('#franchisee_bank_mode_int1').is(":checked")) {
         bank_mode_int = 0;
-    }else if($('#franchisee_bank_mode_int2').is(":checked")){
+    } else if ($('#franchisee_bank_mode_int2').is(":checked")) {
         bank_mode_int = 1;
-    }
-    else if($('#franchisee_bank_mode_int3').is(":checked")){
+    } else if ($('#franchisee_bank_mode_int3').is(":checked")) {
         bank_mode_int = 2;
     }
     $.ajax({
@@ -187,14 +186,14 @@ $("#franchisee_save").click(function () {
         headers: {
             Authorization: "Bearer " + $.cookie("X-Token"),
         },
-        data:{
+        data: {
             mode: "franchisee",
-            id:ids,
-            w_state : w_state,
-            bank_mode_int : bank_mode_int,
-            company_name : $('#franchisee_name').val(),
-            company_margin : $('#franchisee_margin').val() / 100,
-            company_money : $('#franchisee_money').val(),
+            id: ids,
+            w_state: w_state,
+            bank_mode_int: bank_mode_int,
+            company_name: $('#franchisee_name').val(),
+            company_margin: $('#franchisee_margin').val() / 100,
+            company_money: $('#franchisee_money').val(),
         },
         success: function (res) {
             alert('수정이 완료 되었습니다.')
@@ -215,7 +214,7 @@ $("#franchisee_save").click(function () {
 $(".company_edit").click(function () {
     ids = $(this).data("id");
     Swal.fire({
-        title:"잠시만 기다려주세요",
+        title: "잠시만 기다려주세요",
         allowEscapeKey: false,
         allowOutsideClick: false,
         didOpen: () => {
@@ -228,18 +227,18 @@ $(".company_edit").click(function () {
         headers: {
             Authorization: "Bearer " + $.cookie("X-Token"),
         },
-        data:{
-            id:$(this).data("id")
+        data: {
+            id: $(this).data("id")
         },
         success: function (res) {
             Swal.close()
             $('#name').val(res.data.company_name);
-            $('#margin').val(res.data.company_margin * 100);
+            $('#margin').val(res.data.company_margin );
             $('#money').val(res.data.money);
-            if(res.data.withdraw_state == 0){
-                $('#company_w_state1').prop("checked",true)
-            }else{
-                $('#company_w_state2').prop("checked",true)
+            if (res.data.withdraw_state == 0) {
+                $('#company_w_state1').prop("checked", true)
+            } else {
+                $('#company_w_state2').prop("checked", true)
             }
             $('#company_edit').modal('show');
         },
@@ -256,17 +255,17 @@ $(".company_edit").click(function () {
 
 $("#company_save").click(function () {
     Swal.fire({
-        title:"잠시만 기다려주세요",
+        title: "잠시만 기다려주세요",
         allowEscapeKey: false,
         allowOutsideClick: false,
         didOpen: () => {
             Swal.showLoading();
         },
     });
-    let w_state ;
-    if($('#company_w_state1').is(":checked")){
+    let w_state;
+    if ($('#company_w_state1').is(":checked")) {
         w_state = 0;
-    }else if($('#company_w_state2').is(":checked")){
+    } else if ($('#company_w_state2').is(":checked")) {
         w_state = 1;
     }
     $.ajax({
@@ -275,13 +274,13 @@ $("#company_save").click(function () {
         headers: {
             Authorization: "Bearer " + $.cookie("X-Token"),
         },
-        data:{
+        data: {
             mode: "company",
-            id:ids,
-            w_state : w_state,
-            company_name : $('#name').val(),
-            company_margin : $('#margin').val() / 100,
-            company_money : $('#money').val(),
+            id: ids,
+            w_state: w_state,
+            company_name: $('#name').val(),
+            company_margin: $('#margin').val() / 100,
+            company_money: $('#money').val(),
         },
         success: function (res) {
             alert('수정이 완료 되었습니다.')
@@ -298,4 +297,45 @@ $("#company_save").click(function () {
         },
     });
 });
+
+$(".company_delete").click(function () {
+    var result = confirm("해당업체를 삭제하시겠습니까? 삭제후 복구는 불가능합니다.");
+    if (result) {
+        company_delete()
+    }
+});
+
+function company_delete() {
+    Swal.fire({
+        title: "잠시만 기다려주세요",
+        allowEscapeKey: false,
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        },
+    });
+    $.ajax({
+        type: "POST",
+        url: "/api/v1/user/company_delete",
+        headers: {
+            Authorization: "Bearer " + $.cookie("X-Token"),
+        },
+        data: {
+            id: ids,
+        },
+        success: function (res) {
+            alert('삭제되었습니다.')
+            location.reload()
+            Swal.close()
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            let data = XMLHttpRequest.responseJSON;
+            Swal.fire({
+                icon: "error",
+                title: `에러(${data.result.resultCd})`,
+                text: data.result.advanceMsg,
+            });
+        },
+    });
+}
 

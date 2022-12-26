@@ -375,6 +375,7 @@ class Controller extends BaseController
     {
         $id = $request->input('id');
         $data = company::where('id', $id)->first();
+        $data['company_margin'] = $data['company_margin'] * 100;
         return Return_json("0000", 200, '정상처리', 200, $data);
     }
 
@@ -409,6 +410,20 @@ class Controller extends BaseController
             company::where('id', $id)->update(['company_margin' => $company_margin]); //수수료 업데이트
             company::where('id', $id)->update(['money' => $company_money]); //금액 업데이트
         }
+
+        return Return_json("0000", 200, "정상처리", 200);
+
+    }
+
+
+    //업체 정보 삭제
+    public function Company_delete(Request $request)
+    {
+        $id = $request->input('id');
+        $company_key= company::where('id', $id)->value('company_key');
+
+        User::where('company_key',$company_key)->delete(); //업체와 연결되어있는 모든 계정 삭제
+        company::where('id',$id)->delete();//업체 삭제
 
         return Return_json("0000", 200, "정상처리", 200);
 
