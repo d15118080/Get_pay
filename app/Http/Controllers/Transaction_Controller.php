@@ -1397,15 +1397,17 @@ class Transaction_Controller extends Controller
         $head_actual_update_money = $head_data->money + $head_actual_amount; //현재 본사 금액 + 입금받은 금액의 수수료
         company::where('company_key', $company_data->head_key)->update(['money' => $head_actual_update_money]); //본사 금액 업데이트
 
-        //본사로 수수료 입금 알림 삭제 22년 12월 27일
-        //$head_user_telegrams_get = User::where('company_key', $company_data->head_key)->get(); //본사와 연결된 계정 전부 가져오기
-        //
-        //연결된 계정만큼 반복후 텔레그램 설정한 계정만 알림 발송
-        //foreach ($head_user_telegrams_get as $row) {
-        //if ($row['telegram_id'] != null || $row['telegram_id'] != "") {
-        //Telegram_send($row['telegram_id'], "*[입금 알림]*\n거래 가맹점 : $company_data->company_name\n입금 금액 : $number_amount 원\n정산 금액 : " . number_format($head_actual_amount) . " 원");
-        //}
-        //}
+        //본사로 수수료 입금 알림 삭제 22년 12월 27일 (부성페이만 해당)
+        if(env('APP_URL') != "https://paygates.kr") {
+            $head_user_telegrams_get = User::where('company_key', $company_data->head_key)->get(); //본사와 연결된 계정 전부 가져오기
+
+            //연결된 계정만큼 반복후 텔레그램 설정한 계정만 알림 발송
+            foreach ($head_user_telegrams_get as $row) {
+                if ($row['telegram_id'] != null || $row['telegram_id'] != "") {
+                    Telegram_send($row['telegram_id'], "*[입금 알림]*\n거래 가맹점 : $company_data->company_name\n입금 금액 : $number_amount 원\n정산 금액 : " . number_format($head_actual_amount) . " 원");
+                }
+            }
+        }
 
         //관리자 금액 업데이트
         $super_admin_update_money = User::where('key', 'super_admin')->value('money') + $head_fee + $company_data->company_fee; //현재 관리자 금액 + (본사 수수료 + 입금비(존재할시))
