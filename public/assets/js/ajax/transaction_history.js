@@ -60,6 +60,7 @@ function transaction_history_data_init() {
                     data: data.data.data,
                     destroy: true,
                     order: [[0, 'desc']],
+                    lengthMenu:[10,50,100,1000],
                     columns: [
                         {data: "id"},
                         {data: "transaction_key"},
@@ -78,6 +79,7 @@ function transaction_history_data_init() {
                 $('#admin_history').DataTable({
                     language: lang_kor,
                     data: data.data.data,
+                    lengthMenu:[10,50,100,1000],
                     destroy: true,
                     order: [[0, 'desc']],
                     columns: [
@@ -97,6 +99,7 @@ function transaction_history_data_init() {
                 $('#admin_history').DataTable({
                     language: lang_kor,
                     data: data.data.data,
+                    lengthMenu:[10,50,100,1000],
                     destroy: true,
                     order: [[0, 'desc']],
                     columns: [
@@ -115,6 +118,7 @@ function transaction_history_data_init() {
                 $('#admin_history').DataTable({
                     language: lang_kor,
                     data: data.data.data,
+                    lengthMenu:[10,50,100,1000],
                     destroy: true,
                     columns: null,
                 });
