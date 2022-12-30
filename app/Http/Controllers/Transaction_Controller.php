@@ -303,7 +303,7 @@ class Transaction_Controller extends Controller
                 'account_number' => $bank_check_response_data->response->bankAcctNo,
                 'user_name' => $user_name,
                 'account_state' => "임시계좌",
-                'bank_name'=>"경남은행",
+                'bank_name' => "경남은행",
                 'date_ymd' => date('Y-m-d'),
                 'date_time' => date('H:i:s')
             ]);
@@ -367,7 +367,7 @@ class Transaction_Controller extends Controller
                 'account_number' => $bank_check_response_data->response->bankAcctNo,
                 'user_name' => $user_name,
                 'account_state' => "영구계좌",
-                'bank_name'=>"경남은행",
+                'bank_name' => "경남은행",
                 'date_ymd' => date('Y-m-d'),
                 'date_time' => date('H:i:s')
             ]);
@@ -982,7 +982,7 @@ class Transaction_Controller extends Controller
             if ($company_money < $money + $calculate_fee) {
                 return Return_json('9999', 1, "출금 가능액 보다 클수없습니다 현재 출금하려는 금액은 " . number_format($money) . " 원 이며 수수료는 $calculate_fee 원 입니다", 400, null);
             }
-            if($request->user()->auth_2 == 1){
+            if ($request->user()->auth_2 == 1) {
                 return Return_json('0001', 200, '2차인증 필요', 200);
             }
             company::where('company_key', $company_key)->update(['money' => $company_money - $money - $calculate_fee]); //가맹점 잔액 업데이트
@@ -1011,7 +1011,7 @@ class Transaction_Controller extends Controller
                     Telegram_send($row['telegram_id'], "*[정산 요청 알림]*\n거래 가맹점 : $company_name\n정산 요청 금액 : $number_amount 원\n정산 후 잔액 : " . number_format($company_money - $money - $calculate_fee) . " 원");
                 }
             }
-        //관리자 정산 요청 할경우
+            //관리자 정산 요청 할경우
         }
         return Return_json('0000', 200, '정상 처리되었습니다', 200);
 
@@ -1138,14 +1138,15 @@ class Transaction_Controller extends Controller
     }
 
     //계좌 발급 내역 가져오기
-    public function Accounts_history_data(Request $request){
+    public function Accounts_history_data(Request $request)
+    {
         $company_key = User::where('key', $request->user()->key)->value('company_key');
-        if(account_list::where('company_key',$company_key)->exists()){
-            $data = account_list::where('company_key',$company_key)->get();
-        }else{
+        if (account_list::where('company_key', $company_key)->exists()) {
+            $data = account_list::where('company_key', $company_key)->get();
+        } else {
             $data = null;
         }
-        return Return_json('0000',200,'정상처리',200,$data);
+        return Return_json('0000', 200, '정상처리', 200, $data);
     }
 
     //Rtpay 설정 페이지
@@ -1345,7 +1346,7 @@ class Transaction_Controller extends Controller
         //$clientNm = $request->input('clientNm'); //입금자 이름 (페이투스 에서 보내준거 12-24 사용X 계좌발급 내역에서 가져옴)
         $number_amount = number_format($amount); //거래금액 콤마찍기(텔레그램 발송용)
 
-        if(transaction_history::where('transaction_key',$acctIssuedSeq)->exists()){
+        if (transaction_history::where('transaction_key', $acctIssuedSeq)->exists()) {
             return response()->json(['code' => "0000", 'message' => "정상"], 200);
         }
 
@@ -1353,72 +1354,23 @@ class Transaction_Controller extends Controller
         $company_fee = $amount * $company_data->company_margin; //가맹점이 총판에게 올려줄 금액
         $company_actual_amount = $amount - $company_fee - $company_data->company_fee; //실제 가맹점이 받는 금액(입금금액 - 가맹점 수수료 - 입금비 (존재할시) )
         $company_update_money = $company_data->money + $company_actual_amount; //현재 가맹점 금액 + 입금받은 금액의 수수료제외후 금액
-        company::where('company_key', $company_key)->update(['money' => $company_update_money]); //가맹점 금액 업데이트
-        $company_user_telegrams_get = User::where('company_key', $company_key)->get(); //가맹점과 연결된 계정 전부 가져오기
-
-        //연결된 계정만큼 반복후 텔레그램 설정한 계정만 알림 발송
-        foreach ($company_user_telegrams_get as $row) {
-            if ($row['telegram_id'] != null || $row['telegram_id'] != "") {
-                Telegram_send($row['telegram_id'], "*[입금 알림]*\n입금자명 : $clientNm\n입금 금액 : $number_amount 원\n수수료 : " . number_format($company_fee) . " 원\n입금비 : " . number_format($company_data->company_fee) . " 원\n정산 금액 : " . number_format($company_actual_amount) . " 원");
-            }
-        }
 
         //총판 수수료 정리
         $distributor_fee = $amount * $distributor_data->company_margin; //총판이 지사에게 올려줄 금액
         $distributor_actual_amount = $amount * ($company_data->company_margin - $distributor_data->company_margin); //실제 총판이 받는 금액(가맹점 수수료 - 지사 수수료 * 입금금액)
         $distributor_update_money = $distributor_data->money + $distributor_actual_amount; //현재 지사 금액 + 입금받은 금액의 수수료
-        company::where('company_key', $company_data->distributor_key)->update(['money' => $distributor_update_money]); //총판 금액 업데이트
-
-        $distributor_user_telegrams_get = User::where('company_key', $company_data->distributor_key)->get(); //총판과 연결된 계정 전부 가져오기
-
-        //연결된 계정만큼 반복후 텔레그램 설정한 계정만 알림 발송
-        foreach ($distributor_user_telegrams_get as $row) {
-            if ($row['telegram_id'] != null || $row['telegram_id'] != "") {
-                Telegram_send($row['telegram_id'], "*[입금 알림]*\n거래 가맹점 : $company_data->company_name\n입금 금액 : $number_amount 원\n정산 금액 : " . number_format($distributor_actual_amount) . " 원");
-            }
-        }
 
         //지사 수수료 정리
         $branch_fee = $amount * $branch_data->company_margin; //지사가 본사에게 올려줄 금액
         $branch_actual_amount = $amount * ($distributor_data->company_margin - $branch_data->company_margin); //실제 지사가 받는 금액(총판 수수료 - 지사 수수료 * 입금금액)
         $branch_actual_update_money = $branch_data->money + $branch_actual_amount; //현재 지사 금액 + 입금받은 금액의 수수료
-        company::where('company_key', $company_data->branch_key)->update(['money' => $branch_actual_update_money]); //지사 금액 업데이트
-
-        $branch_user_telegrams_get = User::where('company_key', $company_data->branch_key)->get(); //지사와 연결된 계정 전부 가져오기
-
-        //연결된 계정만큼 반복후 텔레그램 설정한 계정만 알림 발송
-        foreach ($branch_user_telegrams_get as $row) {
-            if ($row['telegram_id'] != null || $row['telegram_id'] != "") {
-                Telegram_send($row['telegram_id'], "*[입금 알림]*\n거래 가맹점 : $company_data->company_name\n입금 금액 : $number_amount 원\n정산 금액 : " . number_format($branch_actual_amount) . " 원");
-            }
-        }
 
         //본사 수수료 정리
         $head_fee = $amount * $head_data->company_margin; //본사가 관리자 에게 올려줄 금액
         $head_actual_amount = $amount * ($branch_data->company_margin - $head_data->company_margin); //실제 본사가 받는 금액(지사 수수료 - 본사 수수료 * 입금금액)
         $head_actual_update_money = $head_data->money + $head_actual_amount; //현재 본사 금액 + 입금받은 금액의 수수료
-        company::where('company_key', $company_data->head_key)->update(['money' => $head_actual_update_money]); //본사 금액 업데이트
 
-        //본사로 수수료 입금 알림 삭제 22년 12월 27일 (부성페이만 해당)
-        if(env('APP_URL') != "https://paygates.kr") {
-            $head_user_telegrams_get = User::where('company_key', $company_data->head_key)->get(); //본사와 연결된 계정 전부 가져오기
-
-            //연결된 계정만큼 반복후 텔레그램 설정한 계정만 알림 발송
-            foreach ($head_user_telegrams_get as $row) {
-                if ($row['telegram_id'] != null || $row['telegram_id'] != "") {
-                    Telegram_send($row['telegram_id'], "*[입금 알림]*\n거래 가맹점 : $company_data->company_name\n입금 금액 : $number_amount 원\n정산 금액 : " . number_format($head_actual_amount) . " 원");
-                }
-            }
-        }
-
-        //관리자 금액 업데이트
-        $super_admin_update_money = User::where('key', 'super_admin')->value('money') + $head_fee + $company_data->company_fee; //현재 관리자 금액 + (본사 수수료 + 입금비(존재할시))
-        User::where('key', 'super_admin')->update(['money' => $super_admin_update_money]); //관리자 금액 업데이트
-        if (User::where('key', 'super_admin')->value('telegram_id') != null || User::where('key', 'super_admin')->value('telegram_id') != "") {
-            Telegram_send($row['telegram_id'], "*[입금 알림]*\n거래 가맹점 : $company_data->company_name\n입금 금액 : $number_amount 원\n정산 금액 : " . number_format($head_fee + $company_data->company_fee) . " 원");
-        }
-
-       $db = transaction_history::insert([
+        $db = transaction_history::insert([
             'transaction_key' => $acctIssuedSeq,
             'head_key' => $company_data->head_key,
             'branch_key' => $company_data->branch_key,
@@ -1436,10 +1388,60 @@ class Transaction_Controller extends Controller
             'date_ymd' => date('Y-m-d'),
             'date_time' => date('H:i:s')
         ]);
-        if($db){
+        if ($db) {
+            company::where('company_key', $company_key)->update(['money' => $company_update_money]); //가맹점 금액 업데이트
+            $company_user_telegrams_get = User::where('company_key', $company_key)->get(); //가맹점과 연결된 계정 전부 가져오기
+
+            company::where('company_key', $company_data->distributor_key)->update(['money' => $distributor_update_money]); //총판 금액 업데이트
+            $distributor_user_telegrams_get = User::where('company_key', $company_data->distributor_key)->get(); //총판과 연결된 계정 전부 가져오기
+
+            company::where('company_key', $company_data->branch_key)->update(['money' => $branch_actual_update_money]); //지사 금액 업데이트
+            $branch_user_telegrams_get = User::where('company_key', $company_data->branch_key)->get(); //지사와 연결된 계정 전부 가져오기
+
+            company::where('company_key', $company_data->head_key)->update(['money' => $head_actual_update_money]); //본사 금액 업데이트
+
+            //가맹점 연결된 계정만큼 반복후 텔레그램 설정한 계정만 알림 발송
+            foreach ($company_user_telegrams_get as $row) {
+                if ($row['telegram_id'] != null || $row['telegram_id'] != "") {
+                    Telegram_send($row['telegram_id'], "*[입금 알림]*\n입금자명 : $clientNm\n입금 금액 : $number_amount 원\n수수료 : " . number_format($company_fee) . " 원\n입금비 : " . number_format($company_data->company_fee) . " 원\n정산 금액 : " . number_format($company_actual_amount) . " 원");
+                }
+            }
+
+            //총판 연결된 계정만큼 반복후 텔레그램 설정한 계정만 알림 발송
+            foreach ($distributor_user_telegrams_get as $row) {
+                if ($row['telegram_id'] != null || $row['telegram_id'] != "") {
+                    Telegram_send($row['telegram_id'], "*[입금 알림]*\n거래 가맹점 : $company_data->company_name\n입금 금액 : $number_amount 원\n정산 금액 : " . number_format($distributor_actual_amount) . " 원");
+                }
+            }
+
+            //지사 연결된 계정만큼 반복후 텔레그램 설정한 계정만 알림 발송
+            foreach ($branch_user_telegrams_get as $row) {
+                if ($row['telegram_id'] != null || $row['telegram_id'] != "") {
+                    Telegram_send($row['telegram_id'], "*[입금 알림]*\n거래 가맹점 : $company_data->company_name\n입금 금액 : $number_amount 원\n정산 금액 : " . number_format($branch_actual_amount) . " 원");
+                }
+            }
+
+            //본사로 수수료 입금 알림 삭제 22년 12월 27일 (부성페이만 해당)
+            if (env('APP_URL') != "https://paygates.kr") {
+                $head_user_telegrams_get = User::where('company_key', $company_data->head_key)->get(); //본사와 연결된 계정 전부 가져오기
+
+                //연결된 계정만큼 반복후 텔레그램 설정한 계정만 알림 발송
+                foreach ($head_user_telegrams_get as $row) {
+                    if ($row['telegram_id'] != null || $row['telegram_id'] != "") {
+                        Telegram_send($row['telegram_id'], "*[입금 알림]*\n거래 가맹점 : $company_data->company_name\n입금 금액 : $number_amount 원\n정산 금액 : " . number_format($head_actual_amount) . " 원");
+                    }
+                }
+            }
+
+            //관리자 금액 업데이트
+            $super_admin_update_money = User::where('key', 'super_admin')->value('money') + $head_fee + $company_data->company_fee; //현재 관리자 금액 + (본사 수수료 + 입금비(존재할시))
+            User::where('key', 'super_admin')->update(['money' => $super_admin_update_money]); //관리자 금액 업데이트
+            if (User::where('key', 'super_admin')->value('telegram_id') != null || User::where('key', 'super_admin')->value('telegram_id') != "") {
+                Telegram_send($row['telegram_id'], "*[입금 알림]*\n거래 가맹점 : $company_data->company_name\n입금 금액 : $number_amount 원\n정산 금액 : " . number_format($head_fee + $company_data->company_fee) . " 원");
+            }
             DB::commit();
             return response()->json(['code' => "0000", 'message' => "정상"], 200);
-        }else{
+        } else {
             DB::rollBack();
         }
 
