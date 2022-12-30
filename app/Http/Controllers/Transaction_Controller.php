@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Hash;
 use PhpParser\Node\Stmt\Return_;
 use Telegram\Bot\Api;
 use App\Fucntions\RTPay;
+use Illuminate\Support\Facades\DB;
 
 class Transaction_Controller extends Controller
 {
@@ -1329,6 +1330,7 @@ class Transaction_Controller extends Controller
     //페이투스 입금 노티
     public function Deposit_notification(Request $request, $route_id)
     {
+        DB::beginTransaction();
         if (!account_list::where('account_number', $request->input('bankAcctNo'))->exists()) {
             //관리자로 텔레 발송 DB에 없는 계좌가 입금되었음
         }
@@ -1416,7 +1418,7 @@ class Transaction_Controller extends Controller
             Telegram_send($row['telegram_id'], "*[입금 알림]*\n거래 가맹점 : $company_data->company_name\n입금 금액 : $number_amount 원\n정산 금액 : " . number_format($head_fee + $company_data->company_fee) . " 원");
         }
 
-        transaction_history::insert([
+       $db = transaction_history::insert([
             'transaction_key' => $acctIssuedSeq,
             'head_key' => $company_data->head_key,
             'branch_key' => $company_data->branch_key,
@@ -1434,7 +1436,13 @@ class Transaction_Controller extends Controller
             'date_ymd' => date('Y-m-d'),
             'date_time' => date('H:i:s')
         ]);
-        return response()->json(['code' => "0000", 'message' => "정상"], 200);
+        if($db){
+            DB::commit();
+            return response()->json(['code' => "0000", 'message' => "정상"], 200);
+        }else{
+            DB::rollBack();
+        }
+
     }
 
     //Rtpay 입금 노티
