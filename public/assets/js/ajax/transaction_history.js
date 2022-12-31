@@ -1,9 +1,8 @@
 import { Token_Check,lang_kor } from './export.js';
 Token_Check();
-var date = new Date();
-var yyyy = date.getFullYear();
-var mm = date.getMonth()+1 > 9 ? date.getMonth()+1 : '0' + date.getMonth()+1;
-var dd = date.getDate() > 9 ? date.getDate() : '0' + date.getDate();
+var yyyy = new Date().getFullYear();
+var mm = new Date().getMonth()+1 > 9 ? new Date().getMonth()+1 : '0' + new Date().getMonth()+1;
+var dd = new Date().getDate() > 9 ? new Date().getDate() : '0' + new Date().getDate();
 
 
 $("input[type=date]").val(yyyy+"-"+mm+"-"+dd);
