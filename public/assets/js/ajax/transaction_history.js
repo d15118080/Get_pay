@@ -50,6 +50,7 @@ function transaction_history_data_init() {
                         {data: "distributor_fee"},
                         {data: "franchisee_fee"},
                         {data: "franchisee_money"},
+                        {data: "company_to_money"},
                         {data: "date_ymd"},
                         {data: "date_time"}
                     ],
@@ -71,6 +72,7 @@ function transaction_history_data_init() {
                         {data: "distributor_fee"},
                         {data: "franchisee_fee"},
                         {data: "franchisee_money"},
+                        {data: "company_to_money"},
                         {data: "date_ymd"},
                         {data: "date_time"}
                     ],
@@ -91,6 +93,7 @@ function transaction_history_data_init() {
                         {data: "distributor_fee"},
                         {data: "franchisee_fee"},
                         {data: "franchisee_money"},
+                        {data: "company_to_money"},
                         {data: "date_ymd"},
                         {data: "date_time"}
                     ],
@@ -110,6 +113,7 @@ function transaction_history_data_init() {
                         {data: "transaction_user_name"},
                         {data: "franchisee_fee"},
                         {data: "franchisee_money"},
+                        {data: "company_to_money"},
                         {data: "date_ymd"},
                         {data: "date_time"}
                     ],

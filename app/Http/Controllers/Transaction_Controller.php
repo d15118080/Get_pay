@@ -1370,6 +1370,17 @@ class Transaction_Controller extends Controller
         $head_actual_amount = $amount * ($branch_data->company_margin - $head_data->company_margin); //실제 본사가 받는 금액(지사 수수료 - 본사 수수료 * 입금금액)
         $head_actual_update_money = $head_data->money + $head_actual_amount; //현재 본사 금액 + 입금받은 금액의 수수료
 
+        company::where('company_key', $company_key)->update(['money' => $company_update_money]); //가맹점 금액 업데이트
+        $company_user_telegrams_get = User::where('company_key', $company_key)->get(); //가맹점과 연결된 계정 전부 가져오기
+
+        company::where('company_key', $company_data->distributor_key)->update(['money' => $distributor_update_money]); //총판 금액 업데이트
+        $distributor_user_telegrams_get = User::where('company_key', $company_data->distributor_key)->get(); //총판과 연결된 계정 전부 가져오기
+
+        company::where('company_key', $company_data->branch_key)->update(['money' => $branch_actual_update_money]); //지사 금액 업데이트
+        $branch_user_telegrams_get = User::where('company_key', $company_data->branch_key)->get(); //지사와 연결된 계정 전부 가져오기
+
+        company::where('company_key', $company_data->head_key)->update(['money' => $head_actual_update_money]); //본사 금액 업데이트
+
         $db = transaction_history::insert([
             'transaction_key' => $acctIssuedSeq,
             'head_key' => $company_data->head_key,
@@ -1384,21 +1395,12 @@ class Transaction_Controller extends Controller
             'distributor_fee' => number_format($distributor_fee) . "(" . number_format($distributor_actual_amount) . ")",
             'franchisee_fee' => $company_fee + $company_data->company_fee,
             'franchisee_money' => $company_actual_amount,
+            'company_to_money'=>number_format($company_update_money),
             'route_key' => $route_id,
             'date_ymd' => date('Y-m-d'),
             'date_time' => date('H:i:s')
         ]);
         if ($db) {
-            company::where('company_key', $company_key)->update(['money' => $company_update_money]); //가맹점 금액 업데이트
-            $company_user_telegrams_get = User::where('company_key', $company_key)->get(); //가맹점과 연결된 계정 전부 가져오기
-
-            company::where('company_key', $company_data->distributor_key)->update(['money' => $distributor_update_money]); //총판 금액 업데이트
-            $distributor_user_telegrams_get = User::where('company_key', $company_data->distributor_key)->get(); //총판과 연결된 계정 전부 가져오기
-
-            company::where('company_key', $company_data->branch_key)->update(['money' => $branch_actual_update_money]); //지사 금액 업데이트
-            $branch_user_telegrams_get = User::where('company_key', $company_data->branch_key)->get(); //지사와 연결된 계정 전부 가져오기
-
-            company::where('company_key', $company_data->head_key)->update(['money' => $head_actual_update_money]); //본사 금액 업데이트
 
             //가맹점 연결된 계정만큼 반복후 텔레그램 설정한 계정만 알림 발송
             foreach ($company_user_telegrams_get as $row) {
