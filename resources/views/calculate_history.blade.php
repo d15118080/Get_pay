@@ -121,13 +121,13 @@
                                 <h5 class="card-title mb-0">정산 내역</h5>
                                 <div action="" method="get" class="mt-3 mb-3 row gy-2 gx-3 align-items-center">
                                     <div class="col-sm-auto">
-                                        <input class="form-control" id="start_date" type="date">
+                                        <input class="form-control" id="start_date" type="date" value="{{date('Y-m-d')}}">
                                     </div>
                                     <div class="col-sm-auto">
                                         ~
                                     </div>
                                     <div class="col-sm-auto">
-                                        <input class="form-control" id="end_date" type="date">
+                                        <input class="form-control" id="end_date" type="date" value="{{date('Y-m-d')}}">
                                     </div>
                                     @if(session('state') == "0" || session('state') =="1")
                                     <div class="col-sm-auto">
