@@ -1,11 +1,11 @@
 import { Token_Check,lang_kor } from './export.js';
 Token_Check();
-var yyyy = new Date().getFullYear();
-var mm = new Date().getMonth()+1;
-var dd = new Date().getDate();
-
-
-$("input[type=date]").val(yyyy+"-"+mm+"-"+dd);
+window.onload = function() {
+    let today;
+    today = new Date();
+    today = today.toISOString().slice(0, 10);
+    $("input[type=date]").val(today);
+}
 
 function transaction_history_data_init() {
     Token_Check();
