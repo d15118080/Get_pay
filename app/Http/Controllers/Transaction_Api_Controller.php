@@ -23,7 +23,7 @@ class Transaction_Api_Controller extends Controller
                             $request->input('start_date'),
                             $request->input('end_date'),
                         ])
-                        ->select('company_name', 'calculate_money','calculate_to_money','bank_number','bank_owner','bank_name','date_ymd','date_time','state','fee')
+                        ->select('company_name', 'calculate_money','calculate_to_money','bank_number','bank_owner','bank_name','date_ymd','date_time','state','fee','bank_code')
                         ->get();
                     $count = calculate::where('head_key', $company_key)->where('state', '완료')->whereBetween('date_ymd',
                         [
@@ -58,7 +58,7 @@ class Transaction_Api_Controller extends Controller
                             $request->input('start_date'),
                             $request->input('end_date'),
                         ])
-                        ->select('company_name', 'calculate_money','calculate_to_money','bank_number','bank_owner','bank_name','date_ymd','date_time','state','fee')
+                        ->select('company_name', 'calculate_money','calculate_to_money','bank_number','bank_owner','bank_name','date_ymd','date_time','state','fee','bank_code')
                         ->get();
                     $count = calculate::where('company_key', $sh_company_key)->where('head_key', $company_key)->where('state', '완료')->whereBetween('date_ymd',
                         [
@@ -95,7 +95,7 @@ class Transaction_Api_Controller extends Controller
                         $request->input('start_date'),
                         $request->input('end_date'),
                     ])
-                    ->select('company_name', 'calculate_money','calculate_to_money','bank_number','bank_owner','bank_name','date_ymd','date_time','state','fee')
+                    ->select('company_name', 'calculate_money','calculate_to_money','bank_number','bank_owner','bank_name','date_ymd','date_time','state','fee','bank_code')
                     ->get();
                 $count = calculate::where('company_key', $company_key)->where('state', '완료')->whereBetween('date_ymd',
                     [
