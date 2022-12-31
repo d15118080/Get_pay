@@ -122,13 +122,13 @@
                                 <h4 class="card-title mb-0 flex-grow-1"><b style="font-size: 12px">수수료 는 해당 업체 위로 올려주는 금액이며 괄호 안에있는 금액이 실 해당 업체의 적립금 입니다.</b></h4>
                                 <div action="" method="get" class="mt-3 mb-3 row gy-2 gx-3 align-items-center">
                                     <div class="col-sm-auto">
-                                        <input class="form-control" id="start_date" type="date" value="{{date('Y-m-d')}}>
+                                        <input class="form-control" id="start_date" type="date" value="{{date('Y-m-d')}}">
                                     </div>
                                     <div class="col-sm-auto">
                                         ~
                                     </div>
                                     <div class="col-sm-auto">
-                                        <input class="form-control" id="end_date" type="date" value="{{date('Y-m-d')}}>
+                                        <input class="form-control" id="end_date" type="date" value="{{date('Y-m-d')}}" >
                                     </div>
                                     @if(session('state') == "0" || session('state') =="1")
                                     <div class="col-sm-auto">
