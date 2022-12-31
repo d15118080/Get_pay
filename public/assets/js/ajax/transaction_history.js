@@ -1,7 +1,7 @@
 import { Token_Check,lang_kor } from './export.js';
 Token_Check();
 var yyyy = new Date().getFullYear();
-var mm = new Date().getMonth();
+var mm = new Date().getMonth()+1;
 var dd = new Date().getDate();
 
 
