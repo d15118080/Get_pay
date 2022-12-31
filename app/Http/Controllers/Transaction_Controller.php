@@ -1331,7 +1331,7 @@ class Transaction_Controller extends Controller
     //페이투스 입금 노티
     public function Deposit_notification(Request $request, $route_id)
     {
-        DB::beginTransaction();
+
         if (!account_list::where('account_number', $request->input('bankAcctNo'))->exists()) {
             //관리자로 텔레 발송 DB에 없는 계좌가 입금되었음
         }
@@ -1439,10 +1439,10 @@ class Transaction_Controller extends Controller
             if (User::where('key', 'super_admin')->value('telegram_id') != null || User::where('key', 'super_admin')->value('telegram_id') != "") {
                 Telegram_send($row['telegram_id'], "*[입금 알림]*\n거래 가맹점 : $company_data->company_name\n입금 금액 : $number_amount 원\n정산 금액 : " . number_format($head_fee + $company_data->company_fee) . " 원");
             }
-            DB::commit();
+
             return response()->json(['code' => "0000", 'message' => "정상"], 200);
         } else {
-            DB::rollBack();
+            return response()->json(['code' => "9999", 'message' => "실패"], 422);
         }
 
     }
