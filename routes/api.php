@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Transaction_Controller;
+use App\Http\Controllers\Transaction_Api_Controller;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -15,6 +16,8 @@ use App\Http\Controllers\Transaction_Controller;
 |
 */
 
+//업체측 API요청
+Route::get('/v2/user/calculate_history_data',[Transaction_Api_Controller::class,'Calculate_history_data']);
 
 
 Route::prefix('/v1')->group(function () {
@@ -37,7 +40,7 @@ Route::prefix('/v1')->group(function () {
             Route::get('/index_transaction_history_data',[Transaction_Controller::class,'Index_data']); //INDEX 정보 가져오기
             Route::get('/token_check', function () {return true;}); //토큰 유효여부 체크
             Route::get('/transaction_history_data',[Transaction_Controller::class,'Transaction_history_data']); //거래 내역 가져오기
-            Route::get('/calculate_history_data',[Transaction_Controller::class,'Calculate_history_data']); //거래 내역 가져오기
+            Route::get('/calculate_history_data',[Transaction_Controller::class,'Calculate_history_data']); //정산요청 내역 가져오기
             Route::post('/charge_request',[Transaction_Controller::class,'Charge_request']); //잔액 충전 요청 (Rtpay 혹은 송금을위한 잔액 충전요청)
             Route::post('/rtpay_insert_or_update',[Transaction_Controller::class,'Rtpay_insert_or_update']); //Rtpay 등록 및 수정
             Route::post('/account_insert_or_update',[Transaction_Controller::class,'Account_insert_or_update']); //가상계좌 등록 및 수정
