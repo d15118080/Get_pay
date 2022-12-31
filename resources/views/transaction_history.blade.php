@@ -257,6 +257,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!-- jquery-cookie -->
+<script>
+    $("input[type=date]").val("<?php echo dete('Y-m-d') ?>");
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
 <script type="module" src="/assets/js/ajax/transaction_history.js"></script>
 <!-- App js -->

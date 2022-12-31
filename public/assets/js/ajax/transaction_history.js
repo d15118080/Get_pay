@@ -1,11 +1,5 @@
 import { Token_Check,lang_kor } from './export.js';
 Token_Check();
-window.onload = function() {
-    let today;
-    today = new Date();
-    today = today.toISOString().slice(0, 10);
-    $("input[type=date]").val(today);
-}
 
 function transaction_history_data_init() {
     Token_Check();
