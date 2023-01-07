@@ -25,7 +25,6 @@ class Transaction_Controller extends Controller
     //인덱스 최근 거래내역 및 요약 차트
     public function Index_data(Request $request)
     {
-
         $company_key = User::where('key', $request->user()->key)->value('company_key');
         $arr_money = []; //입금 금액 0번키 가 7일전임 순서으로 ~ 당일
         $arr_date = []; // 7일전 까지의 날짜

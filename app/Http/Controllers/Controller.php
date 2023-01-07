@@ -7,6 +7,7 @@ use App\Models\calculate;
 use App\Models\company_bank_data;
 use App\Models\head_rtpay;
 use App\Models\Notice;
+use App\Models\system_log;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -390,7 +391,11 @@ class Controller extends BaseController
         $company_name = $request->input('company_name');
         $company_margin = $request->input('company_margin');
         $company_money = $request->input('company_money');
-
+        $user_name = $request->user()->user_name;
+        $company_name = company::where('id',$id)->value('company_name');
+        $company_db_money = number_format(company::where('id',$id)->value('money'));// 업체 현재 잔액
+        $m_money = number_format($request->input('company_money') - company::where('id',$id)->value('money')); //치액
+        $d_money = number_format($company_money);
         if ($mode == "head") {
             company::where('id', $id)->update(['bank_mode' => $a_state]); //장 사용 구분 업데이트
             company::where('id', $id)->update(['withdraw_state' => $w_state]); //출금 사용여부 업데이트
@@ -410,7 +415,11 @@ class Controller extends BaseController
             company::where('id', $id)->update(['company_margin' => $company_margin]); //수수료 업데이트
             company::where('id', $id)->update(['money' => $company_money]); //금액 업데이트
         }
-
+        system_log::insert([
+           'system_log'=>"$user_name 님이 $company_name 업체의 정보를 업데이트 하였습니다 $company_db_money -> $d_money($m_money)",
+            'date_ymd'=>date('Y-m-d'),
+            'date_time'=>date('H:i:s')
+        ]);
         return Return_json("0000", 200, "정상처리", 200);
 
     }
@@ -448,6 +457,21 @@ class Controller extends BaseController
 
         } else {
             return "관리자는 정산 요청 페이지 접근이 불가합니다";
+        }
+    }
+
+    //익스 전환 요청 페이지
+    public function Transform_view(Request $request)
+    {
+        $HToken = base_64_end_code_de($_COOKIE['H-Token'], _key_, _iv_);
+        if (!session('state') == 0) {
+            $company_key = User::where('key', $HToken)->value('company_key');
+            $calculate_fee = company::where('company_key', $company_key)->value('calculate_fee'); //출금 수수료
+            $company_money = company::where('company_key', $company_key)->value('money'); //현재 잔액
+            return view('transform_request', ['calculate_fee' => $calculate_fee, 'company_money' => $company_money]);
+
+        } else {
+            return "관리자는 전환 요청 페이지 접근이 불가합니다";
         }
     }
 

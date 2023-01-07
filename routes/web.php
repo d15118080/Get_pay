@@ -38,6 +38,8 @@ Route::get('/calculates',[Controller::class,'Calculate'])->middleware('Token_Che
 Route::get('/calculate_view',[Controller::class,'Calculate_view'])->middleware('Token_Check');
 //정산 요청 승인/거절 페이지
 Route::get('/calculate_admin_view',[Controller::class,'Calculate_admin_view'])->middleware('Token_Check');
+//익스전환 요청 페이지
+Route::get('/transform_view',[Controller::class,'Transform_view'])->middleware('Token_Check');
 //텔레그램 알림 설정 페이지
 Route::get('/user_telegram_setting',[Controller::class,'Telegarm_setting'])->middleware('Token_Check');
 //사용자 계정설정 페이지
