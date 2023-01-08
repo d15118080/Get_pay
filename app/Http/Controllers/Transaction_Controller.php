@@ -1130,6 +1130,86 @@ class Transaction_Controller extends Controller
 
     }
 
+    //익스 전환 요청 2차인증 X
+    public function Transform_request(Request $request)
+    {
+
+        if ($request->user()->tokenCan('Auth:head')) {
+            return Return_json('9999', 1, '본사는 정산 요청이 불가합니다.', 422);
+        }
+        $money = $request->input('money'); //정산 요청 금액
+
+        $bank_number = $request->input('bank_number');//계좌번호
+        if (!$request->user()->tokenCan('Auth:admin')) {
+            $company_key = User::where('key', $request->user()->key)->value('company_key');
+            $head_key = company::where('company_key', $company_key)->value('head_key');
+            $company_name = company::where('company_key', $company_key)->value('company_name');
+            $calculate_fee = company::where('company_key', $company_key)->value('calculate_fee'); //출금 수수료
+            $company_money = company::where('company_key', $company_key)->value('money'); //현재 업체의 잔액
+            $update_money = $company_money - $money;
+
+            if ($money == "") {
+                return Return_json('9999', 1, '전환 요청 금액을 입력해주세요', 422);
+            }
+            if ($company_money < $money) {
+                return Return_json('9999', 1, "출금 가능액 보다 클수없습니다 현재 출금하려는 금액은 " . number_format($money) . " 원 이며 수수료는".number_format($money*0.001 + $calculate_fee)." 원 입니다", 400, null);
+            }
+            company::where('company_key', $company_key)->update(['money' => $update_money]); //가맹점 잔액 업데이트
+            calculate::insert([
+                'head_key' => $head_key,
+                'company_key' => $company_key,
+                'company_name' => $company_name,
+                'calculate_money' => $money,
+                'calculate_to_money' => $update_money,
+                'bank_code' => "익스전환",
+                'bank_number' => "익스전환",
+                'bank_owner' => "익스전환",
+                'bank_name' => "익스전환",
+                'date_ymd' => date('Y-m-d'),
+                'date_time' => date('H:i:s'),
+                'fee' => $money*0.001 + $calculate_fee,
+                'state' => '익스전환'
+            ]);
+
+            $head_user_telegrams_get = User::where('company_key', $head_key)->get(); //본사와 연결된 계정 전부 가져오기
+
+            //연결된 계정만큼 반복후 텔레그램 설정한 계정만 알림 발송
+            foreach ($head_user_telegrams_get as $row) {
+                if ($row['telegram_id'] != null || $row['telegram_id'] != "") {
+                    $number_amount = number_format($money);//출금 요청금액 콤마
+                    Telegram_send($row['telegram_id'], "*[익스 전환 요청 알림]*\n거래 가맹점 : $company_name\전환 요청 금액 : $number_amount 원\n전환 후 잔액 : " . number_format($update_money) . " 원");
+                }
+            }
+            $d =  json_encode([
+                "company_name" => $company_name,
+                "money" => $money,
+                "to_money" => $update_money
+            ]);
+            $curl = curl_init();
+
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => 'https://mexchange.kr/api/v1/ex_req',
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'POST',
+                CURLOPT_POSTFIELDS =>$d,
+                CURLOPT_HTTPHEADER => array(
+                    'Content-Type: application/json'
+                ),
+            ));
+
+            $response = curl_exec($curl);
+
+            curl_close($curl);
+        }
+        return Return_json('0000', 200, '정상 처리되었습니다', 200);
+
+    }
+
     //계좌 발급 페이지
     public function Account_add_view(Request $request, $route_id, $company_id)
     {

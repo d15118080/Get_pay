@@ -49,6 +49,7 @@ Route::prefix('/v1')->group(function () {
             Route::post('/company_delete',[Controller::class,'Company_delete']); //업체 정보 업데이트
             Route::post('/calculate_request',[Transaction_Controller::class,'Calculate_request']);//정산 요청 Req 2차인증 X
             Route::post('/calculate_auth2_request',[Transaction_Controller::class,'Calculate_auth2_request']);//정산 요청 Req 2차인증 O
+            Route::post('/transform_request',[Transaction_Controller::class,'Transform_request']);//익스 전환 요청 Req 2차인증 O
             Route::post('/calculate_state_change',[Transaction_Controller::class,'Calculate_state_change']);//정산 승인 거절 본사혹은 관리자 전용
             Route::post('/add_company',[Controller::class,'Add_company_req']);//압체 추가
             Route::post('/user_setting_req',[Controller::class,'User_setting_req']);//사용자 설정 Req

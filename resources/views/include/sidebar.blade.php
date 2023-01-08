@@ -224,6 +224,12 @@
                 </li>
                 @if(env('APP_URL') == "https://mpayment.kr")
                     <li class="nav-item">
+                        <a class="nav-link" href="/transform_view">
+                            <i class="ri-notification-4-line"></i> <span
+                                data-key="t-noti">엠익스체인지 머니 전환 신청</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="https://mexchange.kr/" target="_blank">
                             <i class="ri-notification-4-line"></i> <span
                                 data-key="t-noti">엠익스체인지 바로가기</span>
