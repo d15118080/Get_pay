@@ -70,6 +70,8 @@
                                 <h4 class="card-title mb-0 flex-grow-1">익스체인지 머니 전환 요청</h4>
                                 <b class="mt-3">전환 가능 금액 :{{number_format($company_money)}} 원 <br>출금 수수료
                                     : {{$calculate_fee}} 원 + 0.1%</b>
+                                <br>
+                                <p style="color:red;">정산 요청가능 시간 : 02:00/06:00/08:00/10:00/12:00/14:00/15:00/16:00/18:00/ 19:00/21:00/00:00/ 외 해당시간 전에 '정산요청' 하시면 1시간뒤 출금됩니다</p>
                             </div><!-- end card header -->
 
                             <div class="card-body">
