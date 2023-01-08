@@ -226,7 +226,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/transform_view">
                             <i class="ri-notification-4-line"></i> <span
-                                data-key="t-noti">엠익스체인지 머니 전환 신청</span>
+                                data-key="t-noti">엠익스 머니 전환 신청</span>
                         </a>
                     </li>
                     <li class="nav-item">
