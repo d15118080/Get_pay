@@ -94,6 +94,12 @@
                                 <div class="card-body">
                                     <h4 class="card-title mb-4">계좌발급 완료</h4>
                                     <div class="row mb-4">
+                                        <label class="col-form-label col-lg-2">입금하실 은행</label>
+                                        <div class="col-md-10">
+                                            <input id="" value="케이뱅크" type="text" class="form-control" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4">
                                         <label class="col-form-label col-lg-2">입금하실 계좌번호 (케이뱅크)</label>
                                         <div class="col-md-10">
                                             <input id="bankAcctNo" value="" type="text" class="form-control" disabled>
