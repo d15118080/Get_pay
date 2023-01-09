@@ -637,7 +637,7 @@ class Controller extends BaseController
             $calculate_fee = $request->input('calculate_fee');//출금 수수료
 
             //페이투스 사용시에는 영구 임시 선택가능 아닐경우 영구 고정
-            if(company_bank_data::where('compnay_key',$data->head_key)->value('type') ==0){
+            if(company_bank_data::where('company_key',$data->head_key)->value('type') ==0){
                 $bank_mode = $request->input('bank_mode');//영구계좌 허용 : 0 , 임시계좌 허용 : 1 , 둘다허용 : 2 , 사용안함 3
             }else{
                 $bank_mode = 5;
