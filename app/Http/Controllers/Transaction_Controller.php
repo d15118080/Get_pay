@@ -1602,7 +1602,7 @@ class Transaction_Controller extends Controller
             //관리자로 텔레 발송 DB에 없는 계좌가 입금되었음
         }
         $company_key = account_list::where('account_number', $request->input('account'))->value('company_key');
-        $acctIssuedSeq = $request->input('acctIssuedSeq');//거래번호
+        $acctIssuedSeq = $request->input('tid');//거래번호
         $company_data = company::where('company_key', $company_key)->first();//가맹점 정보
         $distributor_data = company::where('company_key', $company_data->distributor_key)->first(); //총판 정보
         $branch_data = company::where('company_key', $company_data->branch_key)->first(); //지사 정보
