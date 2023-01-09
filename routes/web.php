@@ -63,8 +63,12 @@ Route::get('/noti_add',function (){
 });
 /*일반 유저*/
 
-//계좌 발급 페이지
+//계좌 발급 페이지 [페이투스]
 Route::get('/account_issuance/{route_id}/{company_id}',[Transaction_Controller::class,'Account_add_view']);
+
+//계좌 발급 페이지 [K-WON]
+Route::get('/account_issuance_v2/{route_id}/{company_id}',[Transaction_Controller::class,'Account_add_view_v2']);
+
 
 //로그인
 Route::get('/login', function () {

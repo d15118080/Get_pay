@@ -36,3 +36,36 @@ $("#account_setting").click(function () {
         },
     });
 });
+
+$("#account_setting_v2").click(function () {
+    Swal.fire({
+        title: "잠시만 기다려주세요",
+        allowEscapeKey: false,
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        },
+    });
+    Token_Check();
+    $.ajax({
+        type: "POST",
+        url: "/api/v1/user/account_insert_or_update_v2",
+        headers: {
+            Authorization: "Bearer " + $.cookie("X-Token")
+        },
+        data:{
+            p_id:$('#k_mid').val(),
+        },
+        success: function (res) {
+            location.reload()
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            let data = XMLHttpRequest.responseJSON;
+            Swal.fire({
+                icon: "error",
+                title: `에러(${data.result.resultCd})`,
+                text: data.result.advanceMsg,
+            });
+        },
+    });
+});

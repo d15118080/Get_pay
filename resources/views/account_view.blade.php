@@ -87,7 +87,7 @@
                                     </div><!-- end card header -->
 
                                     <div class="card-body">
-                                        <p class="text-muted">본 가상계좌 링크를 회원에게 주시면 됩니다 <b style="color: darkred">임시 계좌는 발급후 10분이내 미입금시 삭제 처리됩니다</b></p>
+                                        <p class="text-muted">본 가상계좌 링크를 회원에게 주시면 됩니다 @if($bank_mode_int != 5)<b style="color: darkred">임시 계좌는 발급후 10분이내 미입금시 삭제 처리됩니다</b> @endif</p>
                                         <div class="live-preview">
                                             <div action="javascript:void(0);">
                                                 <div class="row">
@@ -102,8 +102,8 @@
                                                             <div class="col-md-12">
                                                                 <div class="mb-3">
                                                                     <label for="firstNameinput" class="form-label">영구 계좌 발급 링크</label>
-                                                                    <input type="text" class="form-control" value="{{env('APP_URL')}}/account_issuance/{{$bank_route}}?mode=0" id="firstNameinput" disabled>
-                                                                    <div class="mt-1"><a href="{{env('APP_URL')}}/account_issuance/{{$bank_route}}?mode=0" target="_blank">바로가기</a></div>
+                                                                    <input type="text" class="form-control" value="{{$bank_route}}?mode=0" id="firstNameinput" disabled>
+                                                                    <div class="mt-1"><a href="{{$bank_route}}?mode=0" target="_blank">바로가기</a></div>
                                                                 </div>
                                                             </div>
                                                         @endif
@@ -111,11 +111,20 @@
                                                             <div class="col-md-12">
                                                                 <div class="mb-3">
                                                                     <label for="lastNameinput" class="form-label">임시 계좌 발급 링크</label>
-                                                                    <input type="text" class="form-control" value="{{env('APP_URL')}}/account_issuance/{{$bank_route}}?mode=1" id="lastNameinput" disabled>
-                                                                    <div class="mt-1"><a href="{{env('APP_URL')}}/account_issuance/{{$bank_route}}?mode=1" target="_blank">바로가기</a></div>
+                                                                    <input type="text" class="form-control" value="{{$bank_route}}?mode=1" id="lastNameinput" disabled>
+                                                                    <div class="mt-1"><a href="{{$bank_route}}?mode=1" target="_blank">바로가기</a></div>
                                                                 </div>
                                                             </div>
                                                         @endif
+                                                            @if($bank_mode_int == 5)
+                                                                <div class="col-md-12">
+                                                                    <div class="mb-3">
+                                                                        <label for="lastNameinput" class="form-label">계좌 발급 링크</label>
+                                                                        <input type="text" class="form-control" value="{{$bank_route}}" id="lastNameinput" disabled>
+                                                                        <div class="mt-1"><a href="{{$bank_route}}" target="_blank">바로가기</a></div>
+                                                                    </div>
+                                                                </div>
+                                                            @endif
                                                     @endif
                                                 </div>
                                                 <!--end row-->

@@ -376,7 +376,7 @@ class Transaction_Controller extends Controller
         }
     }
 
-    //페이투스 가상계좌 설정 페이지
+    //가상계좌 설정 페이지
     public function Account_setting(Request $request)
     {
         $HToken = base_64_end_code_de($_COOKIE['H-Token'], _key_, _iv_);
@@ -419,6 +419,27 @@ class Transaction_Controller extends Controller
                 "type" => 0,
                 "basic_auth" => $p_auth,
                 "comp_uuid" => $p_commuid,
+                "route_id" => get_uuid_v4()
+            ]);
+        }
+        return Return_json("0000", 200, "정상처리", 200);
+    }
+
+    //K-WON 가상계좌 정보 등록및 업데이트
+    public function Account_insert_or_update_v2(Request $request)
+    {
+        $company_key = User::where('key', $request->user()->key)->value('company_key');
+        $p_id = $request->input('p_id');//페이투스 아이디
+        if (company_bank_data::where('company_key', $company_key)->exists()) {
+            $head_account_date = company_bank_data::where('company_key', $company_key)->first();
+            if ($head_account_date->p_id != $p_id) {
+                company_bank_data::where('company_key', $company_key)->update(['p_id' => $p_id]); //아이디 업데이트
+            }
+        } else {
+            company_bank_data::insert([
+                "company_key" => $company_key,
+                'p_id' => $p_id,
+                "type" => 1,
                 "route_id" => get_uuid_v4()
             ]);
         }
@@ -1210,10 +1231,17 @@ class Transaction_Controller extends Controller
 
     }
 
-    //계좌 발급 페이지
+    //계좌 발급 페이지 [페이투스]
     public function Account_add_view(Request $request, $route_id, $company_id)
     {
         return view('account_add', ['route_id' => $route_id, 'company_id' => $company_id]);
+    }
+
+    //계좌 발급 페이지 [K-WON]
+    public function Account_add_view_v2(Request $request, $route_id, $company_id)
+    {
+        $mid = company_bank_data::where('route_id',$route_id)->value('p_id');
+        return view('account_add_v2', ['route_id' => $route_id, 'company_id' => $company_id,'mid'=>$mid]);
     }
 
     //계좌 발급 내역 가져오기

@@ -195,10 +195,14 @@ class Controller extends BaseController
             $my_money = company::where('company_key', $company_key)->value('money'); //현재 잔액
             $bank_mode_int = company::where('company_key', $company_key)->value('bank_mode_int'); //가상계좌 영구만 사용인지, 임시만 사용인지
 
-            if ($bank_mode_int == 0 || $bank_mode_int == 1 || $bank_mode_int == 2) {
+            if ($bank_mode_int == 0 || $bank_mode_int == 1 || $bank_mode_int == 2|| $bank_mode_int == 5) {
                 $head_key = company::where('company_key', $company_key)->value('head_key'); //가맹점에 연결된 본사 키
                 $bank_route_s = company_bank_data::where('company_key', $head_key)->value('route_id'); //가상계좌 발급 라우트ID
-                $bank_route = "$bank_route_s/$company_key";
+                if(company_bank_data::where('company_key', $head_key)->value('type') == 0){ //페이투스 로 가상계좌 설정 했다면
+                    $bank_route = env('APP_URL')."/account_issuance/$bank_route_s/$company_key";
+                }else if(company_bank_data::where('company_key', $head_key)->value('type') == 1){//엠터치로 했다면
+                    $bank_route = env('APP_URL')."/account_issuance_v2/$bank_route_s/$company_key";
+                }
             }
 
         }
@@ -224,10 +228,14 @@ class Controller extends BaseController
             $company_key = User::where('key', $HToken)->value('company_key');
         }
         $bank_mode_int = company::where('company_key', $company_key)->value('bank_mode_int'); //가상계좌 영구만 사용인지, 임시만 사용인지
-        if ($bank_mode_int == 0 || $bank_mode_int == 1 || $bank_mode_int == 2) {
+        if ($bank_mode_int == 0 || $bank_mode_int == 1 || $bank_mode_int == 2|| $bank_mode_int == 5) {
             $head_key = company::where('company_key', $company_key)->value('head_key'); //가맹점에 연결된 본사 키
             $bank_route_s = company_bank_data::where('company_key', $head_key)->value('route_id'); //가상계좌 발급 라우트ID
-            $bank_route = "$bank_route_s/$company_key";
+            if(company_bank_data::where('company_key', $head_key)->value('type') == 0){ //페이투스 로 가상계좌 설정 했다면
+                $bank_route = env('APP_URL')."/account_issuance/$bank_route_s/$company_key";
+            }else if(company_bank_data::where('company_key', $head_key)->value('type') == 1){//엠터치로 했다면
+                $bank_route = env('APP_URL')."/account_issuance_v2/$bank_route_s/$company_key";
+            }
         }
 
         return view('account_view', [
@@ -627,7 +635,14 @@ class Controller extends BaseController
             $data = company::where('company_key', $set_key)->first(); //연결된 총판의 정보
             $company_fee = $request->input('company_fee');//입금비
             $calculate_fee = $request->input('calculate_fee');//출금 수수료
-            $bank_mode = $request->input('bank_mode');//영구계좌 허용 : 0 , 임시계좌 허용 : 1 , 둘다허용 : 2 , 사용안함 3
+
+            //페이투스 사용시에는 영구 임시 선택가능 아닐경우 영구 고정
+            if(company_bank_data::where('compnay_key',$data->head_key)->value('type') ==0){
+                $bank_mode = $request->input('bank_mode');//영구계좌 허용 : 0 , 임시계좌 허용 : 1 , 둘다허용 : 2 , 사용안함 3
+            }else{
+                $bank_mode = 5;
+            }
+
             company::insert([
                 'company_key' => $uuid,
                 'company_name' => $company_name,

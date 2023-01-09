@@ -43,7 +43,8 @@ Route::prefix('/v1')->group(function () {
             Route::get('/calculate_history_data',[Transaction_Controller::class,'Calculate_history_data']); //정산요청 내역 가져오기
             Route::post('/charge_request',[Transaction_Controller::class,'Charge_request']); //잔액 충전 요청 (Rtpay 혹은 송금을위한 잔액 충전요청)
             Route::post('/rtpay_insert_or_update',[Transaction_Controller::class,'Rtpay_insert_or_update']); //Rtpay 등록 및 수정
-            Route::post('/account_insert_or_update',[Transaction_Controller::class,'Account_insert_or_update']); //가상계좌 등록 및 수정
+            Route::post('/account_insert_or_update',[Transaction_Controller::class,'Account_insert_or_update']); //가상계좌 등록 및 수정 [페이투스 전용]
+            Route::post('/account_insert_or_update_v2',[Transaction_Controller::class,'Account_insert_or_update_v2']); //가상계좌 등록 및 수정 [K-WON 전용]
             Route::get('/get_company_data',[Controller::class,'Get_company_data']); //업체 정보 가져오기 (리스트 내 수정하기위하여)
             Route::post('/company_update',[Controller::class,'Company_update']); //업체 정보 업데이트
             Route::post('/company_delete',[Controller::class,'Company_delete']); //업체 정보 업데이트

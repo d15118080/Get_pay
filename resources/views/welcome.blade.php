@@ -1,30 +1,31 @@
 <!doctype html>
-<html lang="ko" data-layout="vertical" data-topbar="light" data-sidebar-size="lg" data-sidebar-image="none" data-body-image="img-1" data-preloader="disable">
+<html lang="ko" data-layout="vertical" data-topbar="light" data-sidebar-size="lg" data-sidebar-image="none"
+      data-body-image="img-1" data-preloader="disable">
 
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <title>{{env('APP_NAME')}} - 대시보드</title>
-    <meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width" />
-    <meta content="Themesbrand" name="author" />
+    <meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width"/>
+    <meta content="Themesbrand" name="author"/>
     <!-- App favicon -->
     <link rel="shortcut icon" href="/assets/images/favicon.ico">
 
     <!-- jsvectormap css -->
-    <link href="/assets/libs/jsvectormap/css/jsvectormap.min.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/libs/jsvectormap/css/jsvectormap.min.css" rel="stylesheet" type="text/css"/>
 
     <!--Swiper slider css-->
-    <link href="/assets/libs/swiper/swiper-bundle.min.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/libs/swiper/swiper-bundle.min.css" rel="stylesheet" type="text/css"/>
 
     <!-- Layout config Js -->
     <script src="/assets/js/layout.js"></script>
     <!-- Bootstrap Css -->
-    <link href="/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
     <!-- Icons Css -->
-    <link href="/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/css/icons.min.css" rel="stylesheet" type="text/css"/>
     <!-- App Css-->
-    <link href="/assets/css/app.min.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/css/app.min.css" rel="stylesheet" type="text/css"/>
     <!-- custom Css-->
-    <link href="/assets/css/custom.min.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/css/custom.min.css" rel="stylesheet" type="text/css"/>
 </head>
 
 <body>
@@ -53,7 +54,8 @@
 
                             <div class="page-title-right">
                                 <ol class="breadcrumb m-0">
-                                    <li class="breadcrumb-item"><a href="javascript: void(0);">{{env('APP_NAME')}}</a></li>
+                                    <li class="breadcrumb-item"><a href="javascript: void(0);">{{env('APP_NAME')}}</a>
+                                    </li>
                                     <li class="breadcrumb-item active">대시보드</li>
                                 </ol>
                             </div>
@@ -87,21 +89,25 @@
                                             <div class="d-flex align-items-center">
                                                 <div class="flex-grow-1 overflow-hidden">
                                                     @php
-                                                    if(session('state') == 1 || session('state') == 2 || session('state') == 3){
-                                                        $title = "하부 가맹점";
-                                                    }elseif(session('state') == 4){
-                                                        $title ="";
-                                                    }else{
-                                                        $title ="";
-                                                    }
+                                                        if(session('state') == 1 || session('state') == 2 || session('state') == 3){
+                                                            $title = "하부 가맹점";
+                                                        }elseif(session('state') == 4){
+                                                            $title ="";
+                                                        }else{
+                                                            $title ="";
+                                                        }
                                                     @endphp
-                                                    <p class="text-uppercase fw-medium text-muted text-truncate mb-0">금일 {{$title}} 매출 금액</p>
+                                                    <p class="text-uppercase fw-medium text-muted text-truncate mb-0">
+                                                        금일 {{$title}} 매출 금액</p>
                                                 </div>
                                             </div>
                                             <div class="d-flex align-items-end justify-content-between mt-4">
                                                 <div>
-                                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span id="today_money" class="counter-value" data-target="{{$today_money}}">0</span> 원</h4>
-                                                    <a href="/transaction_history" class="text-decoration-underline">매출 내역 보기</a>
+                                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span
+                                                            id="today_money" class="counter-value"
+                                                            data-target="{{$today_money}}">0</span> 원</h4>
+                                                    <a href="/transaction_history" class="text-decoration-underline">매출
+                                                        내역 보기</a>
                                                 </div>
                                                 <div class="avatar-sm flex-shrink-0">
                                                         <span class="avatar-title bg-soft-primary rounded fs-3">
@@ -118,12 +124,15 @@
                                         <div class="card-body">
                                             <div class="d-flex align-items-center">
                                                 <div class="flex-grow-1 overflow-hidden">
-                                                    <p class="text-uppercase fw-medium text-muted text-truncate mb-0">금일 출금 금액</p>
+                                                    <p class="text-uppercase fw-medium text-muted text-truncate mb-0">금일
+                                                        출금 금액</p>
                                                 </div>
                                             </div>
                                             <div class="d-flex align-items-end justify-content-between mt-4">
                                                 <div>
-                                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span id="today_w_money"  class="counter-value" data-target="{{$today_withdraw_money}}">0</span> 원</h4>
+                                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span
+                                                            id="today_w_money" class="counter-value"
+                                                            data-target="{{$today_withdraw_money}}">0</span> 원</h4>
                                                     <a href="/calculates" class="text-decoration-underline">출금 내역 보기</a>
                                                 </div>
                                                 <div class="avatar-sm flex-shrink-0">
@@ -141,12 +150,16 @@
                                         <div class="card-body">
                                             <div class="d-flex align-items-center">
                                                 <div class="flex-grow-1 overflow-hidden">
-                                                    <p class="text-uppercase fw-medium text-muted text-truncate mb-0">현재 잔액</p>
+                                                    <p class="text-uppercase fw-medium text-muted text-truncate mb-0">현재
+                                                        잔액</p>
                                                 </div>
                                             </div>
                                             <div class="d-flex align-items-end justify-content-between mt-4">
                                                 <div>
-                                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span id="my_money" class="counter-value" data-target="{{$my_money}}">0</span> 원</h4>
+                                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span id="my_money"
+                                                                                                          class="counter-value"
+                                                                                                          data-target="{{$my_money}}">0</span>
+                                                        원</h4>
                                                     <a href="" class="text-decoration-underline">출금 요청</a>
                                                 </div>
                                                 <div class="avatar-sm flex-shrink-0">
@@ -164,13 +177,17 @@
                                         <div class="card-body">
                                             <div class="d-flex align-items-center">
                                                 <div class="flex-grow-1 overflow-hidden">
-                                                    <p class="text-uppercase fw-medium text-muted text-truncate mb-0">금일 {{$title}} 입금 건수</p>
+                                                    <p class="text-uppercase fw-medium text-muted text-truncate mb-0">
+                                                        금일 {{$title}} 입금 건수</p>
                                                 </div>
                                             </div>
                                             <div class="d-flex align-items-end justify-content-between mt-4">
                                                 <div>
-                                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span id="today_count"  class="counter-value" data-target="{{$today_money_count}}">0</span> 건</h4>
-                                                    <a href="/transaction_history" class="text-decoration-underline">매출 내역 더보기</a>
+                                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span
+                                                            id="today_count" class="counter-value"
+                                                            data-target="{{$today_money_count}}">0</span> 건</h4>
+                                                    <a href="/transaction_history" class="text-decoration-underline">매출
+                                                        내역 더보기</a>
                                                 </div>
                                                 <div class="avatar-sm flex-shrink-0">
                                                         <span class="avatar-title bg-soft-primary rounded fs-3">
@@ -187,13 +204,17 @@
                                         <div class="card-body">
                                             <div class="d-flex align-items-center">
                                                 <div class="flex-grow-1 overflow-hidden">
-                                                    <p class="text-uppercase fw-medium text-muted text-truncate mb-0">금일 출금 건수</p>
+                                                    <p class="text-uppercase fw-medium text-muted text-truncate mb-0">금일
+                                                        출금 건수</p>
                                                 </div>
                                             </div>
                                             <div class="d-flex align-items-end justify-content-between mt-4">
                                                 <div>
-                                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span id="today_count"  class="counter-value" data-target="{{$today_withdraw_count}}">0</span> 건</h4>
-                                                    <a href="/calculates" class="text-decoration-underline">정산 내역 더보기</a>
+                                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span
+                                                            id="today_count" class="counter-value"
+                                                            data-target="{{$today_withdraw_count}}">0</span> 건</h4>
+                                                    <a href="/calculates" class="text-decoration-underline">정산 내역
+                                                        더보기</a>
                                                 </div>
                                                 <div class="avatar-sm flex-shrink-0">
                                                         <span class="avatar-title bg-soft-primary rounded fs-3">
@@ -214,7 +235,9 @@
                                         </div><!-- end card header -->
                                         <div class="card-body p-0 pb-2">
                                             <div class="w-100">
-                                                <div id="customer_impression_charts" data-colors='["--vz-secondary", "--vz-primary", "--vz-primary-rgb, 0.50"]' class="apex-charts" dir="ltr"></div>
+                                                <div id="customer_impression_charts"
+                                                     data-colors='["--vz-secondary", "--vz-primary", "--vz-primary-rgb, 0.50"]'
+                                                     class="apex-charts" dir="ltr"></div>
                                             </div>
                                         </div><!-- end card body -->
                                     </div><!-- end card -->
@@ -232,7 +255,9 @@
                                             <ul class="list-group list-group-flush">
                                                 @if(count($notis) != 0)
                                                     @foreach($notis as $row)
-                                                <li class="list-group-item"><a href="/noti_view?id={{$row->id}}"><b>[{{$row->date_ymd}} {{$row->date_time}}] [공지]</b> {{$row->noti_title}}</a></li>
+                                                        <li class="list-group-item"><a
+                                                                href="/noti_view?id={{$row->id}}"><b>[{{$row->date_ymd}} {{$row->date_time}}
+                                                                    ] [공지]</b> {{$row->noti_title}}</a></li>
                                                     @endforeach
                                                 @endif
                                             </ul>
@@ -245,244 +270,339 @@
                             </div>
                             @if(count($data) != 0)
                                 @if(session('state') == 0)
-                                {{--최고 관리자 거래내역--}}
-                                <div class="row">
-                                    <div class="col-xl">
-                                        <div class="card">
-                                            <div class="card-header align-items-center d-flex">
-                                                <h4 class="card-title mb-0 flex-grow-1">최근 거래내역<br><b style="font-size: 12px">수수료 는 해당 업체 위로 올려주는 금액이며 괄호 안에있는 금액이 실 해당 업체의 적립금 입니다.</b></h4>
-                                                <div class="flex-shrink-0">
-                                                    <a href="#" class="btn btn-soft-info btn-sm">
-                                                        <i class="ri-file-list-3-line align-middle"></i> 더보기
-                                                    </a>
-                                                </div>
-                                            </div><!-- end card header -->
+                                    {{--최고 관리자 거래내역--}}
+                                    <div class="row">
+                                        <div class="col-xl">
+                                            <div class="card">
+                                                <div class="card-header align-items-center d-flex">
+                                                    <h4 class="card-title mb-0 flex-grow-1">최근 거래내역<br><b
+                                                            style="font-size: 12px">수수료 는 해당 업체 위로 올려주는 금액이며 괄호 안에있는 금액이
+                                                            실 해당 업체의 적립금 입니다.</b></h4>
+                                                    <div class="flex-shrink-0">
+                                                        <a href="#" class="btn btn-soft-info btn-sm">
+                                                            <i class="ri-file-list-3-line align-middle"></i> 더보기
+                                                        </a>
+                                                    </div>
+                                                </div><!-- end card header -->
 
-                                            <div class="card-body">
-                                                <div class="table-responsive table-card">
-                                                    <table class="table table-borderless table-centered align-middle table-nowrap mb-0">
-                                                        <thead class="text-muted table-light">
-                                                        <tr class="text-center">
-                                                            <th scope="col">거래 번호</th>
-                                                            <th scope="col">거래 일자</th>
-                                                            <th scope="col">거래 대상</th>
-                                                            <th scope="col">입금자</th>
-                                                            <th scope="col">거래 금액</th>
-                                                            <th scope="col">본사 수수료(실적립금)</th>
-                                                            <th scope="col">지사 수수료(실적립금)</th>
-                                                            <th scope="col">총판 수수료(실적립금)</th>
-                                                            <th scope="col">가맹점 수수료(실적립금)</th>
-                                                            <th scope="col">상태</th>
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        @foreach($data as $row)
-                                                        <tr class="text-center">
-                                                            <td>
-                                                                <a class="fw-medium link-primary text-center">{{$row->transaction_key}}</a>
-                                                            </td>
-                                                            <td>{{$row->date_ymd}} {{$row->date_time}}</td>
-                                                            <td>{{$row->company_name}}</td>
-                                                            <td>{{$row->transaction_user_name}}</td>
-                                                            <td><span class="text-success">{{number_format($row->transaction_money)}}</span>원</td>
-                                                            <td>
-                                                                {{$row->head_fee}}<span>원</span>
-                                                            </td>
-                                                            <td>
-                                                                {{$row->branch_fee}}<span>원</span>
-                                                            </td>
-                                                            <td>
-                                                                {{$row->distributor_fee}}<span>원</span>
-                                                            </td>
-                                                            <td>
-                                                                {{number_format($row->franchisee_fee)}}({{number_format($row->franchisee_money)}})<span>원</span>
-                                                            </td>
-                                                            <td>
-                                                                <span class="badge badge-soft-success">입금 완료</span>
-                                                            </td>
-                                                        </tr><!-- end tr -->
-                                                        @endforeach
-                                                        </tbody><!-- end tbody -->
-                                                    </table><!-- end table -->
+                                                <div class="card-body">
+                                                    <div class="table-responsive table-card">
+                                                        <table
+                                                            class="table table-borderless table-centered align-middle table-nowrap mb-0">
+                                                            <thead class="text-muted table-light">
+                                                            <tr class="text-center">
+                                                                <th scope="col">거래 번호</th>
+                                                                <th scope="col">거래 일자</th>
+                                                                <th scope="col">거래 대상</th>
+                                                                <th scope="col">입금자</th>
+                                                                <th scope="col">거래 금액</th>
+                                                                <th scope="col">본사 수수료(실적립금)</th>
+                                                                <th scope="col">지사 수수료(실적립금)</th>
+                                                                <th scope="col">총판 수수료(실적립금)</th>
+                                                                <th scope="col">가맹점 수수료(실적립금)</th>
+                                                                <th scope="col">상태</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            @foreach($data as $row)
+                                                                <tr class="text-center">
+                                                                    <td>
+                                                                        <a class="fw-medium link-primary text-center">{{$row->transaction_key}}</a>
+                                                                    </td>
+                                                                    <td>{{$row->date_ymd}} {{$row->date_time}}</td>
+                                                                    <td>{{$row->company_name}}</td>
+                                                                    <td>{{$row->transaction_user_name}}</td>
+                                                                    <td><span
+                                                                            class="text-success">{{number_format($row->transaction_money)}}</span>원
+                                                                    </td>
+                                                                    <td>
+                                                                        {{$row->head_fee}}<span>원</span>
+                                                                    </td>
+                                                                    <td>
+                                                                        {{$row->branch_fee}}<span>원</span>
+                                                                    </td>
+                                                                    <td>
+                                                                        {{$row->distributor_fee}}<span>원</span>
+                                                                    </td>
+                                                                    <td>
+                                                                        {{number_format($row->franchisee_fee)}}
+                                                                        ({{number_format($row->franchisee_money)}}
+                                                                        )<span>원</span>
+                                                                    </td>
+                                                                    <td>
+                                                                        <span
+                                                                            class="badge badge-soft-success">입금 완료</span>
+                                                                    </td>
+                                                                </tr><!-- end tr -->
+                                                            @endforeach
+                                                            </tbody><!-- end tbody -->
+                                                        </table><!-- end table -->
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </div> <!-- .card-->
-                                    </div> <!-- .col-->
-                                </div> <!-- end row-->
+                                            </div> <!-- .card-->
+                                        </div> <!-- .col-->
+                                    </div> <!-- end row-->
                                 @elseif(session('state') == 1)
-                                {{--본사 거래내역--}}
-                                <div class="row">
-                                    <div class="col-xl">
-                                        <div class="card">
-                                            <div class="card-header align-items-center d-flex">
-                                                <h4 class="card-title mb-1 flex-grow-1">최근 거래내역 <br><b style="font-size: 12px">수수료 는 해당 업체 위로 올려주는 금액이며 괄호 안에있는 금액이 실 해당 업체의 적립금 입니다.</b></h4>
-                                                <div class="flex-shrink-0">
-                                                    <a href="#" class="btn btn-soft-info btn-sm">
-                                                        <i class="ri-file-list-3-line align-middle"></i> 더보기
-                                                    </a>
-                                                </div>
-                                            </div><!-- end card header -->
+                                    {{--본사 거래내역--}}
+                                    <div class="row">
+                                        <div class="col-xl">
+                                            <div class="card">
+                                                <div class="card-header align-items-center d-flex">
+                                                    <h4 class="card-title mb-1 flex-grow-1">최근 거래내역 <br><b
+                                                            style="font-size: 12px">수수료 는 해당 업체 위로 올려주는 금액이며 괄호 안에있는 금액이
+                                                            실 해당 업체의 적립금 입니다.</b></h4>
+                                                    <div class="flex-shrink-0">
+                                                        <a href="#" class="btn btn-soft-info btn-sm">
+                                                            <i class="ri-file-list-3-line align-middle"></i> 더보기
+                                                        </a>
+                                                    </div>
+                                                </div><!-- end card header -->
 
-                                            <div class="card-body">
-                                                <div class="table-responsive table-card">
-                                                    <table class="table table-borderless table-centered align-middle table-nowrap mb-0">
-                                                        <thead class="text-muted table-light">
-                                                        <tr class="text-center">
-                                                            <th scope="col">거래 번호</th>
-                                                            <th scope="col">거래 일자</th>
-                                                            <th scope="col">거래 대상</th>
-                                                            <th scope="col">입금자</th>
-                                                            <th scope="col">거래 금액</th>
-                                                            <th scope="col">지사 수수료(실적립금)</th>
-                                                            <th scope="col">총판 수수료(실적립금)</th>
-                                                            <th scope="col">가맹점 수수료(실적립금)</th>
-                                                            <th scope="col">상태</th>
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        @foreach($data as $row)
+                                                <div class="card-body">
+                                                    <div class="table-responsive table-card">
+                                                        <table
+                                                            class="table table-borderless table-centered align-middle table-nowrap mb-0">
+                                                            <thead class="text-muted table-light">
                                                             <tr class="text-center">
-                                                                <td>
-                                                                    <a class="fw-medium link-primary text-center">{{$row->transaction_key}}</a>
-                                                                </td>
-                                                                <td>{{$row->date_ymd}} {{$row->date_time}}</td>
-                                                                <td>{{$row->company_name}}</td>
-                                                                <td>{{$row->transaction_user_name}}</td>
-                                                                <td><span class="text-success">{{number_format($row->transaction_money)}}</span>원</td>
-                                                                <td>
-                                                                    {{$row->branch_fee}}<span>원</span>
-                                                                </td>
-                                                                <td>
-                                                                    {{$row->distributor_fee}}<span>원</span>
-                                                                </td>
-                                                                <td>
-                                                                    {{number_format($row->franchisee_fee)}}({{number_format($row->franchisee_money)}})<span>원</span>
-                                                                </td>
-                                                                <td>
-                                                                    <span class="badge badge-soft-success">입금 완료</span>
-                                                                </td>
-                                                            </tr><!-- end tr -->
-                                                        @endforeach
-                                                        </tbody><!-- end tbody -->
-                                                    </table><!-- end table -->
+                                                                <th scope="col">거래 번호</th>
+                                                                <th scope="col">거래 일자</th>
+                                                                <th scope="col">거래 대상</th>
+                                                                <th scope="col">입금자</th>
+                                                                <th scope="col">거래 금액</th>
+                                                                <th scope="col">지사 수수료(실적립금)</th>
+                                                                <th scope="col">총판 수수료(실적립금)</th>
+                                                                <th scope="col">가맹점 수수료(실적립금)</th>
+                                                                <th scope="col">상태</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            @foreach($data as $row)
+                                                                <tr class="text-center">
+                                                                    <td>
+                                                                        <a class="fw-medium link-primary text-center">{{$row->transaction_key}}</a>
+                                                                    </td>
+                                                                    <td>{{$row->date_ymd}} {{$row->date_time}}</td>
+                                                                    <td>{{$row->company_name}}</td>
+                                                                    <td>{{$row->transaction_user_name}}</td>
+                                                                    <td><span
+                                                                            class="text-success">{{number_format($row->transaction_money)}}</span>원
+                                                                    </td>
+                                                                    <td>
+                                                                        {{$row->branch_fee}}<span>원</span>
+                                                                    </td>
+                                                                    <td>
+                                                                        {{$row->distributor_fee}}<span>원</span>
+                                                                    </td>
+                                                                    <td>
+                                                                        {{number_format($row->franchisee_fee)}}
+                                                                        ({{number_format($row->franchisee_money)}}
+                                                                        )<span>원</span>
+                                                                    </td>
+                                                                    <td>
+                                                                        <span
+                                                                            class="badge badge-soft-success">입금 완료</span>
+                                                                    </td>
+                                                                </tr><!-- end tr -->
+                                                            @endforeach
+                                                            </tbody><!-- end tbody -->
+                                                        </table><!-- end table -->
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </div> <!-- .card-->
-                                    </div> <!-- .col-->
-                                </div> <!-- end row-->
+                                            </div> <!-- .card-->
+                                        </div> <!-- .col-->
+                                    </div> <!-- end row-->
                                 @elseif(session('state') == 2)
-                                {{--지사 거래내역--}}
-                                <div class="row">
-                                    <div class="col-xl">
-                                        <div class="card">
-                                            <div class="card-header align-items-center d-flex">
-                                                <h4 class="card-title mb-1 flex-grow-1">최근 거래내역 <br><b style="font-size: 12px">수수료 는 해당 업체 위로 올려주는 금액이며 괄호 안에있는 금액이 실 해당 업체의 적립금 입니다.</b></h4>
-                                                <div class="flex-shrink-0">
-                                                    <a href="#" class="btn btn-soft-info btn-sm">
-                                                        <i class="ri-file-list-3-line align-middle"></i> 더보기
-                                                    </a>
-                                                </div>
-                                            </div><!-- end card header -->
+                                    {{--지사 거래내역--}}
+                                    <div class="row">
+                                        <div class="col-xl">
+                                            <div class="card">
+                                                <div class="card-header align-items-center d-flex">
+                                                    <h4 class="card-title mb-1 flex-grow-1">최근 거래내역 <br><b
+                                                            style="font-size: 12px">수수료 는 해당 업체 위로 올려주는 금액이며 괄호 안에있는 금액이
+                                                            실 해당 업체의 적립금 입니다.</b></h4>
+                                                    <div class="flex-shrink-0">
+                                                        <a href="#" class="btn btn-soft-info btn-sm">
+                                                            <i class="ri-file-list-3-line align-middle"></i> 더보기
+                                                        </a>
+                                                    </div>
+                                                </div><!-- end card header -->
 
-                                            <div class="card-body">
-                                                <div class="table-responsive table-card">
-                                                    <table class="table table-borderless table-centered align-middle table-nowrap mb-0">
-                                                        <thead class="text-muted table-light">
-                                                        <tr class="text-center">
-                                                            <th scope="col">거래 번호</th>
-                                                            <th scope="col">거래 일자</th>
-                                                            <th scope="col">거래 대상</th>
-                                                            <th scope="col">입금자</th>
-                                                            <th scope="col">거래 금액</th>
-                                                            <th scope="col">총판 수수료(실적립금)</th>
-                                                            <th scope="col">가맹점 수수료(실적립금)</th>
-                                                            <th scope="col">상태</th>
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        @foreach($data as $row)
+                                                <div class="card-body">
+                                                    <div class="table-responsive table-card">
+                                                        <table
+                                                            class="table table-borderless table-centered align-middle table-nowrap mb-0">
+                                                            <thead class="text-muted table-light">
                                                             <tr class="text-center">
-                                                                <td>
-                                                                    <a class="fw-medium link-primary text-center">{{$row->transaction_key}}</a>
-                                                                </td>
-                                                                <td>{{$row->date_ymd}} {{$row->date_time}}</td>
-                                                                <td>{{$row->company_name}}</td>
-                                                                <td>{{$row->transaction_user_name}}</td>
-                                                                <td><span class="text-success">{{number_format($row->transaction_money)}}</span>원</td>
-                                                                <td>
-                                                                    {{$row->distributor_fee}}<span>원</span>
-                                                                </td>
-                                                                <td>
-                                                                    {{number_format($row->franchisee_fee)}}({{number_format($row->franchisee_money)}})<span>원</span>
-                                                                </td>
-                                                                <td>
-                                                                    <span class="badge badge-soft-success">입금 완료</span>
-                                                                </td>
-                                                            </tr><!-- end tr -->
-                                                        @endforeach
-                                                        </tbody><!-- end tbody -->
-                                                    </table><!-- end table -->
+                                                                <th scope="col">거래 번호</th>
+                                                                <th scope="col">거래 일자</th>
+                                                                <th scope="col">거래 대상</th>
+                                                                <th scope="col">입금자</th>
+                                                                <th scope="col">거래 금액</th>
+                                                                <th scope="col">총판 수수료(실적립금)</th>
+                                                                <th scope="col">가맹점 수수료(실적립금)</th>
+                                                                <th scope="col">상태</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            @foreach($data as $row)
+                                                                <tr class="text-center">
+                                                                    <td>
+                                                                        <a class="fw-medium link-primary text-center">{{$row->transaction_key}}</a>
+                                                                    </td>
+                                                                    <td>{{$row->date_ymd}} {{$row->date_time}}</td>
+                                                                    <td>{{$row->company_name}}</td>
+                                                                    <td>{{$row->transaction_user_name}}</td>
+                                                                    <td><span
+                                                                            class="text-success">{{number_format($row->transaction_money)}}</span>원
+                                                                    </td>
+                                                                    <td>
+                                                                        {{$row->distributor_fee}}<span>원</span>
+                                                                    </td>
+                                                                    <td>
+                                                                        {{number_format($row->franchisee_fee)}}
+                                                                        ({{number_format($row->franchisee_money)}}
+                                                                        )<span>원</span>
+                                                                    </td>
+                                                                    <td>
+                                                                        <span
+                                                                            class="badge badge-soft-success">입금 완료</span>
+                                                                    </td>
+                                                                </tr><!-- end tr -->
+                                                            @endforeach
+                                                            </tbody><!-- end tbody -->
+                                                        </table><!-- end table -->
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </div> <!-- .card-->
-                                    </div> <!-- .col-->
-                                </div> <!-- end row-->
+                                            </div> <!-- .card-->
+                                        </div> <!-- .col-->
+                                    </div> <!-- end row-->
                                 @elseif(session('state') == 3)
-                                {{--총판 거래내역--}}
-                                <div class="row">
-                                    <div class="col-xl">
-                                        <div class="card">
-                                            <div class="card-header align-items-center d-flex">
-                                                <h4 class="card-title mb-0 flex-grow-1">최근 거래내역<br><b style="font-size: 12px">수수료 는 해당 업체 위로 올려주는 금액이며 괄호 안에있는 금액이 실 해당 업체의 적립금 입니다.</b></h4>
-                                                <div class="flex-shrink-0">
-                                                    <a href="#" class="btn btn-soft-info btn-sm">
-                                                        <i class="ri-file-list-3-line align-middle"></i> 더보기
-                                                    </a>
-                                                </div>
-                                            </div><!-- end card header -->
+                                    {{--총판 거래내역--}}
+                                    <div class="row">
+                                        <div class="col-xl">
+                                            <div class="card">
+                                                <div class="card-header align-items-center d-flex">
+                                                    <h4 class="card-title mb-0 flex-grow-1">최근 거래내역<br><b
+                                                            style="font-size: 12px">수수료 는 해당 업체 위로 올려주는 금액이며 괄호 안에있는 금액이
+                                                            실 해당 업체의 적립금 입니다.</b></h4>
+                                                    <div class="flex-shrink-0">
+                                                        <a href="#" class="btn btn-soft-info btn-sm">
+                                                            <i class="ri-file-list-3-line align-middle"></i> 더보기
+                                                        </a>
+                                                    </div>
+                                                </div><!-- end card header -->
 
-                                            <div class="card-body">
-                                                <div class="table-responsive table-card">
-                                                    <table class="table table-borderless table-centered align-middle table-nowrap mb-0">
-                                                        <thead class="text-muted table-light">
-                                                        <tr class="text-center">
-                                                            <th scope="col">거래 번호</th>
-                                                            <th scope="col">거래 일자</th>
-                                                            <th scope="col">거래 대상</th>
-                                                            <th scope="col">입금자</th>
-                                                            <th scope="col">거래 금액</th>
-                                                            <th scope="col">가맹점 수수료(실적립금)</th>
-                                                            <th scope="col">상태</th>
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        @foreach($data as $row)
+                                                <div class="card-body">
+                                                    <div class="table-responsive table-card">
+                                                        <table
+                                                            class="table table-borderless table-centered align-middle table-nowrap mb-0">
+                                                            <thead class="text-muted table-light">
                                                             <tr class="text-center">
-                                                                <td>
-                                                                    <a class="fw-medium link-primary text-center">{{$row->transaction_key}}</a>
-                                                                </td>
-                                                                <td>{{$row->date_ymd}} {{$row->date_time}}</td>
-                                                                <td>{{$row->company_name}}</td>
-                                                                <td>{{$row->transaction_user_name}}</td>
-                                                                <td><span class="text-success">{{number_format($row->transaction_money)}}</span>원</td>
-                                                                <td>
-                                                                    {{number_format($row->franchisee_fee)}}({{number_format($row->franchisee_money)}})<span>원</span>
-                                                                </td>
-                                                                <td>
-                                                                    <span class="badge badge-soft-success">입금 완료</span>
-                                                                </td>
-                                                            </tr><!-- end tr -->
-                                                        @endforeach
-                                                        </tbody><!-- end tbody -->
-                                                    </table><!-- end table -->
+                                                                <th scope="col">거래 번호</th>
+                                                                <th scope="col">거래 일자</th>
+                                                                <th scope="col">거래 대상</th>
+                                                                <th scope="col">입금자</th>
+                                                                <th scope="col">거래 금액</th>
+                                                                <th scope="col">가맹점 수수료(실적립금)</th>
+                                                                <th scope="col">상태</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            @foreach($data as $row)
+                                                                <tr class="text-center">
+                                                                    <td>
+                                                                        <a class="fw-medium link-primary text-center">{{$row->transaction_key}}</a>
+                                                                    </td>
+                                                                    <td>{{$row->date_ymd}} {{$row->date_time}}</td>
+                                                                    <td>{{$row->company_name}}</td>
+                                                                    <td>{{$row->transaction_user_name}}</td>
+                                                                    <td><span
+                                                                            class="text-success">{{number_format($row->transaction_money)}}</span>원
+                                                                    </td>
+                                                                    <td>
+                                                                        {{number_format($row->franchisee_fee)}}
+                                                                        ({{number_format($row->franchisee_money)}}
+                                                                        )<span>원</span>
+                                                                    </td>
+                                                                    <td>
+                                                                        <span
+                                                                            class="badge badge-soft-success">입금 완료</span>
+                                                                    </td>
+                                                                </tr><!-- end tr -->
+                                                            @endforeach
+                                                            </tbody><!-- end tbody -->
+                                                        </table><!-- end table -->
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </div> <!-- .card-->
-                                    </div> <!-- .col-->
-                                </div> <!-- end row-->
+                                            </div> <!-- .card-->
+                                        </div> <!-- .col-->
+                                    </div> <!-- end row-->
                                 @elseif(session('state') == 4)
-                                {{--가맹점 거래내역--}}
-                                <div class="row">
+                                    {{--가맹점 거래내역--}}
+                                    <div class="row">
+                                        <div class="col-xl">
+                                            <div class="card">
+                                                <div class="card-header align-items-center d-flex">
+                                                    <h4 class="card-title mb-0 flex-grow-1">최근 거래내역</h4>
+                                                    <div class="flex-shrink-0">
+                                                        <a href="#" class="btn btn-soft-info btn-sm">
+                                                            <i class="ri-file-list-3-line align-middle"></i> 더보기
+                                                        </a>
+                                                    </div>
+                                                </div><!-- end card header -->
+
+                                                <div class="card-body">
+                                                    <div class="table-responsive table-card">
+                                                        <table
+                                                            class="table table-borderless table-centered align-middle table-nowrap mb-0">
+                                                            <thead class="text-muted table-light">
+                                                            <tr class="text-center">
+                                                                <th scope="col">거래 번호</th>
+                                                                <th scope="col">거래 일자</th>
+                                                                <th scope="col">거래 대상</th>
+                                                                <th scope="col">입금자</th>
+                                                                <th scope="col">거래 금액</th>
+                                                                <th scope="col">수수료</th>
+                                                                <th scope="col">실적립 금액</th>
+                                                                <th scope="col">상태</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            @foreach($data as $row)
+                                                                <tr class="text-center">
+                                                                    <td>
+                                                                        <a class="fw-medium link-primary text-center">{{$row->transaction_key}}</a>
+                                                                    </td>
+                                                                    <td>{{$row->date_ymd}} {{$row->date_time}}</td>
+                                                                    <td>{{$row->company_name}}</td>
+                                                                    <td>{{$row->transaction_user_name}}</td>
+                                                                    <td><span
+                                                                            class="text-success">{{number_format($row->transaction_money)}}</span>
+                                                                        원
+                                                                    </td>
+                                                                    <td>
+                                                                        {{number_format($row->franchisee_fee)}}
+                                                                        <span> 원</span>
+                                                                    </td>
+                                                                    <td>{{number_format($row->franchisee_money)}} 원</td>
+                                                                    <td>
+                                                                        <span
+                                                                            class="badge badge-soft-success">입금 완료</span>
+                                                                    </td>
+                                                                </tr><!-- end tr -->
+                                                            @endforeach
+                                                            </tbody><!-- end tbody -->
+                                                        </table><!-- end table -->
+                                                    </div>
+                                                </div>
+                                            </div> <!-- .card-->
+                                        </div> <!-- .col-->
+                                    </div> <!-- end row-->
+                                @endif
+                            @endif
+
+                            @if(count($data) == 0)
+                                <div id="index_not_data" class="row">
                                     <div class="col-xl">
                                         <div class="card">
                                             <div class="card-header align-items-center d-flex">
@@ -496,120 +616,84 @@
 
                                             <div class="card-body">
                                                 <div class="table-responsive table-card">
-                                                    <table class="table table-borderless table-centered align-middle table-nowrap mb-0">
-                                                        <thead class="text-muted table-light">
-                                                        <tr class="text-center">
-                                                            <th scope="col">거래 번호</th>
-                                                            <th scope="col">거래 일자</th>
-                                                            <th scope="col">거래 대상</th>
-                                                            <th scope="col">입금자</th>
-                                                            <th scope="col">거래 금액</th>
-                                                            <th scope="col">수수료</th>
-                                                            <th scope="col">실적립 금액</th>
-                                                            <th scope="col">상태</th>
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        @foreach($data as $row)
-                                                            <tr class="text-center">
-                                                                <td>
-                                                                    <a class="fw-medium link-primary text-center">{{$row->transaction_key}}</a>
-                                                                </td>
-                                                                <td>{{$row->date_ymd}} {{$row->date_time}}</td>
-                                                                <td>{{$row->company_name}}</td>
-                                                                <td>{{$row->transaction_user_name}}</td>
-                                                                <td><span class="text-success">{{number_format($row->transaction_money)}}</span> 원</td>
-                                                                <td>
-                                                                    {{number_format($row->franchisee_fee)}}<span> 원</span>
-                                                                </td>
-                                                                <td>{{number_format($row->franchisee_money)}} 원</td>
-                                                                <td>
-                                                                    <span class="badge badge-soft-success">입금 완료</span>
-                                                                </td>
-                                                            </tr><!-- end tr -->
-                                                        @endforeach
-                                                        </tbody><!-- end tbody -->
-                                                    </table><!-- end table -->
+                                                    <div class="mb-1 mt-1 text-center">데이터가 존재하지 않습니다.</div>
                                                 </div>
                                             </div>
                                         </div> <!-- .card-->
                                     </div> <!-- .col-->
                                 </div> <!-- end row-->
-                                @endif
-                            @endif
-
-                            @if(count($data) == 0)
-                            <div id="index_not_data" class="row">
-                                <div class="col-xl">
-                                    <div class="card">
-                                        <div class="card-header align-items-center d-flex">
-                                            <h4 class="card-title mb-0 flex-grow-1">최근 거래내역</h4>
-                                            <div class="flex-shrink-0">
-                                                <a href="#" class="btn btn-soft-info btn-sm">
-                                                    <i class="ri-file-list-3-line align-middle"></i> 더보기
-                                                </a>
-                                            </div>
-                                        </div><!-- end card header -->
-
-                                        <div class="card-body">
-                                            <div class="table-responsive table-card">
-                                                <div class="mb-1 mt-1 text-center">데이터가 존재하지 않습니다.</div>
-                                            </div>
-                                        </div>
-                                    </div> <!-- .card-->
-                                </div> <!-- .col-->
-                            </div> <!-- end row-->
                             @endif
                         </div> <!-- end .h-100-->
                     </div> <!-- end col -->
                     @if(session('state') == 4 && session('bank_mode_int') != 3)
-                    <div class="row">
-                        <div class="col-xl">
-                            <div class="card">
-                                <div class="card-header align-items-center d-flex">
-                                    <h4 class="card-title mb-0 flex-grow-1">가상계좌 발급 링크</h4>
-                                </div><!-- end card header -->
+                        <div class="row">
+                            <div class="col-xl">
+                                <div class="card">
+                                    <div class="card-header align-items-center d-flex">
+                                        <h4 class="card-title mb-0 flex-grow-1">가상계좌 발급 링크</h4>
+                                    </div><!-- end card header -->
 
-                                <div class="card-body">
-                                    <p class="text-muted">본 가상계좌 링크를 회원에게 주시면 됩니다 <b style="color: darkred">임시 계좌는 발급후 10분이내 미입금시 삭제 처리됩니다</b></p>
-                                    <div class="live-preview">
-                                        <div action="javascript:void(0);">
-                                            <div class="row">
-                                                @if($bank_route == "" || $bank_route == null)
-                                                    <div class="col-md-12">
-                                                        <div class="mb-3">
-                                                            본사 가상게좌 등록 대기중입니다.
+                                    <div class="card-body">
+                                        <p class="text-muted">본 가상계좌 링크를 회원에게 주시면 됩니다 @if($bank_mode_int != 5)<b style="color: darkred">임시 계좌는 발급후 10분이내 미입금시 삭제 처리됩니다</b> @endif</p>
+                                        <div class="live-preview">
+                                            <div action="javascript:void(0);">
+                                                <div class="row">
+                                                    @if($bank_route == "" || $bank_route == null)
+                                                        <div class="col-md-12">
+                                                            <div class="mb-3">
+                                                                본사 가상게좌 등록 대기중입니다.
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                @else
-                                                    @if($bank_mode_int == 0 || $bank_mode_int == 2)
-                                                    <div class="col-md-12">
-                                                        <div class="mb-3">
-                                                            <label for="firstNameinput" class="form-label">영구 계좌 발급 링크</label>
-                                                            <input type="text" class="form-control" value="{{env('APP_URL')}}/account_issuance/{{$bank_route}}?mode=0" id="firstNameinput" disabled>
-                                                            <div class="mt-1"><a href="{{env('APP_URL')}}/account_issuance/{{$bank_route}}?mode=0" target="_blank">바로가기</a></div>
-                                                        </div>
-                                                    </div>
-                                                    @endif
-                                                    @if($bank_mode_int == 1 || $bank_mode_int == 2)
-                                                    <div class="col-md-12">
-                                                        <div class="mb-3">
-                                                            <label for="lastNameinput" class="form-label">임시 계좌 발급 링크</label>
-                                                            <input type="text" class="form-control" value="{{env('APP_URL')}}/account_issuance/{{$bank_route}}?mode=1" id="lastNameinput" disabled>
-                                                            <div class="mt-1"><a href="{{env('APP_URL')}}/account_issuance/{{$bank_route}}?mode=1" target="_blank">바로가기</a></div>
+                                                    @else
+                                                        @if($bank_mode_int == 0 || $bank_mode_int == 2)
+                                                            <div class="col-md-12">
+                                                                <div class="mb-3">
+                                                                    <label for="firstNameinput" class="form-label">영구 계좌
+                                                                        발급 링크</label>
+                                                                    <input type="text" class="form-control"
+                                                                           value="{{$bank_route}}?mode=0"
+                                                                           id="firstNameinput" disabled>
+                                                                    <div class="mt-1"><a href="{{$bank_route}}?mode=0"
+                                                                                         target="_blank">바로가기</a></div>
+                                                                </div>
+                                                            </div>
+                                                        @endif
+                                                        @if($bank_mode_int == 1 || $bank_mode_int == 2)
+                                                            <div class="col-md-12">
+                                                                <div class="mb-3">
+                                                                    <label for="lastNameinput" class="form-label">임시 계좌
+                                                                        발급 링크</label>
+                                                                    <input type="text" class="form-control"
+                                                                           value="{{$bank_route}}?mode=1"
+                                                                           id="lastNameinput" disabled>
+                                                                    <div class="mt-1"><a href="{{$bank_route}}?mode=1"
+                                                                                         target="_blank">바로가기</a></div>
 
-                                                        </div>
-                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        @endif
+                                                        @if($bank_mode_int == 5)
+                                                            <div class="col-md-12">
+                                                                <div class="mb-3">
+                                                                    <label for="lastNameinput" class="form-label">계좌 발급
+                                                                        링크</label>
+                                                                    <input type="text" class="form-control"
+                                                                           value="{{$bank_route}}" id="lastNameinput"
+                                                                           disabled>
+                                                                    <div class="mt-1"><a href="{{$bank_route}}"
+                                                                                         target="_blank">바로가기</a></div>
+                                                                </div>
+                                                            </div>
+                                                        @endif
                                                     @endif
-                                                @endif
+                                                </div>
+                                                <!--end row-->
                                             </div>
-                                            <!--end row-->
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div> <!-- end col -->
-                    </div>
+                            </div> <!-- end col -->
+                        </div>
                     @endif
                 </div>
             </div>
@@ -643,12 +727,13 @@
 <script src="/assets/libs/swiper/swiper-bundle.min.js"></script>
 
 <!-- Dashboard init -->
-<script type="module"  src="/assets/js/pages/dashboard-ecommerce.init.js"></script>
+<script type="module" src="/assets/js/pages/dashboard-ecommerce.init.js"></script>
 
 <!-- App js -->
 <script src="/assets/js/app.js"></script>
 
-<script src="//code.jquery.com/jquery-3.6.2.js" integrity="sha256-pkn2CUZmheSeyssYw3vMp1+xyub4m+e+QK4sQskvuo4=" crossorigin="anonymous"></script>
+<script src="//code.jquery.com/jquery-3.6.2.js" integrity="sha256-pkn2CUZmheSeyssYw3vMp1+xyub4m+e+QK4sQskvuo4="
+        crossorigin="anonymous"></script>
 <!-- sweetalert2 -->
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!-- login -->
