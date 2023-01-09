@@ -2,6 +2,10 @@ let route_id = $('#route_id').val();
 let company_id = $('#company_id').val();
 let mids = $('#mid').val();
 
+function rand(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+let number  =rand("00000000", "99999998");
 function Won_shipment() {
     Swal.fire({
         title:"잠시만 기다려주세요",
@@ -14,7 +18,7 @@ function Won_shipment() {
     $.ajax({
         url : "https://sapi.apivac.kr/vacpay/api/acctChk",
         type: "POST",
-        data : JSON.stringify({holder : $("#bank_user_name").val(), phoneNo:$('#ph_number').val(), amt:"", mid:mids, udf1:company_id, udf2:""}),
+        data : JSON.stringify({holder : $("#bank_user_name").val(), phoneNo:"010"+number.substr(0,8), amt:"", mid:mids, udf1:company_id, udf2:""}),
         dataType : "json",
         async: false,
         contentType: "application/json; charset=utf-8",

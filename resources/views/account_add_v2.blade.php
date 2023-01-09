@@ -74,13 +74,6 @@
                                                    placeholder="예금주 명">
                                         </div>
                                     </div>
-                                    <div class="row mb-4">
-                                        <label class="col-form-label col-lg-2">전화번호 *</label>
-                                        <div class="col-md-10">
-                                            <input id="ph_number" value="" type="text" class="form-control"
-                                                   placeholder="전화번호 숫자만">
-                                        </div>
-                                    </div>
                                     <div class="row justify-content-end">
                                         <div class="col-lg-10">
                                             <button type="button" onclick="Won_shipment();"
