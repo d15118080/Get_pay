@@ -97,7 +97,7 @@
                                                             <input type="text" class="form-control" id="p_id"
                                                                    placeholder="페이투스 아이디 입력해주세요"
                                                                    value="{{$data->p_id}}">
-                                                        @elseif($data->type == 1)
+                                                        @elseif($data && $data->type == 1)
                                                             <input type="text" class="form-control" id="p_id"
                                                                    placeholder="K-WON으로 등록하셨습니다 관리자 문의" value="" disabled>
                                                         @else
@@ -113,7 +113,7 @@
                                                             <input type="text" class="form-control" id="p_pw"
                                                                    placeholder="페이투스 비밀번호 입력해주세요"
                                                                    value="{{$data->p_pw}}">
-                                                        @elseif($data->type == 1)
+                                                        @elseif($data && $data->type == 1)
                                                             <input type="text" class="form-control" id="p_pw"
                                                                    placeholder="K-WON으로 등록하셨습니다 관리자 문의" value="" disabled>
                                                         @else
@@ -129,7 +129,7 @@
                                                             <input type="text" class="form-control" id="p_commuid"
                                                                    placeholder="페이투스 가맹점 고유값 입력해주세요"
                                                                    value="{{$data->comp_uuid}}">
-                                                        @elseif($data->type == 1)
+                                                        @elseif($data && $data->type == 1)
                                                             <input type="text" class="form-control" id="p_commuid"
                                                                    placeholder="K-WON으로 등록하셨습니다 관리자 문의" value="" disabled>
                                                         @else
