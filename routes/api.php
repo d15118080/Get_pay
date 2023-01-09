@@ -28,9 +28,12 @@ Route::prefix('/v1')->group(function () {
         //가상계좌 관리
         Route::post('/1won_shipment/{route_id}',[Transaction_Controller::class,'Won_shipment']); //1원 인증 발송
         Route::post('/1won_shipment_check/{route_id}',[Transaction_Controller::class,'Won_shipment_check']); //1원 인증 체크
-        Route::post('/account_temporary_issuance/{route_id}/{company_id}',[Transaction_Controller::class,'Account_temporary_issuance']);//임시 계좌발급
-        Route::post('/account_everlasting_issuance/{route_id}/{company_id}',[Transaction_Controller::class,'Account_everlasting_issuance']);//영구 계좌발급
-        Route::post('/deposit_notification/{route_id}',[Transaction_Controller::class,'Deposit_notification']); //입금 노티
+        Route::post('/account_temporary_issuance/{route_id}/{company_id}',[Transaction_Controller::class,'Account_temporary_issuance']);//임시 계좌발급 [페이투스 전용]
+        Route::post('/account_everlasting_issuance/{route_id}/{company_id}',[Transaction_Controller::class,'Account_everlasting_issuance']);//영구 계좌발급 [페이투스 전용]
+        Route::post('/account_everlasting_issuance_v2/{route_id}/{company_id}',[Transaction_Controller::class,'Account_everlasting_issuance_v2']);//영구 계좌발급 [K-WON 전용]
+        Route::post('/deposit_notification/{route_id}',[Transaction_Controller::class,'Deposit_notification']); //입금 노티 [페이투스 전용]
+        Route::post('/deposit_notification_v2/{route_id}',[Transaction_Controller::class,'Deposit_notification_v2']); //입금 노티 [K-WON 전용]
+
         Route::post('/telegram_setting',[Transaction_Controller::class,'Telegram_setting']);//텔레그램 셋팅
         //Rtpay 관련
         Route::post('/rtpay_v1/{route_id}',[Transaction_Controller::class,'Rtpay_noti_v1']);//Rtpay

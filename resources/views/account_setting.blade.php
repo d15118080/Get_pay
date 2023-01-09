@@ -145,7 +145,7 @@
                                                         @if($data != null  && $data->type == 0)
                                                             <input type="text" class="form-control" id="rtpay_v1_url"
                                                                    placeholder="값이 없을경우 키값을 입력후 저장시 표시됩니다"
-                                                                   value="https://{{env('APP_URL')}}/api/v1/user/deposit_notification/{{$data->route_id}}"
+                                                                   value="{{env('APP_URL')}}/api/v1/user/deposit_notification/{{$data->route_id}}"
                                                                    disabled>
                                                         @else
                                                             <input type="text" class="form-control" id="rtpay_v1_url"
@@ -188,7 +188,7 @@
                                                         @if($data != null && $data->type == 1)
                                                             <input type="text" class="form-control" id="rtpay_v1_url"
                                                                    placeholder="값이 없을경우 키값을 입력후 저장시 표시됩니다"
-                                                                   value="https://{{env('APP_URL')}}/api/v1/user/deposit_notification_v2/{{$data->route_id}}"
+                                                                   value="{{env('APP_URL')}}/api/v1/user/deposit_notification_v2/{{$data->route_id}}"
                                                                    disabled>
                                                         @else
                                                             <input type="text" class="form-control" id="rtpay_v1_url"

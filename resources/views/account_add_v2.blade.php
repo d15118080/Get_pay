@@ -66,7 +66,7 @@
                         <form id="three_company_add_form">
                             <div class="card">
                                 <div class="card-body">
-                                    <h4 class="card-title mb-4">본인확인</h4>
+                                    <h4 class="card-title mb-4">본인 인증</h4>
                                     <div class="row mb-4">
                                         <label class="col-form-label col-lg-2">예금주 명 *</label>
                                         <div class="col-md-10">
@@ -74,10 +74,17 @@
                                                    placeholder="예금주 명">
                                         </div>
                                     </div>
+                                    <div class="row mb-4">
+                                        <label class="col-form-label col-lg-2">전화번호 *</label>
+                                        <div class="col-md-10">
+                                            <input id="ph_number" value="" type="text" class="form-control"
+                                                   placeholder="전화번호 숫자만">
+                                        </div>
+                                    </div>
                                     <div class="row justify-content-end">
                                         <div class="col-lg-10">
                                             <button type="button" onclick="Won_shipment();"
-                                                    class="btn btn-primary info-change">본인인증
+                                                    class="btn btn-primary info-change">계좌 발급
                                             </button>
                                         </div>
                                     </div>
