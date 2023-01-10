@@ -1,30 +1,35 @@
 <!doctype html>
-<html lang="ko" data-layout="vertical" data-topbar="light" data-sidebar-size="lg" data-sidebar-image="none" data-body-image="img-1" data-preloader="disable">
+<html lang="ko" data-layout="vertical" data-topbar="light" data-sidebar-size="lg" data-sidebar-image="none"
+      data-body-image="img-1" data-preloader="disable">
 
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <title>{{env('APP_NAME')}} - 업체리스트</title>
-    <meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width" />
-    <meta content="Themesbrand" name="author" />
+    <meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width"/>
+    <meta content="Themesbrand" name="author"/>
     <!-- App favicon -->
     <link rel="shortcut icon" href="/assets/images/favicon.ico">
 
     <!-- jsvectormap css -->
-    <link href="/assets/libs/jsvectormap/css/jsvectormap.min.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/libs/jsvectormap/css/jsvectormap.min.css" rel="stylesheet" type="text/css"/>
 
     <!--Swiper slider css-->
-    <link href="/assets/libs/swiper/swiper-bundle.min.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/libs/swiper/swiper-bundle.min.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css"/>
+    <!--datatable responsive css-->
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css"/>
 
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
     <!-- Layout config Js -->
     <script src="/assets/js/layout.js"></script>
     <!-- Bootstrap Css -->
-    <link href="/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
     <!-- Icons Css -->
-    <link href="/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/css/icons.min.css" rel="stylesheet" type="text/css"/>
     <!-- App Css-->
-    <link href="/assets/css/app.min.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/css/app.min.css" rel="stylesheet" type="text/css"/>
     <!-- custom Css-->
-    <link href="/assets/css/custom.min.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/css/custom.min.css" rel="stylesheet" type="text/css"/>
 </head>
 
 <body>
@@ -53,7 +58,8 @@
 
                             <div class="page-title-right">
                                 <ol class="breadcrumb m-0">
-                                    <li class="breadcrumb-item"><a href="javascript: void(0);">{{env('APP_NAME')}}</a></li>
+                                    <li class="breadcrumb-item"><a href="javascript: void(0);">{{env('APP_NAME')}}</a>
+                                    </li>
                                     <li class="breadcrumb-item active">업체 리스트</li>
                                 </ol>
                             </div>
@@ -78,71 +84,99 @@
                                 <!--end col-->
                             </div>
                             <!--end row-->
-                                {{--본사 리스트 [관리자] --}}
-                                @if(count($data) != 0)
-                                    @if($_GET['mode'] == "all")
-                                        <div class="row">
-                                            <div class="col-xl">
-                                                <div class="card">
-                                                    <div class="card-header align-items-center d-flex">
-                                                        <h4>본사 리스트</h4>
-                                                    </div><!-- end card header -->
+                            <div class="row">
+                                <div class="col-xl-3 col-md-6">
+                                    <!-- card -->
+                                    <div class="card card-animate">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center">
+                                                <div class="flex-grow-1 overflow-hidden">
+                                                    <p class="text-uppercase fw-medium text-muted text-truncate mb-0">
+                                                        업체 총 잔액</p>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex align-items-end justify-content-between mt-4">
+                                                <div>
+                                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span
+                                                            id="today_money" class="counter-value"
+                                                            data-target="{{$total_money}}">0</span> 원</h4>
+                                                </div>
+                                                <div class="avatar-sm flex-shrink-0">
+                                                        <span class="avatar-title bg-soft-primary rounded fs-3">
+                                                            <i class="bx bx-money text-primary"></i>
+                                                        </span>
+                                                </div>
+                                            </div>
+                                        </div><!-- end card body -->
+                                    </div><!-- end card -->
+                                </div><!-- end col -->
+                            </div> <!-- end row-->
+                            {{--본사 리스트 [관리자] --}}
+                            @if(count($data) != 0)
+                                @if($_GET['mode'] == "all")
+                                    <div class="row">
+                                        <div class="col-xl">
+                                            <div class="card">
+                                                <div class="card-header align-items-center d-flex">
+                                                    <h4>본사 리스트</h4>
+                                                </div><!-- end card header -->
 
-                                                    <div class="card-body">
-                                                        <div class="table-responsive table-card">
-                                                            <table class="table table-borderless table-centered align-middle table-nowrap mb-0">
-                                                                <thead class="text-muted table-light">
-                                                                <tr class="text-center">
-                                                                    <th scope="col">ID</th>
-                                                                    <th scope="col">업체 명</th>
-                                                                    <th scope="col">업체 수수료</th>
-                                                                    <th scope="col">하부 지사</th>
-                                                                    <th scope="col">하부 총판</th>
-                                                                    <th scope="col">하부 가맹점</th>
-                                                                    <th scope="col">현재 잔액</th>
-                                                                    <th scope="col">생성일</th>
-                                                                    <th scope="col">상태</th>
-                                                                    @if(session('state') == 0 || session('state') == 1)
-                                                                    <th scope="col">수정</th>
+                                                <div class="card-body">
+                                                    <table class="display table table-bordered dt-responsive">
+                                                        <thead class="text-muted table-light">
+                                                        <tr class="text-center">
+                                                            <th scope="col">ID</th>
+                                                            <th scope="col">업체 명</th>
+                                                            <th scope="col">업체 수수료</th>
+                                                            <th scope="col">하부 지사</th>
+                                                            <th scope="col">하부 총판</th>
+                                                            <th scope="col">하부 가맹점</th>
+                                                            <th scope="col">현재 잔액</th>
+                                                            <th scope="col">생성일</th>
+                                                            <th scope="col">상태</th>
+                                                            @if(session('state') == 0 || session('state') == 1)
+                                                                <th scope="col">수정</th>
+                                                            @endif
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        @foreach($data  as $row)
+                                                            <tr class="text-center">
+                                                                <td>
+                                                                    <a class="fw-medium link-primary text-center">{{$row->id}}</a>
+                                                                </td>
+                                                                <td>{{$row->company_name}}</td>
+                                                                <td>{{$row->company_margin * 100}} %</td>
+                                                                <td>{{$row->branch_count}} 개 업체</td>
+                                                                <td>{{$row->distributor_key}} 개 업체</td>
+                                                                <td>{{$row->franchisee_count}} 개 업체</td>
+                                                                <td><span>{{number_format($row->money)}} 원</span></td>
+                                                                <td>{{$row->date_ymd}} {{$row->date_time}}</td>
+                                                                <td>
+                                                                    @if($row->withdraw_state == 0)
+                                                                        <span
+                                                                            class="badge badge-soft-success">출금 허용</span>
+                                                                    @else
+                                                                        <span
+                                                                            class="badge badge-soft-danger">출금 차단</span>
                                                                     @endif
-                                                                </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    @foreach($data  as $row)
-                                                                    <tr class="text-center">
-                                                                        <td>
-                                                                            <a class="fw-medium link-primary text-center">{{$row->id}}</a>
-                                                                        </td>
-                                                                        <td>{{$row->company_name}}</td>
-                                                                        <td>{{$row->company_margin * 100}} %</td>
-                                                                        <td>{{$row->branch_count}} 개 업체</td>
-                                                                        <td>{{$row->distributor_key}} 개 업체</td>
-                                                                        <td>{{$row->franchisee_count}} 개 업체</td>
-                                                                        <td><span>{{number_format($row->money)}} 원</span></td>
-                                                                        <td>{{$row->date_ymd}} {{$row->date_time}}</td>
-                                                                        <td>
-                                                                            @if($row->withdraw_state == 0)
-                                                                            <span class="badge badge-soft-success">출금 허용</span>
-                                                                            @else
-                                                                            <span class="badge badge-soft-danger">출금 차단</span>
-                                                                            @endif
-                                                                        </td>
-                                                                        @if(session('state') == 0 || session('state') == 1)
-                                                                        <td>
-                                                                            <a class="head_edit" data-id="{{$row->id}}" data-mode="head">수정</a>
-                                                                        </td>
-                                                                        @endif
-                                                                    </tr><!-- end tr -->
-                                                                    @endforeach
-                                                                </tbody><!-- end tbody -->
-                                                            </table><!-- end table -->
-                                                        </div>
-                                                    </div>
-                                                </div> <!-- .card-->
-                                            </div> <!-- .col-->
-                                        </div> <!-- end row-->
-                                    @elseif( $_GET['mode'] == "branch")
-                                        <div class="row">
+                                                                </td>
+                                                                @if(session('state') == 0 || session('state') == 1)
+                                                                    <td>
+                                                                        <a class="head_edit" data-id="{{$row->id}}"
+                                                                           data-mode="head">수정</a>
+                                                                    </td>
+                                                                @endif
+                                                            </tr><!-- end tr -->
+                                                        @endforeach
+                                                        </tbody><!-- end tbody -->
+                                                    </table><!-- end table -->
+                                                </div>
+                                            </div> <!-- .card-->
+                                        </div> <!-- .col-->
+                                    </div> <!-- end row-->
+                                @elseif( $_GET['mode'] == "branch")
+                                    <div class="row">
                                         <div class="col-xl">
                                             <div class="card">
                                                 <div class="card-header align-items-center d-flex">
@@ -151,7 +185,7 @@
 
                                                 <div class="card-body">
                                                     <div class="table-responsive table-card">
-                                                        <table class="table table-borderless table-centered align-middle table-nowrap mb-0">
+                                                        <table class="display table table-bordered dt-responsive">
                                                             <thead class="text-muted table-light">
                                                             <tr class="text-center">
                                                                 <th scope="col">ID</th>
@@ -175,40 +209,43 @@
                                                                     <td>{{$row->company_margin * 100}} %</td>
                                                                     <td>{{$row->distributor_key}} 개 업체</td>
                                                                     <td>{{$row->franchisee_count}} 개 업체</td>
-                                                                    <td><span>{{number_format($row->money)}} 원</span></td>
+                                                                    <td><span>{{number_format($row->money)}} 원</span>
+                                                                    </td>
                                                                     <td>{{$row->date_ymd}} {{$row->date_time}}</td>
                                                                     <td>
                                                                         @if($row->withdraw_state == 0)
-                                                                            <span class="badge badge-soft-success">출금 허용</span>
+                                                                            <span
+                                                                                class="badge badge-soft-success">출금 허용</span>
                                                                         @else
-                                                                            <span class="badge badge-soft-danger">출금 차단</span>
+                                                                            <span
+                                                                                class="badge badge-soft-danger">출금 차단</span>
                                                                         @endif
                                                                     </td>
                                                                     @if(session('state') == 0 || session('state') == 1)
-                                                                    <td>
-                                                                        <a class="company_edit" data-id="{{$row->id}}" data-mode="franchisee">수정</a>
-                                                                    </td>
+                                                                        <td>
+                                                                            <a class="company_edit"
+                                                                               data-id="{{$row->id}}"
+                                                                               data-mode="franchisee">수정</a>
+                                                                        </td>
                                                                     @endif
                                                                 </tr><!-- end tr -->
                                                             @endforeach
                                                             </tbody><!-- end tbody -->
                                                         </table><!-- end table -->
                                                     </div>
-                                                </div>
-                                            </div> <!-- .card-->
-                                        </div> <!-- .col-->
-                                    </div> <!-- end row-->
-                                    @elseif( $_GET['mode'] == "distributor")
-                                        <div class="row">
-                                            <div class="col-xl">
-                                                <div class="card">
-                                                    <div class="card-header align-items-center d-flex">
-                                                        <h4>총판 리스트</h4>
-                                                    </div><!-- end card header -->
+                                                </div> <!-- .card-->
+                                            </div> <!-- .col-->
+                                        </div> <!-- end row-->
+                                        @elseif( $_GET['mode'] == "distributor")
+                                            <div class="row">
+                                                <div class="col-xl">
+                                                    <div class="card">
+                                                        <div class="card-header align-items-center d-flex">
+                                                            <h4>총판 리스트</h4>
+                                                        </div><!-- end card header -->
 
-                                                    <div class="card-body">
-                                                        <div class="table-responsive table-card">
-                                                            <table class="table table-borderless table-centered align-middle table-nowrap mb-0">
+                                                        <div class="card-body">
+                                                            <table class="display table table-bordered dt-responsive">
                                                                 <thead class="text-muted table-light">
                                                                 <tr class="text-center">
                                                                     <th scope="col">ID</th>
@@ -219,7 +256,7 @@
                                                                     <th scope="col">생성일</th>
                                                                     <th scope="col">상태</th>
                                                                     @if(session('state') == 0 || session('state') == 1)
-                                                                    <th scope="col">수정</th>
+                                                                        <th scope="col">수정</th>
                                                                     @endif
                                                                 </tr>
                                                                 </thead>
@@ -232,7 +269,9 @@
                                                                         <td>{{$row->company_name}}</td>
                                                                         <td>{{$row->company_margin * 100}} %</td>
                                                                         <td>{{$row->franchisee_count}} 개 업체</td>
-                                                                        <td><span>{{number_format($row->money)}} 원</span></td>
+                                                                        <td>
+                                                                            <span>{{number_format($row->money)}} 원</span>
+                                                                        </td>
                                                                         <td>{{$row->date_ymd}} {{$row->date_time}}</td>
                                                                         <td>
                                                                             @if($row->withdraw_state == 0)
@@ -242,30 +281,30 @@
                                                                             @endif
                                                                         </td>
                                                                         @if(session('state') == 0 || session('state') == 1)
-                                                                        <td>
-                                                                            <a class="company_edit" data-id="{{$row->id}}" data-mode="franchisee">수정</a>
-                                                                        </td>
+                                                                            <td>
+                                                                                <a class="company_edit"
+                                                                                   data-id="{{$row->id}}"
+                                                                                   data-mode="franchisee">수정</a>
+                                                                            </td>
                                                                         @endif
                                                                     </tr><!-- end tr -->
                                                                 @endforeach
                                                                 </tbody><!-- end tbody -->
                                                             </table><!-- end table -->
                                                         </div>
-                                                    </div>
-                                                </div> <!-- .card-->
-                                            </div> <!-- .col-->
-                                        </div> <!-- end row-->
-                                    @elseif($_GET['mode'] == "franchisee")
-                                        <div class="row">
-                                            <div class="col-xl">
-                                                <div class="card">
-                                                    <div class="card-header align-items-center d-flex">
-                                                        <h4>가맹점 리스트</h4>
-                                                    </div><!-- end card header -->
+                                                    </div> <!-- .card-->
+                                                </div> <!-- .col-->
+                                            </div> <!-- end row-->
+                                        @elseif($_GET['mode'] == "franchisee")
+                                            <div class="row">
+                                                <div class="col-xl">
+                                                    <div class="card">
+                                                        <div class="card-header align-items-center d-flex">
+                                                            <h4>가맹점 리스트</h4>
+                                                        </div><!-- end card header -->
 
-                                                    <div class="card-body">
-                                                        <div class="table-responsive table-card">
-                                                            <table class="table table-borderless table-centered align-middle table-nowrap mb-0">
+                                                        <div class="card-body">
+                                                            <table class="display table table-bordered dt-responsive">
                                                                 <thead class="text-muted table-light">
                                                                 <tr class="text-center">
                                                                     <th scope="col">ID</th>
@@ -275,7 +314,7 @@
                                                                     <th scope="col">생성일</th>
                                                                     <th scope="col">상태</th>
                                                                     @if(session('state') == 0 || session('state') == 1)
-                                                                    <th scope="col">수정</th>
+                                                                        <th scope="col">수정</th>
                                                                     @endif
                                                                 </tr>
                                                                 </thead>
@@ -287,7 +326,9 @@
                                                                         </td>
                                                                         <td>{{$row->company_name}}</td>
                                                                         <td>{{$row->company_margin * 100}} %</td>
-                                                                        <td><span>{{number_format($row->money)}} 원</span></td>
+                                                                        <td>
+                                                                            <span>{{number_format($row->money)}} 원</span>
+                                                                        </td>
                                                                         <td>{{$row->date_ymd}} {{$row->date_time}}</td>
                                                                         <td>
                                                                             @if($row->withdraw_state == 0)
@@ -297,234 +338,262 @@
                                                                             @endif
                                                                         </td>
                                                                         @if(session('state') == 0 || session('state') == 1)
-                                                                        <td>
-                                                                            <a class="franchisee_edit" data-id="{{$row->id}}" data-mode="franchisee">수정</a>
-                                                                        </td>
+                                                                            <td>
+                                                                                <a class="franchisee_edit"
+                                                                                   data-id="{{$row->id}}"
+                                                                                   data-mode="franchisee">수정</a>
+                                                                            </td>
                                                                         @endif
                                                                     </tr><!-- end tr -->
                                                                 @endforeach
                                                                 </tbody><!-- end tbody -->
                                                             </table><!-- end table -->
                                                         </div>
-                                                    </div>
-                                                </div> <!-- .card-->
-                                            </div> <!-- .col-->
-                                        </div> <!-- end row-->
-                                @endif
-                            @endif
-                        </div> <!-- end .h-100-->
-                    </div> <!-- end col -->
-                </div>
-            </div>
-            <!-- container-fluid -->
-        </div>
-        <!-- End Page-content -->
-        <!-- Grids in modals -->
-        <!--본사 수정-->
-        <div class="modal fade" id="head_company_edit" tabindex="-1" aria-labelledby="exampleModalgridLabel" aria-modal="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalgridLabel">업체수정</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="javascript:void(0);">
-                            <div class="row">
-                                <div class="col-lg-12 mb-3">
-                                    <div>
-                                        <label for="firstName" class="form-label">업체 이름</label>
-                                        <input type="text" class="form-control" id="company_name" placeholder="">
-                                    </div>
-                                </div><!--end col-->
-                                <div class="col-lg-12 mb-3">
-                                    <div>
-                                        <label for="lastName" class="form-label">수수료</label>
-                                        <input type="text" class="form-control" id="company_margin" placeholder="">
-                                    </div>
-                                </div><!--end col-->
-                                <div class="col-lg-12 mb-3">
-                                    <div>
-                                        <label for="lastName" class="form-label">잔액</label>
-                                        <input type="text" class="form-control" id="company_money" placeholder="">
-                                    </div>
-                                </div><!--end col-->
-                                <div class="col-lg-12 mb-3">
-                                    <label for="genderInput" class="form-label">출금 상태</label>
-                                    <div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="w_state" id="w_state" value="0">
-                                            <label class="form-check-label" for="w_state">출금 가능</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="w_state" id="w_state2" value="1">
-                                            <label class="form-check-label" for="w_state2">출금 불가</label>
-                                        </div>
-                                    </div>
-                                </div><!--end col-->
-                                <div class="col-lg-12 mb-3">
-                                    <label for="genderInput" class="form-label">장 구분</label>
-                                    <div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="a_state" id="a_state1" value="0">
-                                            <label class="form-check-label" for="a_state1">가상계좌 사용</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="a_state" id="a_state2" value="1">
-                                            <label class="form-check-label" for="a_state2">RTPay 사용</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="a_state" id="a_state3" value="2">
-                                            <label class="form-check-label" for="a_state2">둘다 사용</label>
-                                        </div>
-                                    </div>
-                                </div><!--end col-->
-                                <div class="col-lg-12">
-                                    <div class="hstack gap-2 justify-content-end">
-                                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">취소</button>
-                                        <button type="button" class="company_delete btn btn-danger">업체 삭제</button>
-                                        <button id="head_save" type="button" class="btn btn-primary" >저장</button>
-                                    </div>
-                                </div><!--end col-->
-                            </div><!--end row-->
-                        </form>
+                                                    </div> <!-- .card-->
+                                                </div> <!-- .col-->
+                                            </div> <!-- end row-->
+                                        @endif
+                                        @endif
+                                    </div> <!-- end .h-100-->
+                        </div> <!-- end col -->
                     </div>
                 </div>
+                <!-- container-fluid -->
             </div>
-        </div>
-        <!--가맹점 수정-->
-        <div class="modal fade" id="franchisee_edit" tabindex="-1" aria-labelledby="exampleModalgridLabel" aria-modal="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalgridLabel">업체수정</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <!-- End Page-content -->
+            <!-- Grids in modals -->
+            <!--본사 수정-->
+            <div class="modal fade" id="head_company_edit" tabindex="-1" aria-labelledby="exampleModalgridLabel"
+                 aria-modal="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalgridLabel">업체수정</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="javascript:void(0);">
+                                <div class="row">
+                                    <div class="col-lg-12 mb-3">
+                                        <div>
+                                            <label for="firstName" class="form-label">업체 이름</label>
+                                            <input type="text" class="form-control" id="company_name" placeholder="">
+                                        </div>
+                                    </div><!--end col-->
+                                    <div class="col-lg-12 mb-3">
+                                        <div>
+                                            <label for="lastName" class="form-label">수수료</label>
+                                            <input type="text" class="form-control" id="company_margin" placeholder="">
+                                        </div>
+                                    </div><!--end col-->
+                                    <div class="col-lg-12 mb-3">
+                                        <div>
+                                            <label for="lastName" class="form-label">잔액</label>
+                                            <input type="text" class="form-control" id="company_money" placeholder="">
+                                        </div>
+                                    </div><!--end col-->
+                                    <div class="col-lg-12 mb-3">
+                                        <label for="genderInput" class="form-label">출금 상태</label>
+                                        <div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="w_state" id="w_state"
+                                                       value="0">
+                                                <label class="form-check-label" for="w_state">출금 가능</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="w_state"
+                                                       id="w_state2" value="1">
+                                                <label class="form-check-label" for="w_state2">출금 불가</label>
+                                            </div>
+                                        </div>
+                                    </div><!--end col-->
+                                    <div class="col-lg-12 mb-3">
+                                        <label for="genderInput" class="form-label">장 구분</label>
+                                        <div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="a_state"
+                                                       id="a_state1" value="0">
+                                                <label class="form-check-label" for="a_state1">가상계좌 사용</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="a_state"
+                                                       id="a_state2" value="1">
+                                                <label class="form-check-label" for="a_state2">RTPay 사용</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="a_state"
+                                                       id="a_state3" value="2">
+                                                <label class="form-check-label" for="a_state2">둘다 사용</label>
+                                            </div>
+                                        </div>
+                                    </div><!--end col-->
+                                    <div class="col-lg-12">
+                                        <div class="hstack gap-2 justify-content-end">
+                                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">취소
+                                            </button>
+                                            <button type="button" class="company_delete btn btn-danger">업체 삭제</button>
+                                            <button id="head_save" type="button" class="btn btn-primary">저장</button>
+                                        </div>
+                                    </div><!--end col-->
+                                </div><!--end row-->
+                            </form>
+                        </div>
                     </div>
-                    <div class="modal-body">
-                        <form action="javascript:void(0);">
-                            <div class="row">
-                                <div class="col-lg-12 mb-3">
-                                    <div>
-                                        <label for="firstName" class="form-label">업체 이름</label>
-                                        <input type="text" class="form-control" id="franchisee_name" placeholder="">
-                                    </div>
-                                </div><!--end col-->
-                                <div class="col-lg-12 mb-3">
-                                    <div>
-                                        <label for="lastName" class="form-label">수수료</label>
-                                        <input type="text" class="form-control" id="franchisee_margin" placeholder="">
-                                    </div>
-                                </div><!--end col-->
-                                <div class="col-lg-12 mb-3">
-                                    <div>
-                                        <label for="lastName" class="form-label">잔액</label>
-                                        <input type="text" class="form-control" id="franchisee_money" placeholder="">
-                                    </div>
-                                </div><!--end col-->
-                                <div class="col-lg-12 mb-3">
-                                    <label for="genderInput" class="form-label">출금 상태</label>
-                                    <div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="franchisee_w_state" id="franchisee_w_state1" value="0">
-                                            <label class="form-check-label" for="franchisee_w_state1">출금 가능</label>
+                </div>
+            </div>
+            <!--가맹점 수정-->
+            <div class="modal fade" id="franchisee_edit" tabindex="-1" aria-labelledby="exampleModalgridLabel"
+                 aria-modal="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalgridLabel">업체수정</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="javascript:void(0);">
+                                <div class="row">
+                                    <div class="col-lg-12 mb-3">
+                                        <div>
+                                            <label for="firstName" class="form-label">업체 이름</label>
+                                            <input type="text" class="form-control" id="franchisee_name" placeholder="">
                                         </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="franchisee_w_state" id="franchisee_w_state2" value="1">
-                                            <label class="form-check-label" for="franchisee_w_state2">출금 불가</label>
+                                    </div><!--end col-->
+                                    <div class="col-lg-12 mb-3">
+                                        <div>
+                                            <label for="lastName" class="form-label">수수료</label>
+                                            <input type="text" class="form-control" id="franchisee_margin"
+                                                   placeholder="">
                                         </div>
-                                    </div>
-                                </div><!--end col-->
-                                <div class="col-lg-12 mb-3">
-                                    <label for="genderInput" class="form-label">가상계좌 옵션</label>
-                                    <div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="franchisee_bank_mode_int" id="franchisee_bank_mode_int1" value="0">
-                                            <label class="form-check-label" for="franchisee_bank_mode_int">영구 계좌만 사용</label>
+                                    </div><!--end col-->
+                                    <div class="col-lg-12 mb-3">
+                                        <div>
+                                            <label for="lastName" class="form-label">잔액</label>
+                                            <input type="text" class="form-control" id="franchisee_money"
+                                                   placeholder="">
                                         </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="franchisee_bank_mode_int" id="franchisee_bank_mode_int2" value="1">
-                                            <label class="form-check-label" for="franchisee_bank_mode_int">임시 계좌만 사용</label>
+                                    </div><!--end col-->
+                                    <div class="col-lg-12 mb-3">
+                                        <label for="genderInput" class="form-label">출금 상태</label>
+                                        <div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="franchisee_w_state"
+                                                       id="franchisee_w_state1" value="0">
+                                                <label class="form-check-label" for="franchisee_w_state1">출금 가능</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="franchisee_w_state"
+                                                       id="franchisee_w_state2" value="1">
+                                                <label class="form-check-label" for="franchisee_w_state2">출금 불가</label>
+                                            </div>
                                         </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="franchisee_bank_mode_int" id="franchisee_bank_mode_int3" value="2">
-                                            <label class="form-check-label" for="franchisee_bank_mode_int">둘다 사용</label>
+                                    </div><!--end col-->
+                                    <div class="col-lg-12 mb-3">
+                                        <label for="genderInput" class="form-label">가상계좌 옵션</label>
+                                        <div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio"
+                                                       name="franchisee_bank_mode_int" id="franchisee_bank_mode_int1"
+                                                       value="0">
+                                                <label class="form-check-label" for="franchisee_bank_mode_int">영구 계좌만
+                                                    사용</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio"
+                                                       name="franchisee_bank_mode_int" id="franchisee_bank_mode_int2"
+                                                       value="1">
+                                                <label class="form-check-label" for="franchisee_bank_mode_int">임시 계좌만
+                                                    사용</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio"
+                                                       name="franchisee_bank_mode_int" id="franchisee_bank_mode_int3"
+                                                       value="2">
+                                                <label class="form-check-label" for="franchisee_bank_mode_int">둘다
+                                                    사용</label>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div><!--end col-->
-                                <div class="col-lg-12">
-                                    <div class="hstack gap-2 justify-content-end">
-                                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">취소</button>
-                                        <button type="button" class="company_delete btn btn-danger">업체 삭제</button>
+                                    </div><!--end col-->
+                                    <div class="col-lg-12">
+                                        <div class="hstack gap-2 justify-content-end">
+                                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">취소
+                                            </button>
+                                            <button type="button" class="company_delete btn btn-danger">업체 삭제</button>
 
-                                        <button id="franchisee_save" type="button" class="btn btn-primary" >저장</button>
-                                    </div>
-                                </div><!--end col-->
-                            </div><!--end row-->
-                        </form>
+                                            <button id="franchisee_save" type="button" class="btn btn-primary">저장
+                                            </button>
+                                        </div>
+                                    </div><!--end col-->
+                                </div><!--end row-->
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <!--기타업체 수정-->
-        <div class="modal fade" id="company_edit" tabindex="-1" aria-labelledby="exampleModalgridLabel" aria-modal="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalgridLabel">업체수정</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="javascript:void(0);">
-                            <div class="row">
-                                <div class="col-lg-12 mb-3">
-                                    <div>
-                                        <label for="firstName" class="form-label">업체 이름</label>
-                                        <input type="text" class="form-control" id="name" placeholder="">
-                                    </div>
-                                </div><!--end col-->
-                                <div class="col-lg-12 mb-3">
-                                    <div>
-                                        <label for="lastName" class="form-label">수수료</label>
-                                        <input type="text" class="form-control" id="margin" placeholder="">
-                                    </div>
-                                </div><!--end col-->
-                                <div class="col-lg-12 mb-3">
-                                    <div>
-                                        <label for="lastName" class="form-label">잔액</label>
-                                        <input type="text" class="form-control" id="money" placeholder="">
-                                    </div>
-                                </div><!--end col-->
-                                <div class="col-lg-12 mb-3">
-                                    <label for="genderInput" class="form-label">출금 상태</label>
-                                    <div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="company_w_state" id="company_w_state1" value="0">
-                                            <label class="form-check-label" for="company_w_state1">출금 가능</label>
+            <!--기타업체 수정-->
+            <div class="modal fade" id="company_edit" tabindex="-1" aria-labelledby="exampleModalgridLabel"
+                 aria-modal="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalgridLabel">업체수정</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="javascript:void(0);">
+                                <div class="row">
+                                    <div class="col-lg-12 mb-3">
+                                        <div>
+                                            <label for="firstName" class="form-label">업체 이름</label>
+                                            <input type="text" class="form-control" id="name" placeholder="">
                                         </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="company_w_state" id="company_w_state2" value="1">
-                                            <label class="form-check-label" for="company_w_state2">출금 불가</label>
+                                    </div><!--end col-->
+                                    <div class="col-lg-12 mb-3">
+                                        <div>
+                                            <label for="lastName" class="form-label">수수료</label>
+                                            <input type="text" class="form-control" id="margin" placeholder="">
                                         </div>
-                                    </div>
-                                </div><!--end col-->
-                                <div class="col-lg-12">
-                                    <div class="hstack gap-2 justify-content-end">
+                                    </div><!--end col-->
+                                    <div class="col-lg-12 mb-3">
+                                        <div>
+                                            <label for="lastName" class="form-label">잔액</label>
+                                            <input type="text" class="form-control" id="money" placeholder="">
+                                        </div>
+                                    </div><!--end col-->
+                                    <div class="col-lg-12 mb-3">
+                                        <label for="genderInput" class="form-label">출금 상태</label>
+                                        <div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="company_w_state"
+                                                       id="company_w_state1" value="0">
+                                                <label class="form-check-label" for="company_w_state1">출금 가능</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="company_w_state"
+                                                       id="company_w_state2" value="1">
+                                                <label class="form-check-label" for="company_w_state2">출금 불가</label>
+                                            </div>
+                                        </div>
+                                    </div><!--end col-->
+                                    <div class="col-lg-12">
+                                        <div class="hstack gap-2 justify-content-end">
 
-                                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">취소</button>
-                                        <button type="button" class="company_delete btn btn-danger">업체 삭제</button>
-                                        <button id="company_save" type="button" class="btn btn-primary" >저장</button>
-                                    </div>
-                                </div><!--end col-->
-                            </div><!--end row-->
-                        </form>
+                                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">취소
+                                            </button>
+                                            <button type="button" class="company_delete btn btn-danger">업체 삭제</button>
+                                            <button id="company_save" type="button" class="btn btn-primary">저장</button>
+                                        </div>
+                                    </div><!--end col-->
+                                </div><!--end row-->
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
+            @include('include.fotter')
         </div>
-        @include('include.fotter')
+        <!-- end main content-->
     </div>
-    <!-- end main content-->
-
 </div>
 <!-- END layout-wrapper -->
 
@@ -549,7 +618,18 @@
 <!-- App js -->
 <script src="/assets/js/app.js"></script>
 
-<script src="//code.jquery.com/jquery-3.6.2.js" integrity="sha256-pkn2CUZmheSeyssYw3vMp1+xyub4m+e+QK4sQskvuo4=" crossorigin="anonymous"></script>
+<script src="//code.jquery.com/jquery-3.6.2.js" integrity="sha256-pkn2CUZmheSeyssYw3vMp1+xyub4m+e+QK4sQskvuo4="
+        crossorigin="anonymous"></script>
+<!--datatable js-->
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
 <!-- sweetalert2 -->
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!-- jquery-cookie -->

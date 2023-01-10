@@ -15,7 +15,6 @@ use App\Http\Controllers\Transaction_Controller;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 Route::get('/',[Controller::class,'Index'] )->middleware('Token_Check');
 
 //가상계좌 발급 내역

@@ -1288,6 +1288,11 @@ class Transaction_Controller extends Controller
         $company_key = User::where('key', $request->user()->key)->value('company_key');
         if (account_list::where('company_key', $company_key)->exists()) {
             $data = account_list::where('company_key', $company_key)->get();
+            foreach ($data as $row){
+                $row['total_money'] = number_format(transaction_history::where('transaction_user_name',$row->user_name)->sum('transaction_money'))." 원";
+                $row['total_count']= transaction_history::where('transaction_user_name',$row->user_name)->count()." 건";
+                $row['last_update']= transaction_history::where('transaction_user_name',$row->user_name)->value('date_ymd');
+            }
         } else {
             $data = null;
         }

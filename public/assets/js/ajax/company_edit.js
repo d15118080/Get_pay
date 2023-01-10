@@ -1,4 +1,4 @@
-import {Token_Check} from './export.js';
+import {Token_Check,lang_kor} from './export.js';
 
 Token_Check();
 let ids
@@ -338,4 +338,11 @@ function company_delete() {
         },
     });
 }
+
+
+$('.table').DataTable({
+    language: lang_kor,
+    destroy: true,
+    order: [[1, 'asc']],
+});
 

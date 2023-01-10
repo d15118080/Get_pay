@@ -50,7 +50,7 @@ window.addEventListener('message', function(e) {
         Swal.close()
         Account_everlasting_issuance(result.data.account_info.holder,result.data.account_info.account)
     }catch{
-       
+
     }
 });
 

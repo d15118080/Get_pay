@@ -28,7 +28,10 @@ Token_Check();
                         {data: "account_number"},
                         {data: "bank_name"},
                         {data: "account_state"},
-                        {data: "date_ymd"}
+                        {data: "date_ymd"},
+                        {data: "total_count"},
+                        {data: "total_money"},
+                        {data: "last_update"}
                     ],
                 });
 

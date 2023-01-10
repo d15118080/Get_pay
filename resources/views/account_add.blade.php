@@ -227,6 +227,12 @@
                                 <div class="card-body">
                                     <h4 class="card-title mb-4">계좌발급 완료</h4>
                                     <div class="row mb-4">
+                                        <label class="col-form-label col-lg-2">예금주</label>
+                                        <div class="col-md-10">
+                                            <input id="user_name" value="" type="text" class="form-control" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4">
                                         <label class="col-form-label col-lg-2">입금하실 계좌번호 (경남은행)</label>
                                         <div class="col-md-10">
                                             <input id="bankAcctNo" value="" type="text" class="form-control" disabled>

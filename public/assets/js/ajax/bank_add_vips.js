@@ -91,6 +91,7 @@ function Account_everlasting_issuance() {
             $("#three").css("display", "none");
             $("#for").css("display", "");
             $("#bankAcctNo").val(res.data.bank_no);
+            $("#user_name").val($('#bank_user_name').val());
             Swal.close()
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {

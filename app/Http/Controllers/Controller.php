@@ -252,6 +252,7 @@ class Controller extends BaseController
         //관리자가 본사 리스트 요청
         if ($_GET['mode'] == "all" && session('state') == 0) {
             $data = company::where('state', 1)->get();
+            $money = company::where('state', 1)->sum('money');
             foreach ($data as $row) {
                 $row['branch_count'] = company::where('head_key', $row->company_key)->where('state', 2)->count(); //각 본사의 연결된 지사 카운팅
                 $row['distributor_key'] = company::where('head_key', $row->company_key)->where('state', 3)->count(); //각 본사의 연결된 총판 카운팅
@@ -262,6 +263,7 @@ class Controller extends BaseController
         //관리자가 지사 리스트 요청
         if ($_GET['mode'] == "branch" && session('state') == 0) {
             $data = company::where('state', 2)->get();
+            $money = company::where('state', 2)->sum('money');
             foreach ($data as $row) {
                 $row['distributor_key'] = company::where('branch_key', $row->company_key)->where('state', 3)->count(); //각 지사의 연결된 총판 카운팅
                 $row['franchisee_count'] = company::where('branch_key', $row->company_key)->where('state', 4)->count(); //각 지사의 연결된 가맹점 카운팅
@@ -271,6 +273,7 @@ class Controller extends BaseController
         //관리자가 총판 리스트 요청
         if ($_GET['mode'] == "distributor" && session('state') == 0) {
             $data = company::where('state', 3)->get();
+            $money = company::where('state', 3)->sum('money');
             foreach ($data as $row) {
                 $row['franchisee_count'] = company::where('distributor_key', $row->company_key)->where('state', 4)->count(); //각 총판의 연결된 가맹점 카운팅
             }
@@ -279,6 +282,7 @@ class Controller extends BaseController
         //관리자가 가맹점 리스트 요청
         if ($_GET['mode'] == "franchisee" && session('state') == 0) {
             $data = company::where('state', 4)->get();
+            $money = company::where('state', 4)->sum('money');
         }
 
         //본사가 지사 리스트 요청
@@ -286,6 +290,7 @@ class Controller extends BaseController
             $HToken = base_64_end_code_de($_COOKIE['H-Token'], _key_, _iv_);
             $company_key = User::where('key', $HToken)->value('company_key');
             $data = company::where('head_key', $company_key)->where('state', 2)->get();
+            $money = company::where('head_key', $company_key)->where('state', 2)->sum('money');
             foreach ($data as $row) {
                 $row['distributor_key'] = company::where('branch_key', $row->company_key)->where('state', 3)->count(); //각 지사의 연결된 총판 카운팅
                 $row['franchisee_count'] = company::where('branch_key', $row->company_key)->where('state', 4)->count(); //각 지사의 연결된 가맹점 카운팅
@@ -297,6 +302,8 @@ class Controller extends BaseController
             $HToken = base_64_end_code_de($_COOKIE['H-Token'], _key_, _iv_);
             $company_key = User::where('key', $HToken)->value('company_key');
             $data = company::where('head_key', $company_key)->where('state', 3)->get();
+            $money = company::where('head_key', $company_key)->where('state', 3)->sum('money');
+
             foreach ($data as $row) {
                 $row['franchisee_count'] = company::where('distributor_key', $row->company_key)->where('state', 4)->count(); //각 총판의 연결된 가맹점 카운팅
             }
@@ -307,6 +314,8 @@ class Controller extends BaseController
             $HToken = base_64_end_code_de($_COOKIE['H-Token'], _key_, _iv_);
             $company_key = User::where('key', $HToken)->value('company_key');
             $data = company::where('head_key', $company_key)->where('state', 4)->get();
+            $money = company::where('head_key', $company_key)->where('state', 4)->sum('money');
+
         }
 
         //지사가 총판 리스트 요청
@@ -314,6 +323,8 @@ class Controller extends BaseController
             $HToken = base_64_end_code_de($_COOKIE['H-Token'], _key_, _iv_);
             $company_key = User::where('key', $HToken)->value('company_key');
             $data = company::where('branch_key', $company_key)->where('state', 3)->get();
+            $money = company::where('branch_key', $company_key)->where('state', 3)->sum('money');
+
             foreach ($data as $row) {
                 $row['franchisee_count'] = company::where('distributor_key', $row->company_key)->where('state', 4)->count(); //각 총판의 연결된 가맹점 카운팅
             }
@@ -324,6 +335,8 @@ class Controller extends BaseController
             $HToken = base_64_end_code_de($_COOKIE['H-Token'], _key_, _iv_);
             $company_key = User::where('key', $HToken)->value('company_key');
             $data = company::where('branch_key', $company_key)->where('state', 4)->get();
+            $money = company::where('branch_key', $company_key)->where('state', 4)->sum('money');
+
         }
 
         //총판이 가맹점 리스트 요청
@@ -331,8 +344,10 @@ class Controller extends BaseController
             $HToken = base_64_end_code_de($_COOKIE['H-Token'], _key_, _iv_);
             $company_key = User::where('key', $HToken)->value('company_key');
             $data = company::where('distributor_key', $company_key)->where('state', 4)->get();
+            $money = company::where('distributor_key', $company_key)->where('state', 4)->sum('money');
         }
-        return view('company_lists', ['data' => $data]);
+
+        return view('company_lists', ['data' => $data,'total_money'=>$money]);
     }
 
     //정산 내역 페이지
