@@ -370,10 +370,10 @@ class Controller extends BaseController
         }
         //관리자 일경우
         if (session('state') == 0) {
-            $compay_lists = company::get();
+            $compay_lists = company::orderBy('company_name', 'asc')->get();
             //본사일 경우
         } elseif (session('state') == 1) {
-            $compay_lists = company::where('head_key', $company_key)->get();
+            $compay_lists = company::orderBy('company_name', 'asc')->where('head_key', $company_key)->get();
         } else {
             $compay_lists = null;
         }
@@ -389,16 +389,16 @@ class Controller extends BaseController
         }
         //관리자 일경우
         if (session('state') == 0) {
-            $compay_lists = company::where('state', 4)->get();
+            $compay_lists = company::where('state', 4)->orderBy('company_name', 'asc')->get();
             //본사일 경우
         } elseif (session('state') == 1) {
-            $compay_lists = company::where('head_key', $company_key)->where('state', 4)->get();
+            $compay_lists = company::where('head_key', $company_key)->where('state', 4)->orderBy('company_name', 'asc')->get();
             //지사일 경우
         } elseif (session('state') == 2) {
-            $compay_lists = company::where('branch_key', $company_key)->where('state', 4)->get();
+            $compay_lists = company::where('branch_key', $company_key)->where('state', 4)->orderBy('company_name', 'asc')->get();
             //총판일 경우
         } elseif (session('state') == 3) {
-            $compay_lists = company::where('distributor_key', $company_key)->where('state', 4)->get();
+            $compay_lists = company::where('distributor_key', $company_key)->where('state', 4)->orderBy('company_name', 'asc')->get();
         } else {
             $compay_lists = null;
         }
@@ -481,7 +481,7 @@ class Controller extends BaseController
     //정산 요청 페이지
     public function Calculate_view(Request $request)
     {
-        $bank_data = bank_list::get();
+        $bank_data = bank_list::orderBy('bank_name', 'asc')->get();
         $HToken = base_64_end_code_de($_COOKIE['H-Token'], _key_, _iv_);
         if (!session('state') == 0) {
             $company_key = User::where('key', $HToken)->value('company_key');
