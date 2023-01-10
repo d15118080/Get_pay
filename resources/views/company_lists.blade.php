@@ -312,6 +312,10 @@
                                                                     <th scope="col">업체 수수료</th>
                                                                     <th scope="col">현재 잔액</th>
                                                                     <th scope="col">생성일</th>
+                                                                    <th scope="col">금일 거래액</th>
+                                                                    <th scope="col">금일 거래건수</th>
+                                                                    <th scope="col">금일 정산금액</th>
+                                                                    <th scope="col">금일 정산건수</th>
                                                                     <th scope="col">상태</th>
                                                                     @if(session('state') == 0 || session('state') == 1)
                                                                         <th scope="col">수정</th>
@@ -330,6 +334,10 @@
                                                                             <span>{{number_format($row->money)}} 원</span>
                                                                         </td>
                                                                         <td>{{$row->date_ymd}} {{$row->date_time}}</td>
+                                                                        <td>{{number_format($row->today_money)}} 원</td>
+                                                                        <td>{{number_format($row->today_count)}} 건</td>
+                                                                        <td>{{number_format($row->today_calculate_money)}} 원</td>
+                                                                        <td>{{number_format($row->today_calculate_count)}} 건</td>
                                                                         <td>
                                                                             @if($row->withdraw_state == 0)
                                                                                 <span class="badge badge-soft-success">출금 허용</span>

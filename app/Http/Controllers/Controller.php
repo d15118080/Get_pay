@@ -283,6 +283,12 @@ class Controller extends BaseController
         if ($_GET['mode'] == "franchisee" && session('state') == 0) {
             $data = company::where('state', 4)->get();
             $money = company::where('state', 4)->sum('money');
+            foreach ($data as $row){
+                $row['today_money'] = transaction_history::where('company_key',$row->company_key)->where('date_ymd',date('Y-m-d'))->sum('transaction_money'); //금일 입금 금액
+                $row['today_count'] = transaction_history::where('company_key',$row->company_key)->where('date_ymd',date('Y-m-d'))->count(); //금일 입금 건수
+                $row['today_calculate_money'] = calculate::where('company_key',$row->company_key)->where('date_ymd',date('Y-m-d'))->where('state','완료')->sum('calculate_money'); //금일 정산 금액
+                $row['today_calculate_count'] = calculate::where('company_key',$row->company_key)->where('date_ymd',date('Y-m-d'))->where('state','완료')->count(); //금일 정산 건수
+            }
         }
 
         //본사가 지사 리스트 요청
@@ -315,7 +321,12 @@ class Controller extends BaseController
             $company_key = User::where('key', $HToken)->value('company_key');
             $data = company::where('head_key', $company_key)->where('state', 4)->get();
             $money = company::where('head_key', $company_key)->where('state', 4)->sum('money');
-
+            foreach ($data as $row){
+                $row['today_money'] = transaction_history::where('company_key',$row->company_key)->where('date_ymd',date('Y-m-d'))->sum('transaction_money'); //금일 입금 금액
+                $row['today_count'] = transaction_history::where('company_key',$row->company_key)->where('date_ymd',date('Y-m-d'))->count(); //금일 입금 건수
+                $row['today_calculate_money'] = calculate::where('company_key',$row->company_key)->where('date_ymd',date('Y-m-d'))->where('state','완료')->sum('calculate_money'); //금일 정산 금액
+                $row['today_calculate_count'] = calculate::where('company_key',$row->company_key)->where('date_ymd',date('Y-m-d'))->where('state','완료')->count(); //금일 정산 건수
+            }
         }
 
         //지사가 총판 리스트 요청
